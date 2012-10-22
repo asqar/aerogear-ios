@@ -19,12 +19,17 @@
 #import "AGPipe.h"
 #import "AGAuthenticationModule.h"
 
-/**
- * AGPipeline represents a 'collection' of server connections (pipes) and
- * their corresponding data models. This object provides a standard way to
- * communicate with the server no matter the data format or transport expected.
- *
- * A pipeline must have at least one pipe.
+/** `AGPipeline` represents a `collection` of server connections (`AGPipe` objects). The `AGPipeline` class offers some simple 'management' APIs to work with containing `AGPipe` objects, which itself represents a server connection. 
+
+Create an empty `AGPipeline` object:
+
+     // NSURL object:
+    NSURL* serverURL = [NSURL URLWithString:@"http://todo-aerogear.rhcloud.com/todo-server/"];
+
+    // create the 'todo' pipeline, which points to the baseURL of the REST application
+    AGPipeline* todo = [AGPipeline pipeline:serverURL];
+    
+Simple create example....
  */
 @interface AGPipeline : NSObject
 
