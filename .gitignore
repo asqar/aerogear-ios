@@ -19,8 +19,8 @@ DerivedData
 # CocoaPods
 Podfile.lock
 Pods/
-!Pods/Pods-AeroGear-iOSTests.xcconfig
-!Pods/Pods.xcconfig
+!AeroGear-iOS/Pods/Pods-AeroGear-iOSTests.xcconfig
+!AeroGear-iOS/Pods/Pods.xcconfig
 
 #Docset/AppleDoc
 */Docset/*
