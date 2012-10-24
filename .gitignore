@@ -12,16 +12,15 @@ build/*
 !default.perspectivev3
 *.xcworkspace
 !default.xcworkspace
-!AeroGear-iOS/AeroGear-iOS.xcworkspace
 xcuserdata
 profile
 *.moved-aside
 DerivedData
-
-
 # CocoaPods
-##Podfile.lock
-##Pods/
+Podfile.lock
+Pods/
+!Pods/Pods-AeroGear-iOSTests.xcconfig
+!Pods/Pods.xcconfig
 
 #Docset/AppleDoc
 */Docset/*
