@@ -1,9 +1,0 @@
-PODS:
-  - AFNetworking (1.0)
-  - Kiwi (1.1.0)
-  - OCMock (2.0.1)
-
-DEPENDENCIES:
-  - AFNetworking (~> 1.0)
-  - Kiwi
-  - OCMock
