@@ -3,6 +3,7 @@ xcodeproj 'AeroGear-iOS.xcodeproj'
 platform :ios, '5.0'
 
 pod 'AFNetworking', '1.0RC1'
+pod 'SocketRocket', '0.2.0'
 
 target 'AeroGear-iOSTests', :exclusive => true do
 	pod 'OCMock'

@@ -13,6 +13,13 @@
 		5707E0F516351E4B0083949C /* AGAuthenticationModule.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 573B709A161DA29A009F0452 /* AGAuthenticationModule.h */; };
 		570B908616231D1100426BA7 /* AGRestAuthenticationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B908516231D1100426BA7 /* AGRestAuthenticationTests.m */; };
 		570B908A1624360600426BA7 /* AGAuthenticatorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B90891624360600426BA7 /* AGAuthenticatorTests.m */; };
+		570B9BF41639449B006B6AD8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF31639449B006B6AD8 /* libicucore.dylib */; };
+		570B9BF7163944A9006B6AD8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF6163944A9006B6AD8 /* CFNetwork.framework */; };
+		570B9BF9163944B0006B6AD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF8163944B0006B6AD8 /* Security.framework */; };
+		570B9BFA1639457F006B6AD8 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF31639449B006B6AD8 /* libicucore.dylib */; };
+		570B9BFB16394587006B6AD8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF6163944A9006B6AD8 /* CFNetwork.framework */; };
+		570B9BFC1639458F006B6AD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF8163944B0006B6AD8 /* Security.framework */; };
+		570B9BFF16394613006B6AD8 /* SocketRocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B9BFE16394613006B6AD8 /* SocketRocketTests.m */; };
 		571DBACB1610715800A0A3A6 /* AGMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBACA1610715800A0A3A6 /* AGMemoryStorage.m */; };
 		571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBACE161071BF00A0A3A6 /* AGBaseStorage.m */; };
 		571DBAD51610C3D700A0A3A6 /* AGMemoryStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBAD41610C3D700A0A3A6 /* AGMemoryStorageSpec.m */; };
@@ -76,6 +83,11 @@
 /* Begin PBXFileReference section */
 		570B908516231D1100426BA7 /* AGRestAuthenticationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRestAuthenticationTests.m; sourceTree = "<group>"; };
 		570B90891624360600426BA7 /* AGAuthenticatorTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGAuthenticatorTests.m; sourceTree = "<group>"; };
+		570B9BF31639449B006B6AD8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		570B9BF6163944A9006B6AD8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		570B9BF8163944B0006B6AD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		570B9BFD16394613006B6AD8 /* SocketRocketTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketRocketTests.h; sourceTree = "<group>"; };
+		570B9BFE16394613006B6AD8 /* SocketRocketTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketRocketTests.m; sourceTree = "<group>"; };
 		571DBAC91610715800A0A3A6 /* AGMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGMemoryStorage.h; sourceTree = "<group>"; };
 		571DBACA1610715800A0A3A6 /* AGMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGMemoryStorage.m; sourceTree = "<group>"; };
 		571DBACD161071BF00A0A3A6 /* AGBaseStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGBaseStorage.h; sourceTree = "<group>"; };
@@ -129,6 +141,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				570B9BF9163944B0006B6AD8 /* Security.framework in Frameworks */,
+				570B9BF7163944A9006B6AD8 /* CFNetwork.framework in Frameworks */,
+				570B9BF41639449B006B6AD8 /* libicucore.dylib in Frameworks */,
 				57737FDD15E3D01D006B97BB /* Foundation.framework in Frameworks */,
 				08D43362329A46488E585071 /* libPods.a in Frameworks */,
 			);
@@ -138,6 +153,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				570B9BFC1639458F006B6AD8 /* Security.framework in Frameworks */,
+				570B9BFB16394587006B6AD8 /* CFNetwork.framework in Frameworks */,
+				570B9BFA1639457F006B6AD8 /* libicucore.dylib in Frameworks */,
 				57737FEC15E3D01D006B97BB /* SenTestingKit.framework in Frameworks */,
 				57737FEE15E3D01D006B97BB /* UIKit.framework in Frameworks */,
 				57737FEF15E3D01D006B97BB /* Foundation.framework in Frameworks */,
@@ -172,6 +190,8 @@
 				573CBDA915E546A20071E7A6 /* AGRestAdapterTests.m */,
 				57ED1451160B492B00881924 /* AGDataManagerTests.m */,
 				570B908516231D1100426BA7 /* AGRestAuthenticationTests.m */,
+				570B9BFD16394613006B6AD8 /* SocketRocketTests.h */,
+				570B9BFE16394613006B6AD8 /* SocketRocketTests.m */,
 			);
 			name = "Unit Tests";
 			sourceTree = "<group>";
@@ -190,6 +210,9 @@
 		57737FCE15E3D01D006B97BB = {
 			isa = PBXGroup;
 			children = (
+				570B9BF8163944B0006B6AD8 /* Security.framework */,
+				570B9BF6163944A9006B6AD8 /* CFNetwork.framework */,
+				570B9BF31639449B006B6AD8 /* libicucore.dylib */,
 				DD46252015EF437500A5040C /* common.xcconfig */,
 				57737FDE15E3D01D006B97BB /* AeroGear-iOS */,
 				57737FF315E3D01D006B97BB /* AeroGear-iOSTests */,
@@ -456,6 +479,7 @@
 				571DBAD51610C3D700A0A3A6 /* AGMemoryStorageSpec.m in Sources */,
 				570B908616231D1100426BA7 /* AGRestAuthenticationTests.m in Sources */,
 				570B908A1624360600426BA7 /* AGAuthenticatorTests.m in Sources */,
+				570B9BFF16394613006B6AD8 /* SocketRocketTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +560,7 @@
 				DSTROOT = /tmp/AeroGear_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AeroGear-iOS/AeroGear-iOS-Prefix.pch";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -549,6 +574,7 @@
 				DSTROOT = /tmp/AeroGear_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AeroGear-iOS/AeroGear-iOS-Prefix.pch";
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

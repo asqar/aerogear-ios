@@ -3,15 +3,18 @@ DEPENDENCIES:
 - AFNetworking (= 1.0RC1)
 - Kiwi
 - OCMock
+- SocketRocket (= 0.2.0)
 
 PODS: 
 - AFNetworking (1.0RC1)
 - Kiwi (1.1.0)
 - OCMock (2.0.1)
-
-SPEC CHECKSUMS: 
-  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
-  AFNetworking: b21c1252d437fd322e7db1caa93b163d76a362cb
-  Kiwi: 9141d15cf4f52a2178139ea16722f021b4059906
+- SocketRocket (0.2.0)
 
 COCOAPODS: 0.15.2
+
+SPEC CHECKSUMS: 
+  Kiwi: 9141d15cf4f52a2178139ea16722f021b4059906
+  SocketRocket: a0529878e3c4c200196fa3a7e2ac1ef34aa33ffe
+  AFNetworking: b21c1252d437fd322e7db1caa93b163d76a362cb
+  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
