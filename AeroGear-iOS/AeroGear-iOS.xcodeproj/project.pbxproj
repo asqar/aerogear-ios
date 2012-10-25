@@ -20,6 +20,8 @@
 		570B9BFB16394587006B6AD8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF6163944A9006B6AD8 /* CFNetwork.framework */; };
 		570B9BFC1639458F006B6AD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 570B9BF8163944B0006B6AD8 /* Security.framework */; };
 		570B9BFF16394613006B6AD8 /* SocketRocketTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B9BFE16394613006B6AD8 /* SocketRocketTests.m */; };
+		570B9C0216395DD7006B6AD8 /* AGWebSocketAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B9C0116395DD7006B6AD8 /* AGWebSocketAdapter.m */; };
+		570B9C05163965AC006B6AD8 /* AGWebSocketAdapterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 570B9C04163965AC006B6AD8 /* AGWebSocketAdapterTests.m */; };
 		571DBACB1610715800A0A3A6 /* AGMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBACA1610715800A0A3A6 /* AGMemoryStorage.m */; };
 		571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBACE161071BF00A0A3A6 /* AGBaseStorage.m */; };
 		571DBAD51610C3D700A0A3A6 /* AGMemoryStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 571DBAD41610C3D700A0A3A6 /* AGMemoryStorageSpec.m */; };
@@ -86,8 +88,10 @@
 		570B9BF31639449B006B6AD8 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		570B9BF6163944A9006B6AD8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		570B9BF8163944B0006B6AD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		570B9BFD16394613006B6AD8 /* SocketRocketTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocketRocketTests.h; sourceTree = "<group>"; };
 		570B9BFE16394613006B6AD8 /* SocketRocketTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SocketRocketTests.m; sourceTree = "<group>"; };
+		570B9C0016395DD7006B6AD8 /* AGWebSocketAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGWebSocketAdapter.h; sourceTree = "<group>"; };
+		570B9C0116395DD7006B6AD8 /* AGWebSocketAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGWebSocketAdapter.m; sourceTree = "<group>"; };
+		570B9C04163965AC006B6AD8 /* AGWebSocketAdapterTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGWebSocketAdapterTests.m; sourceTree = "<group>"; };
 		571DBAC91610715800A0A3A6 /* AGMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGMemoryStorage.h; sourceTree = "<group>"; };
 		571DBACA1610715800A0A3A6 /* AGMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGMemoryStorage.m; sourceTree = "<group>"; };
 		571DBACD161071BF00A0A3A6 /* AGBaseStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGBaseStorage.h; sourceTree = "<group>"; };
@@ -190,8 +194,8 @@
 				573CBDA915E546A20071E7A6 /* AGRestAdapterTests.m */,
 				57ED1451160B492B00881924 /* AGDataManagerTests.m */,
 				570B908516231D1100426BA7 /* AGRestAuthenticationTests.m */,
-				570B9BFD16394613006B6AD8 /* SocketRocketTests.h */,
 				570B9BFE16394613006B6AD8 /* SocketRocketTests.m */,
+				570B9C04163965AC006B6AD8 /* AGWebSocketAdapterTests.m */,
 			);
 			name = "Unit Tests";
 			sourceTree = "<group>";
@@ -295,6 +299,8 @@
 				573CBDA715E51C120071E7A6 /* AGAdapter.h */,
 				57DCDB8215F20E4800289EA4 /* AGBaseAdapter.h */,
 				57DCDB8315F20E4800289EA4 /* AGBaseAdapter.m */,
+				570B9C0016395DD7006B6AD8 /* AGWebSocketAdapter.h */,
+				570B9C0116395DD7006B6AD8 /* AGWebSocketAdapter.m */,
 			);
 			name = Pipeline;
 			sourceTree = "<group>";
@@ -461,6 +467,7 @@
 				571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */,
 				573B709D161DA2AE009F0452 /* AGAuthenticator.m in Sources */,
 				573B70A1161DDD1C009F0452 /* AGRestAuthentication.m in Sources */,
+				570B9C0216395DD7006B6AD8 /* AGWebSocketAdapter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +487,7 @@
 				570B908616231D1100426BA7 /* AGRestAuthenticationTests.m in Sources */,
 				570B908A1624360600426BA7 /* AGAuthenticatorTests.m in Sources */,
 				570B9BFF16394613006B6AD8 /* SocketRocketTests.m in Sources */,
+				570B9C05163965AC006B6AD8 /* AGWebSocketAdapterTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

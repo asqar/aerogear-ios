@@ -37,6 +37,44 @@
                BlueprintName = "AeroGear-iOSTests"
                ReferencedContainer = "container:AeroGear-iOS.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AGAuthenticatorTests">
+               </Test>
+               <Test
+                  Identifier = "AGBaseAdapterTests">
+               </Test>
+               <Test
+                  Identifier = "AGDataManagerTests">
+               </Test>
+               <Test
+                  Identifier = "AGHttpClientTests">
+               </Test>
+               <Test
+                  Identifier = "AGMemoryStorageSpec">
+               </Test>
+               <Test
+                  Identifier = "AGPipelineTests">
+               </Test>
+               <Test
+                  Identifier = "AGPipelineSpec">
+               </Test>
+               <Test
+                  Identifier = "AGPipeSpec">
+               </Test>
+               <Test
+                  Identifier = "AGRestAdapterSpec">
+               </Test>
+               <Test
+                  Identifier = "AGRestAdapterTests">
+               </Test>
+               <Test
+                  Identifier = "AGRestAuthenticationTests">
+               </Test>
+               <Test
+                  Identifier = "SocketRocketTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

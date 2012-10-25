@@ -16,6 +16,12 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "AGAuthenticationModule.h"
 
 @protocol AGAdapter <NSObject>
+
+-(id) initForURL:(NSURL*) url authModule:(id<AGAuthenticationModule>) authModule;
++(id) pipeForURL:(NSURL*) url authModule:(id<AGAuthenticationModule>) authModule;
+
+
 @end

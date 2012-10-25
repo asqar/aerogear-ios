@@ -15,8 +15,10 @@
  * limitations under the License.
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
+#import "AGPipe.h"
+#import "AGBaseAdapter.h"
 
-@interface SocketRocketTests : SenTestCase
+@interface AGWebSocketAdapter : AGBaseAdapter <AGPipe>
 
 @end
