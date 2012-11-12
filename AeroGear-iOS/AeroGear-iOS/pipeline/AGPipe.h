@@ -73,7 +73,7 @@
 /**
  * Saves (or updates) a give 'JSON' map on the server;
  *
- * @param object a 'JSON' map, representing the data to save/update
+ * @param object the data to save/update
  *
  * @param success A block object to be executed when the request operation finishes successfully.
  * This block has no return value and takes one argument: The object created from the response
@@ -84,7 +84,7 @@
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
--(void) save:(NSDictionary*) object
+-(void) save:(id) object
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure;
 
