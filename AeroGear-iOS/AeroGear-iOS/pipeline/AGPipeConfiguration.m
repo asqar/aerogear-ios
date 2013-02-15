@@ -25,7 +25,7 @@
 @synthesize authModule = _authModule;
 @synthesize name = _name;
 @synthesize type = _type;
-@synthesize interval = _interval;
+@synthesize timeoutInterval = _timeoutInterval;
 
 // paging
 @synthesize parameterProvider = _parameterProvider;
@@ -46,7 +46,7 @@
         _previousIdentifier = @"previous";
         _offset = @"0"; // string to work with 'strange' APIs, that are treating offset as string...
         _limit = [NSNumber numberWithInteger:10];
-        _interval = 60;  // the default timeout interval of NSMutableURLRequest (60 secs)
+        _timeoutInterval = 60;  // the default timeout interval of NSMutableURLRequest (60 secs)
     }
     return self;
 }
