@@ -22,6 +22,10 @@
     NSTimeInterval _interval;
 }
 
++ (AGHttpClient *)clientFor:(NSURL *)url {
+    return [[self alloc] initWithBaseURL:url andTimeoutInterval:60 /* the default timeout interval */];
+}
+
 + (AGHttpClient *)clientFor:(NSURL *)url andTimeoutInterval:(NSTimeInterval)interval {
     return [[self alloc] initWithBaseURL:url andTimeoutInterval:interval];
 }
