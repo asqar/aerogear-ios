@@ -86,4 +86,9 @@ sb */
  */
 @property (strong, nonatomic) id<AGAuthenticationModule> authModule;
 
+/**
+ * The timeout interval for a request to complete.
+ */
+@property (assign, nonatomic) NSTimeInterval interval;
+
 @end

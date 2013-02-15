@@ -18,18 +18,23 @@
 #import "AGHttpClient.h"
 
 
-@implementation AGHttpClient
-
-+ (AGHttpClient *)clientFor:(NSURL *)url {
-    return [[self alloc] initWithBaseURL:url];
+@implementation AGHttpClient {
+    NSTimeInterval _interval;
 }
 
-- (id)initWithBaseURL:(NSURL *)url {
++ (AGHttpClient *)clientFor:(NSURL *)url andTimeoutInterval:(NSTimeInterval)interval {
+    return [[self alloc] initWithBaseURL:url andTimeoutInterval:interval];
+}
+
+- (id)initWithBaseURL:(NSURL *)url andTimeoutInterval:(NSTimeInterval)interval {
 	
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
     }
+    
+    // set the timeout interval for requests
+    _interval = interval;
     
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     
@@ -39,13 +44,16 @@
     return self;
 }
 
-// override to not handle the cookies
+// override to not handle the cookies and add timeout interval for requests
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                       path:(NSString *)path
                                 parameters:(NSDictionary *)parameters
 {
     // invoke the 'requestWithMethod:path:parameters:' from AFNetworking:
     NSMutableURLRequest* req = [super requestWithMethod:method path:path parameters:parameters];
+    
+    // set the timeout interval
+    [req setTimeoutInterval:_interval];
     
     // disable the default cookie handling in the override:
     [req setHTTPShouldHandleCookies:NO];

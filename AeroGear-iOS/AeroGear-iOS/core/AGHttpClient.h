@@ -20,6 +20,6 @@
 
 @interface AGHttpClient : AFHTTPClient
 
-+ (AGHttpClient *)clientFor:(NSURL *)url;
++ (AGHttpClient *)clientFor:(NSURL *)url andTimeoutInterval:(NSTimeInterval)interval;
 
 @end

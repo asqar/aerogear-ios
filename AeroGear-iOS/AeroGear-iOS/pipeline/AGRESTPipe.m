@@ -64,7 +64,7 @@
         _recordId = _config.recordId;
         _authModule = (id<AGAuthenticationModuleAdapter>) _config.authModule;
         
-        _restClient = [AGHttpClient clientFor:finalURL];
+        _restClient = [AGHttpClient clientFor:finalURL andTimeoutInterval:_config.interval];
         _restClient.parameterEncoding = AFJSONParameterEncoding;
 
         _pagingObject = [NSMutableArray array];
