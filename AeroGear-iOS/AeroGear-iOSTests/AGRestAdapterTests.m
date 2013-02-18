@@ -42,6 +42,7 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
 	[AGMockURLProtocol setHeaders:nil];
 	[AGMockURLProtocol setResponseData:nil];
 	[AGMockURLProtocol setError:nil];
+    [AGMockURLProtocol setResponseDelay:0]; // default is immediate response
     
     // set correct content-type otherwise AFNetworking
     // will complain because it expects JSON response
@@ -53,6 +54,7 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
     AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
     [config setBaseURL:baseURL];
     [config setName:@"projects"];
+    [config setTimeout:1]; // this is just for testing of testReadWithTimeout
     
     _restPipe = [AGRESTPipe pipeWithConfig:config];
 }
@@ -63,6 +65,7 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
 	[AGMockURLProtocol setHeaders:nil];
 	[AGMockURLProtocol setResponseData:nil];
 	[AGMockURLProtocol setError:nil];
+    [AGMockURLProtocol setResponseDelay:0];
     
     [super tearDown];
 }
@@ -100,13 +103,19 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
 -(void)testReadWithTimeout {
     [AGMockURLProtocol setResponseData:[PROJECTS dataUsingEncoding:NSUTF8StringEncoding]];
     
+    // simulate delay in response
+    // Note that pipe has been default configured for a timeout in 1 sec
+    // here we simulate a delay of 2 sec
+    [AGMockURLProtocol setResponseDelay:2];
+    
     [_restPipe read:^(id responseObject) {
-        STAssertNotNil(responseObject, @"response should not be nil");
+        STFail(@"%@", @"should NOT have been called");
         _finishedFlag = YES;
         
     } failure:^(NSError *error) {
+        STAssertEquals(-1001, [error code], @"should be equal to code -1001 [request time out]");
         _finishedFlag = YES;
-        STFail(@"should not fail");
+
     }];
     
     // keep the run loop going

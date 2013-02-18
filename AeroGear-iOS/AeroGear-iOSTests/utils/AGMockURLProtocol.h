@@ -28,6 +28,7 @@
 + (void)removeHeader:(NSString*)key;
 + (void)setStatusCode:(NSInteger)statusCode;
 + (void)setError:(NSError*)error;
++ (void)setResponseDelay:(NSTimeInterval)seconds;
 
 + (NSString*)methodCalled;
 

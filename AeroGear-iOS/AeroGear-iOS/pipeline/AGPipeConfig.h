@@ -89,6 +89,6 @@ sb */
 /**
  * The timeout interval for a request to complete.
  */
-@property (assign, nonatomic) NSTimeInterval timeoutInterval;
+@property (assign, nonatomic) NSTimeInterval timeout;
 
 @end
