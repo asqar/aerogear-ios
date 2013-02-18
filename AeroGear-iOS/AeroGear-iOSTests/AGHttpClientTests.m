@@ -58,10 +58,6 @@ static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"sty
 
 -(void)tearDown {
     [NSURLProtocol unregisterClass:[AGMockURLProtocol class]];
-    [AGMockURLProtocol setStatusCode:200];
-	[AGMockURLProtocol setHeaders:nil];
-	[AGMockURLProtocol setResponseData:nil];
-	[AGMockURLProtocol setError:nil];
     
     _restClient = nil;
     

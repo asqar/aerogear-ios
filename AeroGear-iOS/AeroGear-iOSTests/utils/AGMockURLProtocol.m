@@ -21,6 +21,9 @@
 - (id)initWithURL:(NSURL*)URL statusCode:(NSInteger)statusCode headerFields:(NSDictionary*)headerFields requestTime:(double)requestTime;
 @end
 
+// AGMockURLProtocol instances are created by the runtime at the time
+// and "static" was a way to set parameters on those instances.
+// See NSURLProtocol documentation for more details.
 static NSData* sResponseData = nil;
 static NSMutableDictionary* sHeaders = nil;
 static NSInteger sStatusCode = 200;

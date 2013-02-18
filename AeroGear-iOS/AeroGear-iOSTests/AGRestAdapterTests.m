@@ -38,6 +38,9 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
 
     // register AGFakeURLProtocol to fake HTTP comm.
     [NSURLProtocol registerClass:[AGMockURLProtocol class]];
+
+    // reset any "previous" state from the mocked URLProtocol
+    // see AGMockURLProtocol class for more information
     [AGMockURLProtocol setStatusCode:200];
 	[AGMockURLProtocol setHeaders:nil];
 	[AGMockURLProtocol setResponseData:nil];
@@ -61,11 +64,6 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
 
 -(void)tearDown {
     [NSURLProtocol unregisterClass:[AGMockURLProtocol class]];
-    [AGMockURLProtocol setStatusCode:200];
-	[AGMockURLProtocol setHeaders:nil];
-	[AGMockURLProtocol setResponseData:nil];
-	[AGMockURLProtocol setError:nil];
-    [AGMockURLProtocol setResponseDelay:0];
     
     [super tearDown];
 }
