@@ -26,7 +26,7 @@ static NSMutableDictionary* sHeaders = nil;
 static NSInteger sStatusCode = 200;
 static NSError* sError = nil;
 static NSString* sMethod = nil;
-static NSTimeInterval delay = 0;
+static NSTimeInterval sDelay = 0;
 
 @implementation AGMockURLProtocol
 
@@ -70,7 +70,7 @@ static NSTimeInterval delay = 0;
 }
 
 + (void)setResponseDelay:(NSTimeInterval)seconds {
-    delay = seconds;
+    sDelay = seconds;
 }
 
 - (NSCachedURLResponse*)cachedResponse {
@@ -95,7 +95,7 @@ static NSTimeInterval delay = 0;
 																 requestTime:0.0];
 		
         // simulate delay in response (if set)
-        [NSThread sleepForTimeInterval:delay];
+        [NSThread sleepForTimeInterval:sDelay];
         
 		[client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];
 		[client URLProtocol:self didLoadData:sResponseData];
