@@ -67,11 +67,6 @@
     return retVal;
 }
 
--(NSArray*) filter:(id)filterObject {
-    // TODO........
-    return nil;
-}
-
 -(BOOL) save:(id)data error:(NSError**)error {
     // a 'collection' of objects:
     if ([data isKindOfClass:[NSArray class]]) {

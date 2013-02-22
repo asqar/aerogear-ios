@@ -44,16 +44,6 @@
 -(id) read:(id)recordId;
 
 /**
- * Reads all, based on a filter, from the underlying storage system.
- *
- * @param filterObject the filter criteria.
- *
- * @return A collection (NSArray), containing all stored objects, matching the given filter.
- * The argument is nil, if nothing matches the criteria.
- */
--(NSArray*) filter:(id)filterObject;
-
-/**
  * Saves the given object in the underlying storage system.
  *
  * @param data An object or a collection (e.g. NSArray) which is being persisted.
