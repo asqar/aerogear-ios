@@ -27,7 +27,13 @@
 // the operation. Will be used on success/failure callbacks
 // to invalidate it.
 @interface AFHTTPRequestOperation (Timeout)
+
+// the timer that is associated with this operation
 @property (nonatomic, retain) NSTimer* timer;
+
+// overide method to invalidate the timer on cancel
+-(void)cancel;
+
 @end
 
 static char const * const TimerTagKey = "TimerTagKey";
@@ -42,6 +48,15 @@ static char const * const TimerTagKey = "TimerTagKey";
 
 - (void)setTimer:(NSTimer*)timer {
     objc_setAssociatedObject(self, TimerTagKey, timer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+-(void)cancel {
+    [super cancel];
+    
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
 }
 @end
 // -------------------------------------------------------
@@ -120,6 +135,20 @@ static char const * const TimerTagKey = "TimerTagKey";
     [req setHTTPShouldHandleCookies:NO];
     
     return req;
+}
+
+// override AFNetworking cancelAllHTTPOperationsWithMethod
+// to cancel all operations regardless of the path passed in.
+- (void)cancelAllHTTPOperationsWithMethod:(NSString *)method path:(NSString *)path {
+    for (NSOperation *operation in [self.operationQueue operations]) {
+        if (![operation isKindOfClass:[AFHTTPRequestOperation class]]) {
+            continue;
+        }
+        
+        if (!method || [method isEqualToString:[[(AFHTTPRequestOperation *)operation request] HTTPMethod]]) {
+            [operation cancel];
+        }
+    }
 }
 
 // =====================================================
