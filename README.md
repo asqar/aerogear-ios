@@ -10,7 +10,7 @@ The project requires [CocoaPods](http://cocoapods.org/) for dependency managemen
 
 ## API docs
 
-The API is documented [here](http://aerogear.org/docs/specs/aerogear-ios/). Some basic usages are documented [here](API.md).
+The API is documented [here](http://aerogear.org/docs/specs/aerogear-ios/).
 
 ## Getting started
 
