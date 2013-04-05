@@ -18,6 +18,7 @@
 #import <Foundation/Foundation.h>
 #import "AGConfig.h"
 #import "AGAuthenticationModule.h"
+#import "AGPageParameterExtractor.h"
 
 /**
  * Represents the public API to configure AGPipe objects.
@@ -90,5 +91,9 @@ sb */
  * The timeout interval for a request to complete.
  */
 @property (assign, nonatomic) NSTimeInterval timeout;
+
+@property (strong, nonatomic) id<AGPageParameterExtractor> pageExtractor;
+
+
 
 @end

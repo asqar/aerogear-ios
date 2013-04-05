@@ -34,6 +34,7 @@
 @synthesize metadataLocation = _metadataLocation;
 @synthesize nextIdentifier = _nextIdentifier;
 @synthesize previousIdentifier = _previousIdentifier;
+@synthesize pageExtractor = _pageExtractor;
 
 - (id)init {
     self = [super init];
