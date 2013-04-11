@@ -69,12 +69,14 @@
         _restClient = [AGHttpClient clientFor:finalURL timeout:_config.timeout];
         _restClient.parameterEncoding = AFJSONParameterEncoding;
 
-        if ([_config.metadataLocation isEqualToString:@"webLinking"]) {
-            [_config setPageExtractor:[[AGPageWebLinkingExtractor alloc] init]];
-        } else if ([_config.metadataLocation isEqualToString:@"header"]) {
-            [_config setPageExtractor:[[AGPageHeaderExtractor alloc] init]];
-        }else if ([_config.metadataLocation isEqualToString:@"body"]) {
-            [_config setPageExtractor:[[AGPageBodyExtractor alloc] init]];
+        if (!_config.pageExtractor) {
+            if ([_config.metadataLocation isEqualToString:@"webLinking"]) {
+                [_config setPageExtractor:[[AGPageWebLinkingExtractor alloc] init]];
+            } else if ([_config.metadataLocation isEqualToString:@"header"]) {
+                [_config setPageExtractor:[[AGPageHeaderExtractor alloc] init]];
+            }else if ([_config.metadataLocation isEqualToString:@"body"]) {
+                [_config setPageExtractor:[[AGPageBodyExtractor alloc] init]];
+            }
         }
     }
     
