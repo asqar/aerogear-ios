@@ -92,8 +92,9 @@ sb */
  */
 @property (assign, nonatomic) NSTimeInterval timeout;
 
+/**
+ * The paging strategy configured for this pipe.
+ */
 @property (strong, nonatomic) id<AGPageParameterExtractor> pageExtractor;
-
-
 
 @end

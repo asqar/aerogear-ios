@@ -25,8 +25,10 @@
 @implementation AGRestAuthentication {
     // ivars
     AGHttpClient* _restClient;
+    
     NSString* _tokenHeaderName;
     
+    NSMutableDictionary *_authHeaderParams;
 }
 
 // =====================================================
@@ -54,7 +56,7 @@
 // ==============================================================
 // ======== internal API (AGAuthenticationModuleAdapter) ========
 // ==============================================================
-@synthesize authToken = _authToken;
+//@synthesize authToken = _authToken;
 
 
 
@@ -150,7 +152,7 @@
      failure:(void (^)(NSError *error))failure {
     
     // stash the token to the header:
-    [_restClient setDefaultHeader:_tokenHeaderName value:_authToken];
+    [_restClient setDefaultHeader:_tokenHeaderName value:[_authHeaderParams objectForKey:_tokenHeaderName]];
     
     // logoff:
     [_restClient postPath:_logoutEndpoint parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -170,6 +172,14 @@
     }];
 }
 
+-(NSDictionary*)authHeaderParams {
+    return (_authHeaderParams != nil? [_authHeaderParams copy]: nil);
+}
+
+-(NSDictionary*)authQueryParams {
+    return nil;
+}
+
 -(void) cancel {
     // cancel all running http operations
     [_restClient.operationQueue cancelAllOperations];
@@ -177,8 +187,13 @@
 
 // private method
 -(void) readAndStashToken:(AFHTTPRequestOperation*) operation {
-    // TODO: hard-coded header name:
-    _authToken = [[[operation response] allHeaderFields] valueForKey:_tokenHeaderName];
+    // init at first access
+    if (!_authHeaderParams)
+        _authHeaderParams = [[NSMutableDictionary alloc] init];
+    
+    NSString* authToken = [[[operation response] allHeaderFields] objectForKey:_tokenHeaderName];
+
+    [_authHeaderParams setObject:authToken forKey:_tokenHeaderName];
 }
 
 // ==============================================================
@@ -186,11 +201,15 @@
 // ==============================================================
 - (BOOL)isAuthenticated {
     //return !!_authToken;
-    return (nil != _authToken);
+    return (nil != _authHeaderParams);
 }
+
 - (void)deauthorize {
-    _authToken = nil;
+    // TODO ?
+    //_authToken = nil;
 }
+
+
 
 // general override...
 -(NSString *) description {

@@ -304,7 +304,11 @@
 // helper method:
 -(void) applyAuthToken {
     if ([_authModule isAuthenticated]) {
-        [_restClient setDefaultHeader:@"Auth-Token" value:[_authModule authToken]];
+        NSDictionary *authHeaders = [_authModule authHeaderParams];
+
+        [authHeaders enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [_restClient setDefaultHeader:key value:obj];
+        }];
     }
 }
 

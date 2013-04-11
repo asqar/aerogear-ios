@@ -36,19 +36,19 @@
 }
 
 -(id<AGAuthenticationModule>) auth:(void (^)(id<AGAuthConfig> config)) config {
-    AGAuthConfiguration* pipeConfig = [[AGAuthConfiguration alloc] init];
+    AGAuthConfiguration* authConfig = [[AGAuthConfiguration alloc] init];
     
     if (config) {
-        config(pipeConfig);
+        config(authConfig);
     }
 
     // TODO check ALL supported types...
-    if (! [pipeConfig.type isEqualToString:@"AG_SECURITY"]) {
+    if (! [authConfig.type isEqualToString:@"AG_SECURITY"]) {
         return nil;
     }
     
-    id<AGAuthenticationModule> module = [AGRestAuthentication moduleWithConfig:pipeConfig];
-    [_modules setValue:module forKey:[pipeConfig name]];
+    id<AGAuthenticationModule> module = [AGRestAuthentication moduleWithConfig:authConfig];
+    [_modules setValue:module forKey:[authConfig name]];
     return module;
 }
 

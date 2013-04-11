@@ -26,12 +26,12 @@
 /**
  * Returns the type of the underlying 'auth module implementation'
  */
-@property (nonatomic, readonly) NSString* authToken;
+//@property (nonatomic, readonly) NSString* authToken;
 
 /**
  * Performs a simple check if the user of the module impl. is authenticated.
  */
-- (BOOL)isAuthenticated;
+//- (BOOL)isAuthenticated;
 
 /**
  * Performs deauthorization, after logout.

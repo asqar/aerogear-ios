@@ -178,6 +178,13 @@ As with the case of Pipe, configured timeout interval (in the config object) and
 -(void) logout:(void (^)())success
      failure:(void (^)(NSError *error))failure;
 
+
+-(BOOL)isAuthenticated;
+
+-(NSDictionary*)authHeaderParams;
+
+-(NSDictionary*)authQueryParams;
+
 /**
  * Cancel all running pipe operations. Any registered callbacks on the auth module are NOT executed.
  * It is your responsibility to provide any neccessary cleanups after calling this method.
