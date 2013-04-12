@@ -129,24 +129,8 @@
 // read all, via HTTP GET
 -(void) read:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure {
-    
-    // try to add auth.token:
-    [self applyAuthToken];
-    
-    // TODO: better Endpoints....
-    [_restClient getPath:_URL.path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        if (success) {
-            //TODO: NSLog(@"Invoking successblock....");
-            success(responseObject);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        if (failure) {
-            //TODO: NSLog(@"Invoking failure block....");
-            failure(error);
-        }
-    } ];
+
+    [self readWithParams:nil success:success failure:failure];
 }
 
 // read, with (filter/query) params. Used for paging, can be used
