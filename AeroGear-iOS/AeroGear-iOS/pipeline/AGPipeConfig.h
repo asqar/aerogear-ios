@@ -63,7 +63,7 @@
  *
  * If a paramater provider has been given, the limit value is ignored.
  */
-@property (assign, nonatomic) NSNumber* limit;
+@property (strong, nonatomic) NSNumber* limit;
 
 /**
  * Indicates whether paging information (see identifiers) is received
