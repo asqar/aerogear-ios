@@ -392,11 +392,11 @@
 		6F14F189170ED9F4001E14BA /* paging */ = {
 			isa = PBXGroup;
 			children = (
+				6F14F18E170EDA02001E14BA /* AGPageParameterExtractor.h */,
 				6F14F18A170EDA02001E14BA /* AGPageBodyExtractor.h */,
 				6F14F18B170EDA02001E14BA /* AGPageBodyExtractor.m */,
 				6F14F18C170EDA02001E14BA /* AGPageHeaderExtractor.h */,
 				6F14F18D170EDA02001E14BA /* AGPageHeaderExtractor.m */,
-				6F14F18E170EDA02001E14BA /* AGPageParameterExtractor.h */,
 				6F14F18F170EDA02001E14BA /* AGPageWebLinkingExtractor.h */,
 				6F14F190170EDA02001E14BA /* AGPageWebLinkingExtractor.m */,
 			);
