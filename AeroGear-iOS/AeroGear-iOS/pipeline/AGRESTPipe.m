@@ -265,15 +265,15 @@ resourcePath:(NSString*)resourcePath
     
     // we need to check if the map representation contains the "recordID" and its value is actually set:
     if (objectKey == nil || [objectKey isKindOfClass:[NSNull class]]) {
-        //TODO: NSLog(@"HTTP POST to create the given object");
-        
         NSString *path;
         
+        // for nested resources
         if (resourcePath)
             path = [self appendObjectPath:resourcePath];
         else
             path = _URL.path;
         
+        //TODO: NSLog(@"HTTP POST to create the given object");
         [_restClient postPath:path parameters:object success:successCallback failure:failureCallback];
 
     } else {
