@@ -161,9 +161,16 @@ resourcePath:(NSString*)resourcePath
     } ];
 }
 
+-(void) readWithParams:(NSDictionary*)parameterProvider
+               success:(void (^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure {
+    [self readWithParams:parameterProvider resourcePath:nil success:success failure:failure];
+}
+
 // read, with (filter/query) params. Used for paging, can be used
 // to issue queries as well...
 -(void) readWithParams:(NSDictionary*)parameterProvider
+          resourcePath:(NSString*)resourcePath
                success:(void (^)(id responseObject))success
                failure:(void (^)(NSError *error))failure {
 
@@ -175,8 +182,16 @@ resourcePath:(NSString*)resourcePath
     // been configured on the PIPE level.....:
     if (!parameterProvider)
         parameterProvider = _config.parameterProvider;
+    
+    NSString *path;
 
-    [_restClient getPath:_URL.path parameters:parameterProvider success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    // append the nested resource path (if any)
+    if (resourcePath)
+        path = [self appendObjectPath:resourcePath];
+    else
+        path = _URL.path;
+        
+    [_restClient getPath:path parameters:parameterProvider success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
         NSDictionary *linkInformationContainer;
         if ([_config.metadataLocation isEqualToString:@"webLinking"]) {

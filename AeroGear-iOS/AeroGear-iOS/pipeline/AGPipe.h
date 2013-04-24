@@ -190,6 +190,7 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  *
  * @param value The value of the recordId. See property [AGPipeConfig recordId].
  *
+ * @param resourcePath the nested resource path to append to the endpoint URL
  * @param success A block object to be executed when the request operation finishes successfully.
  * This block has no return value and takes one argument: The object created from the response
  * data of request.
@@ -221,6 +222,29 @@ resourcePath:(NSString*)resourcePath
  * the network or parsing error that occurred.
  */
 -(void) readWithParams:(NSDictionary*)parameterProvider
+               success:(void (^)(id responseObject))success
+               failure:(void (^)(NSError *error))failure;
+
+/**
+ * Similar to readWithParams:success:failure but adds the ability to point to a nested path.
+ *
+ * @param parameterProvider A dictionary containing all the parameters and their values, that are
+ * passed to the server. If no parameterProvider is given, the defaults from the `AGPipeConfig`
+ * are used.
+ *
+ * @param resourcePath the nested resource path to append to the endpoint URL
+ *
+ * @param success A block object to be executed when the request operation finishes successfully.
+ * This block has no return value and takes one argument: The object created from the response
+ * data of request.
+ *
+ * @param failure A block object to be executed when the request operation finishes unsuccessfully,
+ * or that finishes successfully, but encountered an error while parsing the response data.
+ * This block has no return value and takes one argument: The `NSError` object describing
+ * the network or parsing error that occurred.
+ */
+-(void) readWithParams:(NSDictionary*)parameterProvider
+          resourcePath:(NSString*)resourcePath
                success:(void (^)(id responseObject))success
                failure:(void (^)(NSError *error))failure;
 
