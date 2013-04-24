@@ -85,6 +85,14 @@
 -(void) read:(id)value
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure {
+
+    [self read:value resourcePath:nil success:success failure:failure];
+}
+
+-(void) read:(id)value
+resourcePath:(NSString*)resourcePath
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure {
     
     if (value == nil || [value isKindOfClass:[NSNull class]]) {
         [self raiseError:@"read" msg:@"read id value was nil" failure:failure];
@@ -95,8 +103,27 @@
     // try to add auth.token:
     [self applyAuthToken];
     
-    NSString* objectKey = [self getStringValue:value];
-    [_restClient getPath:[self appendObjectPath:objectKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    // calculate URI path given the arguments
+    NSString *path;
+
+    // append to the path the string value for this id
+    path = [self getStringValue:value];
+
+    // if nested resource path is also set, append it too.
+    if (resourcePath) {
+        // care for '/' prefix
+        if ([resourcePath hasPrefix:@"/"]) {
+            resourcePath = [resourcePath substringFromIndex:1]; // remove it
+        }
+        
+        // append to the path
+        path = [path stringByAppendingFormat:@"/%@", resourcePath];
+    }
+    
+    // finally prefix the path with the pipe's URL
+    path = [self appendObjectPath:path];
+    
+    [_restClient getPath:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         if (success) {
             //TODO: NSLog(@"Invoking successblock....");
@@ -108,7 +135,7 @@
             //TODO: NSLog(@"Invoking failure block....");
             failure(error);
         }
-    }];
+    }];    
 }
 
 // read all, via HTTP GET
@@ -187,8 +214,15 @@
     } ];
 }
 
+-(void) save:(NSDictionary*) object
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure {
+    
+    [self save:object resourcePath:nil success:success failure:failure];    
+}
 
 -(void) save:(NSDictionary*) object
+resourcePath:(NSString*)resourcePath
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure {
     
@@ -220,22 +254,52 @@
         }
     };
     
+    if (resourcePath) {
+        // care for '/' prefix
+        if ([resourcePath hasPrefix:@"/"]) {
+            resourcePath = [resourcePath substringFromIndex:1];
+        }
+    }
+
     id objectKey = [object objectForKey:_recordId];
     
     // we need to check if the map representation contains the "recordID" and its value is actually set:
     if (objectKey == nil || [objectKey isKindOfClass:[NSNull class]]) {
         //TODO: NSLog(@"HTTP POST to create the given object");
-        [_restClient postPath:_URL.path parameters:object success:successCallback failure:failureCallback];
-        return;
+        
+        NSString *path;
+        
+        if (resourcePath)
+            path = [self appendObjectPath:resourcePath];
+        else
+            path = _URL.path;
+        
+        [_restClient postPath:path parameters:object success:successCallback failure:failureCallback];
+
     } else {
         NSString* updateId = [self getStringValue:objectKey];
+        
+        NSString *path;
+        
+        if (resourcePath)
+            path = [resourcePath stringByAppendingFormat:@"/%@", updateId];
+        else
+            path = updateId;
+        
         //TODO: NSLog(@"HTTP PUT to update the given object");
-        [_restClient putPath:[self appendObjectPath:updateId] parameters:object success:successCallback failure:failureCallback];
-        return;
+        [_restClient putPath:[self appendObjectPath:path] parameters:object success:successCallback failure:failureCallback];
     }
 }
 
 -(void) remove:(NSDictionary*) object
+       success:(void (^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure {
+
+    [self remove:object resourcePath:nil success:success failure:failure];
+}
+
+-(void) remove:(NSDictionary*) object
+  resourcePath:(NSString*)resourcePath
        success:(void (^)(id responseObject))success
        failure:(void (^)(NSError *error))failure {
     
@@ -246,9 +310,6 @@
         return;
     }
     
-    // try to add auth.token:
-    [self applyAuthToken];
-    
     id objectKey = [object objectForKey:_recordId];
     // we need to check if the map representation contains the "recordID" and its value is actually set:
     if (objectKey == nil || [objectKey isKindOfClass:[NSNull class]]) {
@@ -257,7 +318,17 @@
         return;
     }
     
+    // try to add auth.token:
+    [self applyAuthToken];
+    
+    NSString *path;
+    
     NSString* deleteKey = [self getStringValue:objectKey];
+
+    if (resourcePath)
+        path = [resourcePath stringByAppendingFormat:@"/%@", deleteKey];
+    else
+        path = deleteKey;
     
     [_restClient deletePath:[self appendObjectPath:deleteKey] parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

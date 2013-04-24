@@ -160,7 +160,7 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * data of request.
  *
  * @param failure A block object to be executed when the request operation finishes unsuccessfully,
- * or that finishes successfully, but encountered an error while parsing the resonse data.
+ * or that finishes successfully, but encountered an error while parsing the response data.
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
@@ -177,11 +177,30 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * data of request.
  *
  * @param failure A block object to be executed when the request operation finishes unsuccessfully,
- * or that finishes successfully, but encountered an error while parsing the resonse data.
+ * or that finishes successfully, but encountered an error while parsing the response data.
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
 -(void) read:(id)value
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure;
+
+/**
+ * Similar to read:success:failure but adds the ability to point to a nested path.
+ *
+ * @param value The value of the recordId. See property [AGPipeConfig recordId].
+ *
+ * @param success A block object to be executed when the request operation finishes successfully.
+ * This block has no return value and takes one argument: The object created from the response
+ * data of request.
+ *
+ * @param failure A block object to be executed when the request operation finishes unsuccessfully,
+ * or that finishes successfully, but encountered an error while parsing the response data.
+ * This block has no return value and takes one argument: The `NSError` object describing
+ * the network or parsing error that occurred.
+ */
+-(void) read:(id)value
+resourcePath:(NSString*)resourcePath
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure;
 
@@ -205,7 +224,6 @@ Of course the _collection_ behind the responseObject can be stored to a variable
                success:(void (^)(id responseObject))success
                failure:(void (^)(NSError *error))failure;
 
-
 /**
  * Saves (or updates) a given object from the underlying server connection.
  *
@@ -225,8 +243,28 @@ Of course the _collection_ behind the responseObject can be stored to a variable
      failure:(void (^)(NSError *error))failure;
 
 /**
- * Removes an object from the underlying server connection.
+ * Similar to save:success:failure but adds the ability to point to a nested path.
  *
+ * @param object a 'JSON' map, representing the data to save/update.
+ *
+ * @param resourcePath the nested resource path to append to the endpoint URL
+ *
+ * @param success A block object to be executed when the request operation finishes successfully.
+ * This block has no return value and takes one argument: The object created from the response
+ * data of request.
+ *
+ * @param failure A block object to be executed when the request operation finishes unsuccessfully,
+ * or that finishes successfully, but encountered an error while parsing the response data.
+ * This block has no return value and takes one argument: The `NSError` object describing
+ * the network or parsing error that occurred.
+ */
+-(void) save:(NSDictionary*) object
+resourcePath:(NSString*)resourcePath
+     success:(void (^)(id responseObject))success
+     failure:(void (^)(NSError *error))failure;
+
+/**
+ * Removes an object from the underlying server connection.
  *
  * @param object a 'JSON' map, representing the data to remove. Note the map must have the
  * 'recordId' key set. See property [AGPipeConfig recordId].
@@ -241,6 +279,28 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * the network or parsing error that occurred.
  */
 -(void) remove:(NSDictionary*) object
+       success:(void (^)(id responseObject))success
+       failure:(void (^)(NSError *error))failure;
+
+/**
+ * Similar to remove:success:failure but adds the ability to point to a nested path.
+ *
+ * @param object a 'JSON' map, representing the data to remove. Note the map must have the
+ * 'recordId' key set. See property [AGPipeConfig recordId].
+ *
+ * @param resourcePath the nested resource path to append to the endpoint URL
+ *
+ * @param success A block object to be executed when the request operation finishes successfully.
+ * This block has no return value and takes one argument: The object created from the response
+ * data of request.
+ *
+ * @param failure A block object to be executed when the request operation finishes unsuccessfully,
+ * or that finishes successfully, but encountered an error while parsing the response data.
+ * This block has no return value and takes one argument: The `NSError` object describing
+ * the network or parsing error that occurred.
+ */
+-(void) remove:(NSDictionary*) object
+  resourcePath:(NSString*)resourcePath
        success:(void (^)(id responseObject))success
        failure:(void (^)(NSError *error))failure;
 
