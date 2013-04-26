@@ -19,9 +19,13 @@
 #import "AGRESTPipe.h"
 #import "AGMockURLProtocol.h"
 
-static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]},{\"id\":                 2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
+static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]},{\"id\": 2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
 
 static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]}";
+
+static NSString *const TASKS = @"[{\"id\":10,\"title\":\"A Task\",\"description\":\"empty descr\",\"date\":\"2013-04-24\"}, {\"id\":11,\"title\":\"A second Task\",\"description\":\"empty descr\",\"date\":\"2013-02-12\"}]";
+
+static NSString *const TASK = @"{\"id\":10,\"title\":\"A Task\",\"description\":\"empty descr\",\"date\":\"2013-04-24\"}";
 
 @interface AGRestAdapterTests : SenTestCase
 
@@ -243,6 +247,51 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
     }
 }
 
+
+-(void)testReadNestedObject {
+    [AGMockURLProtocol setResponseData:[TASK dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // read a nested TASK for a given PROJECT.
+    // /project/1/tasks/10
+    [_restPipe read:@"1"
+            resourcePath:@"tasks/10"
+            success:^(id responseObject) {
+                STAssertNotNil(responseObject, @"response should not be nil");
+                _finishedFlag = YES;
+                
+            } failure:^(NSError *error) {
+                _finishedFlag = YES;
+                STFail(@"should not fail");
+            }];
+    
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
+-(void)testReadAllNestedObjects {
+    [AGMockURLProtocol setResponseData:[TASKS dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    // read all nested TASK's for a given PROJECT.
+    // /project/1/tasks
+    [_restPipe read:@"1"
+       resourcePath:@"tasks"
+            success:^(id responseObject) {
+                STAssertNotNil(responseObject, @"response should not be nil");
+                _finishedFlag = YES;
+                
+            } failure:^(NSError *error) {
+                _finishedFlag = YES;
+                STFail(@"should not fail");
+            }];
+    
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
 -(void)testSaveNew {
     [AGMockURLProtocol setResponseData:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -265,6 +314,7 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
     }
 }
+
 
 -(void)testSaveExisting {
     [AGMockURLProtocol setResponseData:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
@@ -289,6 +339,60 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
     }
 }
 
+-(void)testSaveNewNestedObject {
+    [AGMockURLProtocol setResponseData:[TASK dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSMutableDictionary* task = [NSMutableDictionary
+                                    dictionaryWithObjectsAndKeys:@"A task", @"title",
+                                    @"empty descr", @"description",
+                                    @"2013-04-24", @"date", nil];
+    
+    
+    [_restPipe save:task
+       resourcePath:@"1/tasks"
+            success:^(id responseObject) {
+        STAssertNotNil(responseObject, @"response should not be nil");
+        STAssertEqualObjects(@"POST", [AGMockURLProtocol methodCalled], @"POST should have been called");
+        _finishedFlag = YES;
+        
+    } failure:^(NSError *error) {
+        _finishedFlag = YES;
+        STFail(@"should not fail");
+    }];
+    
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
+-(void)testSaveExistingNestedObject {
+    [AGMockURLProtocol setResponseData:[TASK dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSMutableDictionary* task = [NSMutableDictionary
+                                 dictionaryWithObjectsAndKeys:@"10", @"id", @"A task", @"title",
+                                 @"empty descr", @"description",
+                                 @"2013-04-24", @"date", nil];
+    
+    
+    [_restPipe save:task
+       resourcePath:@"1/tasks"
+            success:^(id responseObject) {
+                STAssertNotNil(responseObject, @"response should not be nil");
+                STAssertEqualObjects(@"PUT", [AGMockURLProtocol methodCalled], @"PUT should have been called");
+                _finishedFlag = YES;
+                
+            } failure:^(NSError *error) {
+                _finishedFlag = YES;
+                STFail(@"should not fail");
+            }];
+    
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
 -(void)testRemove {
     [AGMockURLProtocol setResponseData:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
     
@@ -301,6 +405,32 @@ static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style
         STAssertNotNil(responseObject, @"response should not be nil");
         _finishedFlag = YES;
 
+    } failure:^(NSError *error) {
+        _finishedFlag = YES;
+        STFail(@"should not fail");
+    }];
+    
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
+-(void)testRemoveNestedObject {
+    [AGMockURLProtocol setResponseData:[TASK dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSMutableDictionary* task = [NSMutableDictionary
+                                 dictionaryWithObjectsAndKeys:@"10", @"id", @"A task", @"title",
+                                 @"empty descr", @"description",
+                                 @"2013-04-24", @"date", nil];
+    
+    
+    [_restPipe remove:task
+                resourcePath:@"1/tasks"
+              success:^(id responseObject) {
+        STAssertNotNil(responseObject, @"response should not be nil");
+        _finishedFlag = YES;
+        
     } failure:^(NSError *error) {
         _finishedFlag = YES;
         STFail(@"should not fail");
