@@ -17,6 +17,7 @@
 
 #import "AGAuthenticator.h"
 #import "AGRestAuthentication.h"
+#import "AGHttpBasicDigestAuthentication.h"
 #import "AGAuthConfiguration.h"
 
 @implementation AGAuthenticator {
@@ -42,13 +43,19 @@
         config(authConfig);
     }
 
-    // TODO check ALL supported types...
-    if (! [authConfig.type isEqualToString:@"AG_SECURITY"]) {
+    id<AGAuthenticationModule> module;
+
+    if ([authConfig.type isEqualToString:@"AG_SECURITY"]) {
+        module = [AGRestAuthentication moduleWithConfig:authConfig];
+    } else if ([authConfig.type isEqualToString:@"Basic"]
+            || [authConfig.type isEqualToString:@"Digest"]) {
+        module = [AGHttpBasicDigestAuthentication moduleWithConfig:authConfig];
+    } else { // unknown type
         return nil;
     }
-    
-    id<AGAuthenticationModule> module = [AGRestAuthentication moduleWithConfig:authConfig];
+
     [_modules setValue:module forKey:[authConfig name]];
+
     return module;
 }
 
