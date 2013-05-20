@@ -44,6 +44,11 @@
 @property (copy, nonatomic) NSString* enrollEndpoint;
 
 /**
+ * Applies the "realm" to the configuration.
+ */
+@property (copy, nonatomic) NSString* realm;
+
+/**
  * The timeout interval for a request to complete.
  */
 @property (assign, nonatomic) NSTimeInterval timeout;

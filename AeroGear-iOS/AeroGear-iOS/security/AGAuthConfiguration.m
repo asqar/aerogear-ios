@@ -24,6 +24,7 @@
 @synthesize loginEndpoint = _loginEndpoint;
 @synthesize logoutEndpoint = _logoutEndpoint;
 @synthesize enrollEndpoint = _enrollEndpoint;
+@synthesize realm = _realm;
 @synthesize timeout = _timeout;
 
 @synthesize name = _name;

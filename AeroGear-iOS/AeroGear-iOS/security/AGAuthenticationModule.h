@@ -124,6 +124,11 @@ As with the case of Pipe, configured timeout interval (in the config object) and
  */
 @property (nonatomic, readonly) NSString* enrollEndpoint;
 
+/**
+ * Returns the 'realm' of the underlying 'auth module implementation'
+ */
+@property (nonatomic, readonly) NSString* realm;
+
 
 /**
  * Performs a signup of a new user. The request accepts a NSDictionary which will be translated to JSON 
