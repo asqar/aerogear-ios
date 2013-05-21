@@ -26,6 +26,7 @@
 @synthesize name = _name;
 @synthesize type = _type;
 @synthesize timeout = _timeout;
+@synthesize credential = _credential;
 @synthesize pageConfig = _pageConfig;
 
 - (id)init {

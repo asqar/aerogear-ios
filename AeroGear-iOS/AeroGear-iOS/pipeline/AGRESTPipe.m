@@ -71,6 +71,10 @@
         _restClient = [AGHttpClient clientFor:finalURL timeout:_config.timeout];
         _restClient.parameterEncoding = AFJSONParameterEncoding;
 
+        if (_config.credential)
+            // AFNetworking 1.0
+            //[_restClient setDefaultCredential:_config.credential];
+
         _pageConfig = [[AGPageConfiguration alloc] init];
         
         // set up paging config from the user supplied block

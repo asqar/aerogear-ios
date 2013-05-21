@@ -63,17 +63,24 @@ static char const * const TimerTagKey = "TimerTagKey";
 @implementation AGHttpClient {
     // secs before a request timeouts (alternative name for primitive "double")
     NSTimeInterval _interval;
+
+    // the credential to use when request required authentication
+    NSURLCredential *_credential;
 }
 
 + (AGHttpClient *)clientFor:(NSURL *)url {
-    return [[self alloc] initWithBaseURL:url timeout:60 /* the default timeout interval */];
+    return [[self alloc] initWithBaseURL:url timeout:60 /* the default timeout interval */ credential:nil];
 }
 
 + (AGHttpClient *)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval {
-    return [[self alloc] initWithBaseURL:url timeout:interval];
+    return [[self alloc] initWithBaseURL:url timeout:interval credential:nil];
 }
 
-- (id)initWithBaseURL:(NSURL *)url timeout:(NSTimeInterval)interval {
++ (AGHttpClient *)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval credential:(NSURLCredential *)credential {
+    return [[self alloc] initWithBaseURL:url timeout:interval credential:credential];
+}
+
+- (id)initWithBaseURL:(NSURL *)url timeout:(NSTimeInterval)interval credential:(NSURLCredential *)credential {
 	
     self = [super initWithBaseURL:url];
     if (!self) {
@@ -82,7 +89,10 @@ static char const * const TimerTagKey = "TimerTagKey";
     
     // set the timeout interval for requests
     _interval = interval;
-    
+
+    // set the credential for requests
+    _credential = credential;
+
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
@@ -202,7 +212,17 @@ static char const * const TimerTagKey = "TimerTagKey";
     } else {
         operation = [self HTTPRequestOperationWithRequest:request success:success failure:failure];
     }
-    
+
+    // apply credentials (if any)
+    if (_credential)
+        [operation setAuthenticationChallengeBlock:^(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge) {
+            if ([challenge previousFailureCount] == 0) {
+                [[challenge sender] useCredential:_credential forAuthenticationChallenge:challenge];
+            } else {
+                [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
+            }
+        }];
+
     [self enqueueHTTPRequestOperation:operation];
 }
 
