@@ -22,5 +22,6 @@
 
 + (AGHttpClient *)clientFor:(NSURL *)url;
 + (AGHttpClient *)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval;
++ (AGHttpClient *)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval credential:(NSURLCredential *)credential;
 
 @end

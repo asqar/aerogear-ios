@@ -67,13 +67,14 @@
         _URL = finalURL;
         _recordId = _config.recordId;
         _authModule = (id<AGAuthenticationModuleAdapter>) _config.authModule;
-        
-        _restClient = [AGHttpClient clientFor:finalURL timeout:_config.timeout];
+
+        // ..for AFNetworking 1.0
+        //if (_config.credential)
+        //   [_restClient setDefaultCredential:_config.credential];
+
+        _restClient = [AGHttpClient clientFor:finalURL timeout:_config.timeout credential:_config.credential];
         _restClient.parameterEncoding = AFJSONParameterEncoding;
 
-        if (_config.credential)
-            // AFNetworking 1.0
-            //[_restClient setDefaultCredential:_config.credential];
 
         _pageConfig = [[AGPageConfiguration alloc] init];
         
