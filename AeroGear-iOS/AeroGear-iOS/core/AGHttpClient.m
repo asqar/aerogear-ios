@@ -51,7 +51,7 @@ static char const * const TimerTagKey = "TimerTagKey";
 
 -(void)cancel {
     [super cancel];
-    
+
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -81,12 +81,11 @@ static char const * const TimerTagKey = "TimerTagKey";
 }
 
 - (id)initWithBaseURL:(NSURL *)url timeout:(NSTimeInterval)interval credential:(NSURLCredential *)credential {
-	
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
     }
-    
+
     // set the timeout interval for requests
     _interval = interval;
 
@@ -94,11 +93,20 @@ static char const * const TimerTagKey = "TimerTagKey";
     _credential = credential;
 
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    
+
     // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
-	[self setDefaultHeader:@"Accept" value:@"application/json"];
-    
+    [self setDefaultHeader:@"Accept" value:@"application/json"];
+
     return self;
+}
+
+- (void)getPath:(NSString *)path
+     parameters:(NSDictionary *)parameters
+        success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+        failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+
+    NSURLRequest *request = [self requestWithMethod:@"GET" path:path parameters:parameters];
+    [self processRequest:request success:success failure:failure];
 }
 
 // override to manual schedule a timeout event.
@@ -109,9 +117,8 @@ static char const * const TimerTagKey = "TimerTagKey";
       parameters:(NSDictionary *)parameters
          success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
          failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
-    
-	NSURLRequest* request = [self requestWithMethod:@"POST" path:path parameters:parameters];
-    
+
+    NSURLRequest* request = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [self processRequest:request success:success failure:failure];
 }
 
@@ -123,20 +130,27 @@ static char const * const TimerTagKey = "TimerTagKey";
      parameters:(NSDictionary *)parameters
         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
-    
-	NSURLRequest* request = [self requestWithMethod:@"PUT" path:path parameters:parameters];
-    
+
+    NSURLRequest* request = [self requestWithMethod:@"PUT" path:path parameters:parameters];
     [self processRequest:request success:success failure:failure];
 }
 
-// override to add a request timeout interval
+- (void)deletePath:(NSString *)path
+        parameters:(NSDictionary *)parameters
+           success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+           failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
+
+    NSURLRequest *request = [self requestWithMethod:@"DELETE" path:path parameters:parameters];
+    [self processRequest:request success:success failure:failure];
+}
+
+// override to set a timeout interval for a request
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
                                       path:(NSString *)path
                                 parameters:(NSDictionary *)parameters
 {
     // invoke the 'requestWithMethod:path:parameters:' from AFNetworking:
     NSMutableURLRequest* req = [super requestWithMethod:method path:path parameters:parameters];
-    
     // set the timeout interval
     [req setTimeoutInterval:_interval];
 
@@ -147,62 +161,71 @@ static char const * const TimerTagKey = "TimerTagKey";
 // =========== private utility methods  ================
 // =====================================================
 
-// Gateway of both postPath and putPath methods to schedule a POST/PUT http operation.
+// Gateway of http methods that schedule an operation to run.
 //
-// This is needed, cause for those two requests, extra steps should be taken that
-// will honour the timeout interval set in our AGPipeConfig (if running in versions of iOS < 6
-// where the timeout interval less than 240sec is ignored)
+// The method is responsible to:
 //
-// In particular for those versions we:
-// - start a manual timer that upon fire (on request timeout) will invoke the client's failure block.
-// - success/failure blocks are wrapped, so that the associative timer is invalidated upon
-//   success or failure completion of the request.
+//  a) for POST/PUT operations extra steps should be taken that
+//     will honour the timeout interval set in our AGPipeConfig
+//     (if running in versions of iOS < 6 where the timeout interval less than 240sec is ignored)
+//
+//     In particular for those versions we:
+//       - start a manual timer that upon fire (on request timeout) will invoke the client's failure block.
+//       - success/failure blocks are wrapped, so that the associative timer is invalidated upon
+//         success or failure completion of the request.
+//
+//
+//  b) if credentials are set in the Pipe Config, we apply the authentication block
+//     called by AFNetworking during the authentication challenge.
+//
 -(void)processRequest:(NSURLRequest*)request
               success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure {
-    
+
     AFHTTPRequestOperation* operation;
-    
+
     // check if the ios version honours the timeout bug
-    if (SYSTEM_VERSION_LESS_THAN(@"6.0")) {
+    if (SYSTEM_VERSION_LESS_THAN(@"6.0") &&
+            ([[request HTTPMethod] isEqualToString:@"POST"]
+                    || [[request HTTPMethod] isEqualToString:@"PUT"])) {
         operation = [self HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            
+
             // invalidate the timer associated with the operation
             [operation.timer invalidate];
             operation.timer = nil;
-            
+
             success(operation, responseObject);
-            
+
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            
+
             // invalidate the timer associated with the operation
             [operation.timer invalidate];
             operation.timer = nil;
-            
+
             failure(operation, error);
         }];
-        
-        
+
+
         // the block to be executed when timeout occurs
         void (^timeout)(void) = ^ {
             // cancel operation
             [operation cancel];
-            
+
             // the timer is invalidated after calling this block(a non-repeating timer)
             // nil out the operation timer instance var
             operation.timer = nil;
-            
+
             // construct error
             NSError* error = [NSError errorWithDomain:NSURLErrorDomain
                                                  code:-1001
                                              userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request timed out.",
-                                                       NSLocalizedDescriptionKey, nil]];
+                                                                                                 NSLocalizedDescriptionKey, nil]];
             // inform client
             dispatch_async(dispatch_get_main_queue(), ^{
                 failure(operation, error);
             });
         };
-        
+
         // associate the timer and schedule to run
         operation.timer = [NSTimer scheduledTimerWithTimeInterval:_interval
                                                            target:[NSBlockOperation blockOperationWithBlock:timeout]
@@ -223,6 +246,7 @@ static char const * const TimerTagKey = "TimerTagKey";
             }
         }];
 
+    // ok we are done, schedule it to run
     [self enqueueHTTPRequestOperation:operation];
 }
 
