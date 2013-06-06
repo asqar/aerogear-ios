@@ -5,6 +5,7 @@ platform :ios
 pod 'AFNetworking', '1.0RC1'
 
 target 'AeroGear-iOSTests', :exclusive => true do
-	pod 'OCMock'
-	pod 'Kiwi'
+    pod 'OCMock'
+    pod 'OHHTTPStubs'
+    pod 'Kiwi'
 end
