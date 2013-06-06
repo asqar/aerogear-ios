@@ -37,7 +37,7 @@ void (^mockResponseWithHeaders)(NSData*, int status, NSDictionary*) = ^(NSData* 
         return [OHHTTPStubsResponse responseWithData:data
                                           statusCode:status
                                         responseTime:1
-                                             headers:@{@"Content-Type": @"application/json; charset=utf-8"}];
+                                             headers:headers];
         
 	}];
 };
