@@ -142,7 +142,7 @@
 	}
 	if([expectations count] > 0)
 	{
-		[NSException raise:NSInternalInconsistencyException format:@"%@ : %d expected methods were not invoked: %@", 
+		[NSException raise:NSInternalInconsistencyException format:@"%@ : %ld expected methods were not invoked: %@", 
 			[self description], [expectations count], [self _recorderDescriptions:YES]];
 	}
 	if([exceptions count] > 0)
@@ -151,9 +151,22 @@
 	}
 }
 
+- (void)stopMocking
+{
+    // no-op for mock objects that are not class object or partial mocks
+}
 
 
 #pragma mark  Handling invocations
+
+- (BOOL)handleSelector:(SEL)sel
+{
+    for (OCMockRecorder *recorder in recorders)
+        if ([recorder matchesSelector:sel])
+            return YES;
+
+    return NO;
+}
 
 - (void)forwardInvocation:(NSInvocation *)anInvocation
 {

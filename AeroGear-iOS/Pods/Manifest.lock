@@ -1,0 +1,19 @@
+PODS:
+  - AFNetworking (1.0RC1)
+  - Kiwi (2.1)
+  - OCMock (2.1.1)
+  - OHHTTPStubs (1.1.2)
+
+DEPENDENCIES:
+  - AFNetworking (= 1.0RC1)
+  - Kiwi
+  - OCMock
+  - OHHTTPStubs
+
+SPEC CHECKSUMS:
+  AFNetworking: b21c1252d437fd322e7db1caa93b163d76a362cb
+  Kiwi: 054ef97d0e50c279b21113a0880a906fa153a7fd
+  OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
+  OHHTTPStubs: a840cb0fe0c2a4271018be540782cc97139dff53
+
+COCOAPODS: 0.19.1
