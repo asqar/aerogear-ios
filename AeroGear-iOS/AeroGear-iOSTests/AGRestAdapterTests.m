@@ -24,8 +24,16 @@ static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"sty
 
 static NSString *const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]}";
 
-void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
+//------- convienience blocks that handle mocking of http comm. -----------
+
+// stores the last type of HTTP method called (POST, PUT, etc)
+// for those tests that require them.
+static NSString* HTTPMethodCalled;
+
+static void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
 	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
+        HTTPMethodCalled = request.HTTPMethod;
+        
         return [OHHTTPStubsResponse responseWithData:data
                                           statusCode:status
                                         responseTime:responseTime
@@ -34,13 +42,15 @@ void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int 
 	}];
 };
 
-void (^mockResponseStatus)(int) = ^(int status) {
-    mockResponseTimeout([NSData data], status, 1);
+static void (^mockResponseStatus)(int) = ^(int status) {
+    mockResponseTimeout([NSData data], status, 0);
 };
 
-void (^mockResponse)(NSData*) = ^(NSData* data) {
-    mockResponseTimeout(data, 200, 1);
+static void (^mockResponse)(NSData*) = ^(NSData* data) {
+    mockResponseTimeout(data, 200, 0);
 };
+
+//-------------------------------------------------------------------------
 
 @interface AGRestAdapterTests : SenTestCase
 
@@ -247,7 +257,7 @@ void (^mockResponse)(NSData*) = ^(NSData* data) {
 
     [_restPipe save:project success:^(id responseObject) {
         STAssertNotNil(responseObject, @"response should not be nil");
-        //STAssertEqualObjects(@"POST", [AGMockURLProtocol methodCalled], @"POST should have been called");
+        STAssertEqualObjects(@"POST", HTTPMethodCalled, @"POST should have been called");
         _finishedFlag = YES;
 
     } failure:^(NSError *error) {
@@ -270,7 +280,7 @@ void (^mockResponse)(NSData*) = ^(NSData* data) {
     
     [_restPipe save:project success:^(id responseObject) {
         STAssertNotNil(responseObject, @"response should not be nil");
-        //STAssertEqualObjects(@"PUT", [AGMockURLProtocol methodCalled], @"PUT should have been called");
+        STAssertEqualObjects(@"PUT", HTTPMethodCalled, @"PUT should have been called");
         _finishedFlag = YES;
         
     } failure:^(NSError *error) {

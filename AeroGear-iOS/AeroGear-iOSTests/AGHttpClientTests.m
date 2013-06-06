@@ -23,7 +23,9 @@
 
 static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]},{\"id\":                 2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
 
-void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
+//------- convienience blocks that handle mocking of http comm. -----------
+
+static void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
 	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
         return [OHHTTPStubsResponse responseWithData:data
                                           statusCode:status
@@ -33,13 +35,15 @@ void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int 
 	}];
 };
 
-void (^mockResponseStatus)(int) = ^(int status) {
-    mockResponseTimeout([NSData data], status, 1);
+static void (^mockResponseStatus)(int) = ^(int status) {
+    mockResponseTimeout([NSData data], status, 0);
 };
 
-void (^mockResponse)(NSData*) = ^(NSData* data) {
-    mockResponseTimeout(data, 200, 1);
+static void (^mockResponse)(NSData*) = ^(NSData* data) {
+    mockResponseTimeout(data, 200, 0);
 };
+
+//-------------------------------------------------------------------------
 
 @interface AGHttpClientTests : SenTestCase
 

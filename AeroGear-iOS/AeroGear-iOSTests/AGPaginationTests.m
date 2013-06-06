@@ -25,9 +25,13 @@ static NSString *const RESPONSE_FIRST  = @"[{\"id\":1,\"color\":\"black\",\"bran
 static NSString *const RESPONSE_SECOND = @"[{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
 static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"brand\":\"BMW\"},{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
 
-void (^mockResponseWithHeaders)(NSData*, int status, NSDictionary*) = ^(NSData* data, int status, NSDictionary* appendHeaders) {
+//------- convienience blocks that handle mocking of http comm. -----------
+
+static void (^mockResponseWithHeaders)(NSData*, int status, NSDictionary*) =
+    ^(NSData* data, int status, NSDictionary* appendHeaders) {
+    
     NSMutableDictionary* headers = [NSMutableDictionary
-                                     dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"];
+                                    dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"];
     
     if (appendHeaders != nil)
         [headers addEntriesFromDictionary:appendHeaders];
@@ -36,20 +40,21 @@ void (^mockResponseWithHeaders)(NSData*, int status, NSDictionary*) = ^(NSData* 
 	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
         return [OHHTTPStubsResponse responseWithData:data
                                           statusCode:status
-                                        responseTime:1
+                                        responseTime:0
                                              headers:headers];
-        
 	}];
 };
 
-void (^mockResponseStatus)(int) = ^(int status) {
+static void (^mockResponseStatus)(int) = ^(int status) {
     mockResponseWithHeaders([NSData data], status, nil);
 };
 
 
-void (^mockResponse)(NSData*) = ^(NSData* data) {
+static void (^mockResponse)(NSData*) = ^(NSData* data) {
     mockResponseWithHeaders(data, 200, nil);
 };
+
+//-------------------------------------------------------------------------
 
 @interface AGPaginationTests : SenTestCase
 
