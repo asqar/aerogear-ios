@@ -16,13 +16,40 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <OHHTTPStubs/OHHTTPStubs.h>
+
 #import "AGRESTPipe.h"
-#import "AGMockURLProtocol.h"
 #import "AGNSMutableArray+Paging.h"
 
 static NSString *const RESPONSE_FIRST  = @"[{\"id\":1,\"color\":\"black\",\"brand\":\"BMW\"}]";
 static NSString *const RESPONSE_SECOND = @"[{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
 static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"brand\":\"BMW\"},{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
+
+void (^mockResponseWithHeaders)(NSData*, int status, NSDictionary*) = ^(NSData* data, int status, NSDictionary* appendHeaders) {
+    NSMutableDictionary* headers = [NSMutableDictionary
+                                     dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"];
+    
+    if (appendHeaders != nil)
+        [headers addEntriesFromDictionary:appendHeaders];
+    
+    
+	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
+        return [OHHTTPStubsResponse responseWithData:data
+                                          statusCode:status
+                                        responseTime:1
+                                             headers:@{@"Content-Type": @"application/json; charset=utf-8"}];
+        
+	}];
+};
+
+void (^mockResponseStatus)(int) = ^(int status) {
+    mockResponseWithHeaders([NSData data], status, nil);
+};
+
+
+void (^mockResponse)(NSData*) = ^(NSData* data) {
+    mockResponseWithHeaders(data, 200, nil);
+};
 
 @interface AGPaginationTests : SenTestCase
 
@@ -36,14 +63,6 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
 
 -(void)setUp {
     [super setUp];
-    
-    // register AGFakeURLProtocol to fake HTTP comm.
-    [NSURLProtocol registerClass:[AGMockURLProtocol class]];
-
-    // set correct content-type otherwise AFNetworking
-    // will complain because it expects JSON response
-    [AGMockURLProtocol setHeaders:[NSDictionary
-                                   dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"]];
     
     AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
     [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
@@ -59,15 +78,10 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
 }
 
 -(void)tearDown {
-    // reset http mock state so it is not propagated to other tests
-    [AGMockURLProtocol setStatusCode:200];
-	[AGMockURLProtocol setResponseData:nil];
-	[AGMockURLProtocol setError:nil];
-    [AGMockURLProtocol setResponseDelay:0];
-    [AGMockURLProtocol setHeaders:nil];
-    // finally, unregister it from the runtime
-    [NSURLProtocol unregisterClass:[AGMockURLProtocol class]];
-    
+    // remove all handlers installed by test methods
+    // to avoid any interference
+    [OHHTTPStubs removeAllRequestHandlers];
+
     [super tearDown];
 }
 
@@ -77,10 +91,9 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
 
 -(void)testNext {
     // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]"});
     
     __block NSMutableArray *pagedResultSet;
 
@@ -93,7 +106,7 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         NSString *car_id = [self extractCarId:responseObject];
         
         // set the mocked response for the second page
-        [AGMockURLProtocol setResponseData:[RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding]];
+        mockResponse([RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding]);
 
         // move to the next page
         [pagedResultSet next:^(id responseObject) {
@@ -119,11 +132,10 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
 
 -(void)testPreviousFromFirstPage {
     // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-    
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]"});
+
     __block NSMutableArray *pagedResultSet;
     
     // fetch the first page
@@ -132,7 +144,7 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         
         // simulate "Bad Request" as in the case of AGController
         // when you try to move back from the first page
-        [AGMockURLProtocol setStatusCode:400];
+        mockResponseStatus(400);
         
         // move back to an invalid page
         [pagedResultSet previous:^(id responseObject) {
@@ -167,15 +179,15 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
 
 -(void)testMoveNextAndPrevious {
     // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]"});
     
     __block NSMutableArray *pagedResultSet;
 
     // fetch the first page
-    [_pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : [NSNumber numberWithInt:1]} success:^(id responseObject) {
+    [_pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : [NSNumber numberWithInt:1]}
+                  success:^(id responseObject) {
         pagedResultSet = responseObject;  // page 1
         
         // hold the "car id" from the first page, so that
@@ -183,24 +195,19 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         // to the next page down in the test.
         NSString *car_id = [self extractCarId:responseObject];
         
-        // update mocked headers for the current page
-        [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=2&limit=1]"];
-        [AGMockURLProtocol addHeader:@"AG-Links-Previous" value:@"http://server.com/context/?color=black&offset=0&limit=1]"];
-        
-        // set the mocked response for the second page
-        [AGMockURLProtocol setResponseData:[RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding]];
+        mockResponseWithHeaders([RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding],
+                                200,
+                                @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=2&limit=1]",
+                                  @"AG-Links-Previous":@"http://server.com/context/?color=black&offset=0&limit=1]"});
         
         // move to the second page
         [pagedResultSet next:^(id responseObject) {
-            
-            // update mocked headers for the current page
-            [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-            // remote previous header, does not exist on this page
-            [AGMockURLProtocol removeHeader:@"AG-Links-Previous"];
-            
+
             // set the mocked response for the first page again
-            [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
-            
+            mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                                    200,
+                                    @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]"});
+
             // move backwards (aka. page 1)
             [pagedResultSet previous:^(id responseObject) {
                 
@@ -240,20 +247,17 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
     
     _pipe = [AGRESTPipe pipeWithConfig:config];
     
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]"});
 
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-
-    // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
-    
     [_pipe readWithParams:nil success:^(id responseObject) {
 
             STAssertTrue([responseObject count] == 1, @"size should be one.");
 
-           // set the mocked response for the first page
-           [AGMockURLProtocol setResponseData:[RESPONSE_TWO_ITEMS dataUsingEncoding:NSUTF8StringEncoding]];
-                
+            // set the mocked response for the first page
+            mockResponse([RESPONSE_TWO_ITEMS dataUsingEncoding:NSUTF8StringEncoding]);
+        
         // override the results per page from parameter provider
         [_pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : [NSNumber numberWithInt:2]} success:^(id responseObject) {
             
@@ -289,12 +293,11 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
     
     _pipe = [AGRESTPipe pipeWithConfig:config];
     
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-    [AGMockURLProtocol addHeader:@"AG-Links-Previous" value:@"http://server.com/context/?color=black&offset=0&limit=1]"];
-    
     // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=1&limit=1]",
+                            @"AG-Links-Previous":@"http://server.com/context/?color=black&offset=0&limit=1]"});
 
     __block NSMutableArray *pagedResultSet;
     
@@ -304,7 +307,7 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         
         // simulate "Bad Request" as in the case of AGController
         // because the nextIdentifier is invalid ("foo" instead of "AG-Links-Next")
-        [AGMockURLProtocol setStatusCode:400];
+        mockResponseStatus(400);
         
         [pagedResultSet next:^(id responseObject) {
             
@@ -342,12 +345,12 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
     
     _pipe = [AGRESTPipe pipeWithConfig:config];
     
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=3&limit=1]"];
-    [AGMockURLProtocol addHeader:@"AG-Links-Previous" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-    
     // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=3&limit=1]",
+                            @"AG-Links-Previous":@"http://server.com/context/?color=black&offset=1&limit=1]"});
+
     
     __block NSMutableArray *pagedResultSet;
     
@@ -357,7 +360,7 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         
         // simulate "Bad Request" as in the case of AGController
         // because the previousIdentifier is invalid ("foo" instead of "AG-Links-Previous")
-        [AGMockURLProtocol setStatusCode:400];
+        mockResponseStatus(400);
         
         [pagedResultSet next:^(id responseObject) {
             
@@ -395,14 +398,14 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
     _pipe = [AGRESTPipe pipeWithConfig:config];
     
     __block NSMutableArray *pagedResultSet;
-    
-    // add the mocked paged identifiers
-    [AGMockURLProtocol addHeader:@"AG-Links-Next" value:@"http://server.com/context/?color=black&offset=3&limit=1]"];
-    [AGMockURLProtocol addHeader:@"AG-Links-Previous" value:@"http://server.com/context/?color=black&offset=1&limit=1]"];
-    
-    // set the mocked response for the first page
-    [AGMockURLProtocol setResponseData:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]];
 
+    // set the mocked response for the first page
+    mockResponseWithHeaders([RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding],
+                            200,
+                            @{@"AG-Links-Next":@"http://server.com/context/?color=black&offset=3&limit=1]",
+                            @"AG-Links-Previous":@"http://server.com/context/?color=black&offset=1&limit=1]"});
+
+    
     [_pipe readWithParams:@{@"color" : @"black", @"offset" : @"2", @"limit" : [NSNumber numberWithInt:1]} success:^(id responseObject) {
         
         pagedResultSet = responseObject;
@@ -411,7 +414,7 @@ static NSString *const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"b
         // because the metadata to extract next Identifiers
         // are located in the "headers" not in the "body"
         // as set in the config.
-        [AGMockURLProtocol setStatusCode:400];
+        mockResponseStatus(400);
 
         [pagedResultSet next:^(id responseObject) {
             

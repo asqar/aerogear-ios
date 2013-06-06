@@ -16,11 +16,11 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
+#import <OHHTTPStubs/OHHTTPStubs.h>
+
 #import "AGRestAuthentication.h"
 #import "AGAuthConfiguration.h"
 #import "AGPipeline.h"
-
-#import "AGMockURLProtocol.h"
 
 static NSString *const PASSING_USERNAME = @"john";
 
@@ -29,6 +29,24 @@ static NSString *const LOGIN_PASSWORD = @"passwd";
 static NSString *const ENROLL_PASSWORD = @"passwd";
 
 static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\":[\"admin\"]}";
+
+void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
+	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
+        return [OHHTTPStubsResponse responseWithData:data
+                                          statusCode:status
+                                        responseTime:responseTime
+                                             headers:@{@"Content-Type": @"application/json; charset=utf-8"}];
+        
+	}];
+};
+
+void (^mockResponseStatus)(int) = ^(int status) {
+    mockResponseTimeout([NSData data], status, 1);
+};
+
+void (^mockResponse)(NSData*) = ^(NSData* data) {
+    mockResponseTimeout(data, 200, 1);
+};
 
 @interface AGRestAuthenticationTests : SenTestCase
 
@@ -44,15 +62,6 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 
 -(void)setUp {
     [super setUp];
-    
-    // register AGFakeURLProtocol to fake HTTP comm.
-    [NSURLProtocol registerClass:[AGMockURLProtocol class]];
-
-    // set correct content-type otherwise AFNetworking
-    // will complain because it expects JSON response
-    [AGMockURLProtocol setHeaders:[NSDictionary
-                                   dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"]];
-    
     
     NSURL* baseURL = [NSURL URLWithString:@"https://server.com/context/"];
     
@@ -73,18 +82,10 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void)tearDown {
-    // reset http mock state so it is not propagated to other tests
-    [AGMockURLProtocol setStatusCode:200];
-	[AGMockURLProtocol setResponseData:nil];
-	[AGMockURLProtocol setError:nil];
-    [AGMockURLProtocol setResponseDelay:0];
-    [AGMockURLProtocol setHeaders:nil];
-    // finally, unregister it from the runtime
-    [NSURLProtocol unregisterClass:[AGMockURLProtocol class]];
-    
-    _projects = nil;
-    _restAuthModule = nil;
-    
+    // remove all handlers installed by test methods
+    // to avoid any interference
+    [OHHTTPStubs removeAllRequestHandlers];
+
     [super tearDown];
 }
 
@@ -93,8 +94,9 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testLoginSuccess {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
+    // install the mock:
+    mockResponse([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                  dataUsingEncoding:NSUTF8StringEncoding]);
 
     [_restAuthModule login:PASSING_USERNAME password:LOGIN_PASSWORD success:^(id responseObject) {
         STAssertEqualObjects(PASSING_USERNAME, [responseObject valueForKey:@"username"], @"should be equal");
@@ -112,14 +114,14 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testLoginWithTimeout {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
-    
     // simulate delay in response
     // Note that pipe has been default configured for a timeout in 1 sec
     // here we simulate a delay of 2 sec
-    [AGMockURLProtocol setResponseDelay:2];
-    
+
+    // install the mock:
+    mockResponseTimeout([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                  dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay */);
+
     [_restAuthModule login:PASSING_USERNAME password:LOGIN_PASSWORD success:^(id responseObject) {
         STFail(@"%@", @"should NOT have been called");
         _finishedFlag = YES;
@@ -136,10 +138,8 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testLoginFails {
-    [AGMockURLProtocol setError:[NSError errorWithDomain:NSURLErrorDomain
-                                                    code:401 // Unauthorized
-                                                userInfo:nil]];
-    
+    mockResponseStatus(401);
+
     [_restAuthModule login:FAILING_USERNAME password:LOGIN_PASSWORD success:^(id responseObject) {
         STFail(@"should not work");
         _finishedFlag = YES;
@@ -154,9 +154,10 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testLogout {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    // install the mock:
+    mockResponse([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                  dataUsingEncoding:NSUTF8StringEncoding]);
+
     [_restAuthModule login:PASSING_USERNAME password:LOGIN_PASSWORD success:^(id object) {
         
         [_restAuthModule logout:^{
@@ -178,16 +179,15 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testLogoutWithTimeout {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
-    
+    // install the mock:
+    mockResponse([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                  dataUsingEncoding:NSUTF8StringEncoding]);
     
     [_restAuthModule login:PASSING_USERNAME password:LOGIN_PASSWORD success:^(id object) {
 
-        // simulate delay in response
-        // Note that pipe has been default configured for a timeout in 1 sec
-        // here we simulate a delay of 2 sec
-        [AGMockURLProtocol setResponseDelay:2];
+        // install the mock:
+        mockResponseTimeout([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                             dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay */);
         
         [_restAuthModule logout:^{
             STFail(@"%@", @"should NOT have been called");
@@ -209,8 +209,9 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testEnrollSuccess {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
+    // install the mock:
+    mockResponse([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                  dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* registerPayload = [NSMutableDictionary dictionary];
     
@@ -237,9 +238,14 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testEnrollTimeout {
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
+    // simulate delay in response
+    // Note that pipe has been default configured for a timeout in 1 sec
+    // here we simulate a delay of 2 sec
     
+    // install the mock:
+    mockResponseTimeout([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                         dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay */);
+
     NSMutableDictionary* registerPayload = [NSMutableDictionary dictionary];
     
     [registerPayload setValue:@"John" forKey:@"firstname"];
@@ -249,11 +255,6 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
     [registerPayload setValue:LOGIN_PASSWORD forKey:@"password"];
     [registerPayload setValue:@"admin" forKey:@"role"];
     
-    
-    // simulate delay in response
-    // Note that pipe has been default configured for a timeout in 1 sec
-    // here we simulate a delay of 2 sec
-    [AGMockURLProtocol setResponseDelay:2];
     
     [_restAuthModule enroll:registerPayload success:^(id responseObject) {
 
@@ -273,10 +274,9 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 }
 
 -(void) testEnrollFails {
-    [AGMockURLProtocol setError:[NSError errorWithDomain:NSURLErrorDomain
-                                                    code:400 // Bad Request
-                                                userInfo:nil]];
-
+    // Simulate 'Bad Request' status
+    mockResponseStatus(400);
+                       
     NSMutableDictionary* registerPayload = [NSMutableDictionary dictionary];
     
     [registerPayload setValue:@"John" forKey:@"firstname"];
@@ -302,11 +302,9 @@ static NSString *const LOGIN_SUCCESS_RESPONSE =  @"{\"username\":\"%@\",\"roles\
 -(void) testCancel {
     NSDate *startTime = [NSDate date];
     
-    [AGMockURLProtocol setResponseData:[[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
-                                        dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    // simulate delay in response
-    [AGMockURLProtocol setResponseDelay:2];
+    // install the mock:
+    mockResponseTimeout([[NSString stringWithFormat:LOGIN_SUCCESS_RESPONSE, PASSING_USERNAME]
+                         dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay */);
     
     [_restAuthModule login:PASSING_USERNAME password:LOGIN_PASSWORD success:^(id responseObject) {
         

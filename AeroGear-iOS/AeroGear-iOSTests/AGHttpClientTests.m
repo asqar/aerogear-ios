@@ -16,14 +16,30 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "AGHttpClient.h"
+#import <OHHTTPStubs/OHHTTPStubs.h>
 
+#import "AGHttpClient.h"
 #import "AGPipeline.h"
-#import "AGMockURLProtocol.h"
 
 static NSString *const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]},{\"id\":                 2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
 
-static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
+void (^mockResponseTimeout)(NSData*, int, NSTimeInterval) = ^(NSData* data, int status, NSTimeInterval responseTime) {
+	[OHHTTPStubs addRequestHandler:^(NSURLRequest *request, BOOL onlyCheck) {
+        return [OHHTTPStubsResponse responseWithData:data
+                                          statusCode:status
+                                        responseTime:responseTime
+                                             headers:@{@"Content-Type": @"application/json; charset=utf-8"}];
+        
+	}];
+};
+
+void (^mockResponseStatus)(int) = ^(int status) {
+    mockResponseTimeout([NSData data], status, 1);
+};
+
+void (^mockResponse)(NSData*) = ^(NSData* data) {
+    mockResponseTimeout(data, 200, 1);
+};
 
 @interface AGHttpClientTests : SenTestCase
 
@@ -36,24 +52,16 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
 
 @implementation AGHttpClientTests{
     BOOL _finishedFlag;
-   
+    
     AGHttpClient* _restClient;
 }
 
 -(void)setUp {
     [super setUp];
     
-    // register AGFakeURLProtocol to fake HTTP comm.
-    [NSURLProtocol registerClass:[AGMockURLProtocol class]];
-
-    // set correct content-type otherwise AFNetworking
-    // will complain because it expects JSON response
-    [AGMockURLProtocol setHeaders:[NSDictionary
-                                   dictionaryWithObject:@"application/json; charset=utf-8" forKey:@"Content-Type"]];
-    
     NSURL* baseURL = [NSURL URLWithString:@"http://server.com/context/"];
     
-    // Note: we set the timeout to a low level so that
+    // Note: we set the timeout(sec) to a low level so that
     // we can test the timeout methods with adjusting response delay
     _restClient = [AGHttpClient clientFor:baseURL timeout:1];
     _restClient.parameterEncoding = AFJSONParameterEncoding;
@@ -62,17 +70,10 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
 }
 
 -(void)tearDown {
-    // reset http mock state so it is not propagated to other tests
-    [AGMockURLProtocol setStatusCode:200];
-	[AGMockURLProtocol setResponseData:nil];
-	[AGMockURLProtocol setError:nil];
-    [AGMockURLProtocol setResponseDelay:0];
-    [AGMockURLProtocol setHeaders:nil];
-    // finally, unregister it from the runtime
-    [NSURLProtocol unregisterClass:[AGMockURLProtocol class]];
-    
-    _restClient = nil;
-    
+    // remove all handlers installed by test methods
+    // to avoid any interference
+    [OHHTTPStubs removeAllRequestHandlers];
+
     [super tearDown];
 }
 
@@ -81,7 +82,8 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
 }
 
 -(void)testGetProjects {
-    [AGMockURLProtocol setResponseData:[PROJECTS dataUsingEncoding:NSUTF8StringEncoding]];
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     [_restClient getPath:@"projects" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         STAssertNotNil(responseObject, @"response should not be nil");
@@ -99,48 +101,47 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPostSuccessAndTimeoutTimerNil {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testPostSuccessAndTimeoutTimerIsNil {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* project = [NSMutableDictionary
                                     dictionaryWithObjectsAndKeys:@"First Project", @"title",
                                     @"project-161-58-58", @"style", nil];
     
-   [_restClient postPath:@"projects" parameters:project success:^(AFHTTPRequestOperation *operation, id responseObject) {
-       
-       STAssertNil(operation.timer, @"timer should be nil");
-        _finishedFlag = YES;
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        STFail(@"should not have been called");
-        _finishedFlag = YES;
-    }];
-    
-    // keep the run loop going
-    while(!_finishedFlag) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-}
-
--(void)testPostFailureWithTimeoutTimerNil {
-    [AGMockURLProtocol setResponseData:nil];
-
-    NSMutableDictionary* project = [NSMutableDictionary
-                                         dictionaryWithObjectsAndKeys:@"First Project", @"title",
-                                         @"project-161-58-58", @"style", nil];
-    
-    // simulate an http 404 error in response
-    // so the failure will be called.
-    [AGMockURLProtocol setError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
-
     [_restClient postPath:@"projects" parameters:project success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+        
+        STAssertNil(operation.timer, @"timer should be nil");
+        _finishedFlag = YES;
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         STFail(@"should not have been called");
         _finishedFlag = YES;
-
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    }];
     
+    // keep the run loop going
+    while(!_finishedFlag) {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    }
+}
+
+
+-(void)testPostFailureAndTimeoutTimerIsNil {
+    // install the mock:
+    mockResponseStatus(404);
+    
+    NSMutableDictionary* project = [NSMutableDictionary
+                                    dictionaryWithObjectsAndKeys:@"First Project", @"title",
+                                    @"project-161-58-58", @"style", nil];
+    
+    [_restClient postPath:@"projects" parameters:project success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        STFail(@"should not have been called");
+        _finishedFlag = YES;
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
         STAssertNil(operation.timer, @"timer should be nil");
         _finishedFlag = YES;
     }];
@@ -151,8 +152,9 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPutSuccessAndTimeoutTimerNil {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testPutSuccessAndTimeoutTimerIsNil {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* project = [NSMutableDictionary
                                     dictionaryWithObjectsAndKeys:@"0", @"id", @"First Project", @"title",
@@ -175,16 +177,13 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPutFailureWithTimeoutTimerNil {
-    [AGMockURLProtocol setResponseData:nil];
+-(void)testPutFailureAndTimeoutTimerIsNil {
+    // install the mock:
+    mockResponseStatus(404);
     
     NSMutableDictionary* project = [NSMutableDictionary
                                     dictionaryWithObjectsAndKeys:@"0", @"id", @"First Project", @"title",
                                     @"project-161-58-58", @"style", nil];
-    
-    // simulate an http 404 error in response
-    // so the failure will be called.
-    [AGMockURLProtocol setError:[NSError errorWithDomain:NSURLErrorDomain code:404 userInfo:nil]];
     
     [_restClient putPath:@"projects/0" parameters:project success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -203,8 +202,9 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testMultiplePostWithTimeout {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testMultiplePostWithTimeoutConnection {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* projectFirst = [NSMutableDictionary
                                          dictionaryWithObjectsAndKeys:@"First Project", @"title",
@@ -212,19 +212,18 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     
     [_restClient postPath:@"projects" parameters:projectFirst success:^(AFHTTPRequestOperation *operation, id responseObject) {
         STAssertNotNil(responseObject, @"response should not be nil");
-
+        
         NSMutableDictionary* projectSecond = [NSMutableDictionary
                                               dictionaryWithObjectsAndKeys:@"Second Project", @"title",
                                               @"project-111-45-51", @"style", nil];
-        
-        // simulate delay in response
-        [AGMockURLProtocol setResponseDelay:2];
+        // install the mock:
+        mockResponseTimeout([PROJECTS dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay*/);
         
         [_restClient postPath:@"projects" parameters:projectSecond success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+            
             STFail(@"should not have been called");
             _finishedFlag = YES;
-
+            
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             
             STAssertNil(operation.timer, @"timer should be nil");
@@ -234,7 +233,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
         } ];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-       
+        
         _finishedFlag = YES;
         STFail(@"should not have been called");
         
@@ -246,15 +245,12 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPutWithTimeout {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testPutWithTimeoutConnection {
+    mockResponseTimeout([PROJECTS dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay*/);
     
     NSMutableDictionary* project = [NSMutableDictionary
                                     dictionaryWithObjectsAndKeys:@"0", @"id", @"First Project", @"title",
                                     @"project-161-58-58", @"style", nil];
-    
-    // simulate delay in response
-    [AGMockURLProtocol setResponseDelay:2];
     
     [_restClient putPath:@"projects/0" parameters:project success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -262,7 +258,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
         _finishedFlag = YES;
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
+        
         STAssertNil(operation.timer, @"timer should be nil");
         STAssertEquals(-1001, [error code], @"should be equal to code -1001 [request time out]");
         _finishedFlag = YES;
@@ -274,8 +270,9 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testMultiplePutWithTimeout {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testMultiplePutWithTimeoutConnection {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* projectFirst = [NSMutableDictionary
                                          dictionaryWithObjectsAndKeys:@"0", @"id", @"First Project", @"title",
@@ -288,8 +285,8 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
                                               dictionaryWithObjectsAndKeys:@"1", @"id", @"Second Project", @"title",
                                               @"project-111-45-51", @"style", nil];
         
-        // simulate delay in response
-        [AGMockURLProtocol setResponseDelay:2];
+        // install the mock:
+        mockResponseTimeout([PROJECTS dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay*/);
         
         [_restClient putPath:@"projects/1" parameters:projectSecond success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
@@ -297,7 +294,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
             _finishedFlag = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
+            
             STAssertNil(operation.timer, @"timer should be nil");
             STAssertEquals(-1001, [error code], @"should be equal to code -1001 [request time out]");
             _finishedFlag = YES;
@@ -305,7 +302,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
         } ];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-     
+        
         _finishedFlag = YES;
         STFail(@"should not have been called");
         
@@ -317,8 +314,9 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPostThenPutWithTimeout {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testPostThenPutWithTimeoutConnection {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* projectFirst = [NSMutableDictionary
                                          dictionaryWithObjectsAndKeys:@"First Project", @"title",
@@ -331,8 +329,8 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
                                               dictionaryWithObjectsAndKeys:@"1", @"id", @"Second Project", @"title",
                                               @"project-111-45-51", @"style", nil];
         
-        // simulate delay in response
-        [AGMockURLProtocol setResponseDelay:2];
+        // install the mock:
+        mockResponseTimeout([PROJECTS dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay*/);
         
         [_restClient putPath:@"projects/1" parameters:projectSecond success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
@@ -340,7 +338,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
             _finishedFlag = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
+            
             STAssertNil(operation.timer, @"timer should be nil");
             STAssertEquals(-1001, [error code], @"should be equal to code -1001 [request time out]");
             _finishedFlag = YES;
@@ -348,7 +346,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
         } ];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-      
+        
         _finishedFlag = YES;
         STFail(@"should not have been called");
         
@@ -360,8 +358,9 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
     }
 }
 
--(void)testPutThenPostWithTimeout {
-    [AGMockURLProtocol setResponseData:[DUMMY_JSON_RESPONSE dataUsingEncoding:NSUTF8StringEncoding]];
+-(void)testPutThenPostWithTimeoutConnection {
+    // install the mock:
+    mockResponse([PROJECTS dataUsingEncoding:NSUTF8StringEncoding]);
     
     NSMutableDictionary* projectFirst = [NSMutableDictionary
                                          dictionaryWithObjectsAndKeys:@"0", @"id", @"First Project", @"title",
@@ -374,8 +373,8 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
                                               dictionaryWithObjectsAndKeys:@"Second Project", @"title",
                                               @"project-111-45-51", @"style", nil];
         
-        // simulate delay in response
-        [AGMockURLProtocol setResponseDelay:2];
+        // install the mock:
+        mockResponseTimeout([PROJECTS dataUsingEncoding:NSUTF8StringEncoding], 200, 2 /* two secs delay*/);
         
         [_restClient postPath:@"projects" parameters:projectSecond success:^(AFHTTPRequestOperation *operation, id responseObject) {
             
@@ -383,7 +382,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
             _finishedFlag = YES;
             
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-           
+            
             STAssertNil(operation.timer, @"timer should be nil");
             STAssertEquals(-1001, [error code], @"should be equal to code -1001 [request time out]");
             _finishedFlag = YES;
@@ -391,7 +390,7 @@ static NSString *const DUMMY_JSON_RESPONSE = @"{\"key\":\"value\"}";
         } ];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-       
+        
         _finishedFlag = YES;
         STFail(@"should not have been called");
         
