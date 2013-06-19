@@ -60,6 +60,14 @@
 		6F7B5EED17325A7D00ED4F83 /* AGPageConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5EEC17325A7D00ED4F83 /* AGPageConfiguration.m */; };
 		6F7B5EF017326E0A00ED4F83 /* AGPageConfigSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7B5EEF17326E0A00ED4F83 /* AGPageConfigSpec.m */; };
 		6FA3FFF016B176D900BD6C56 /* AGPaginationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA3FFEF16B176D900BD6C56 /* AGPaginationTests.m */; };
+		6FC2002617719296004B4730 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC2002517719296004B4730 /* Security.framework */; };
+		6FC200281771929D004B4730 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC200271771929D004B4730 /* MobileCoreServices.framework */; };
+		6FC2002A177192A9004B4730 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC20029177192A9004B4730 /* SystemConfiguration.framework */; };
+		6FC2003417719391004B4730 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC20029177192A9004B4730 /* SystemConfiguration.framework */; };
+		6FC200351771939C004B4730 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC2002517719296004B4730 /* Security.framework */; };
+		6FC20039177193F6004B4730 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC20038177193F6004B4730 /* CoreGraphics.framework */; };
+		6FC2003A1771941E004B4730 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC200271771929D004B4730 /* MobileCoreServices.framework */; };
+		6FC2003B17719448004B4730 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC20038177193F6004B4730 /* CoreGraphics.framework */; };
 		6FC562E2169ECE94000D7A43 /* AGPropertyListStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC562E1169ECE94000D7A43 /* AGPropertyListStorageTests.m */; };
 		6FC8F192172FC84F00905C2F /* AGPageBaseExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC8F191172FC84F00905C2F /* AGPageBaseExtractor.m */; };
 		6FC8F195172FCA7300905C2F /* AGPageBaseExtractorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC8F194172FCA7200905C2F /* AGPageBaseExtractorTests.m */; };
@@ -175,6 +183,10 @@
 		6F7B5EEC17325A7D00ED4F83 /* AGPageConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPageConfiguration.m; path = pipeline/paging/AGPageConfiguration.m; sourceTree = "<group>"; };
 		6F7B5EEF17326E0A00ED4F83 /* AGPageConfigSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPageConfigSpec.m; sourceTree = "<group>"; };
 		6FA3FFEF16B176D900BD6C56 /* AGPaginationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPaginationTests.m; sourceTree = "<group>"; };
+		6FC2002517719296004B4730 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6FC200271771929D004B4730 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6FC20029177192A9004B4730 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6FC20038177193F6004B4730 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6FC562E1169ECE94000D7A43 /* AGPropertyListStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPropertyListStorageTests.m; sourceTree = "<group>"; };
 		6FC8F190172FC84F00905C2F /* AGPageBaseExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPageBaseExtractor.h; path = pipeline/paging/AGPageBaseExtractor.h; sourceTree = "<group>"; };
 		6FC8F191172FC84F00905C2F /* AGPageBaseExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPageBaseExtractor.m; path = pipeline/paging/AGPageBaseExtractor.m; sourceTree = "<group>"; };
@@ -196,6 +208,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FC2003B17719448004B4730 /* CoreGraphics.framework in Frameworks */,
+				6FC2002A177192A9004B4730 /* SystemConfiguration.framework in Frameworks */,
+				6FC200281771929D004B4730 /* MobileCoreServices.framework in Frameworks */,
+				6FC2002617719296004B4730 /* Security.framework in Frameworks */,
 				57737FDD15E3D01D006B97BB /* Foundation.framework in Frameworks */,
 				08D43362329A46488E585071 /* libPods.a in Frameworks */,
 			);
@@ -205,6 +221,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FC2003A1771941E004B4730 /* MobileCoreServices.framework in Frameworks */,
+				6FC20039177193F6004B4730 /* CoreGraphics.framework in Frameworks */,
+				6FC200351771939C004B4730 /* Security.framework in Frameworks */,
+				6FC2003417719391004B4730 /* SystemConfiguration.framework in Frameworks */,
 				57737FEC15E3D01D006B97BB /* SenTestingKit.framework in Frameworks */,
 				57737FEE15E3D01D006B97BB /* UIKit.framework in Frameworks */,
 				57737FEF15E3D01D006B97BB /* Foundation.framework in Frameworks */,
@@ -271,11 +291,11 @@
 		57737FCE15E3D01D006B97BB = {
 			isa = PBXGroup;
 			children = (
-				DD46252015EF437500A5040C /* common.xcconfig */,
 				57737FDE15E3D01D006B97BB /* AeroGear-iOS */,
 				57737FF315E3D01D006B97BB /* AeroGear-iOSTests */,
 				57737FDB15E3D01D006B97BB /* Frameworks */,
 				57737FDA15E3D01D006B97BB /* Products */,
+				DD46252015EF437500A5040C /* common.xcconfig */,
 				B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */,
 				D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */,
 			);
@@ -293,6 +313,10 @@
 		57737FDB15E3D01D006B97BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6FC20038177193F6004B4730 /* CoreGraphics.framework */,
+				6FC20029177192A9004B4730 /* SystemConfiguration.framework */,
+				6FC200271771929D004B4730 /* MobileCoreServices.framework */,
+				6FC2002517719296004B4730 /* Security.framework */,
 				57737FDC15E3D01D006B97BB /* Foundation.framework */,
 				57737FEB15E3D01D006B97BB /* SenTestingKit.framework */,
 				57737FED15E3D01D006B97BB /* UIKit.framework */,
