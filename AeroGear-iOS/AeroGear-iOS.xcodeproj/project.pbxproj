@@ -58,6 +58,8 @@
 		6F14F191170EDA02001E14BA /* AGPageBodyExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14F18B170EDA02001E14BA /* AGPageBodyExtractor.m */; };
 		6F14F192170EDA02001E14BA /* AGPageHeaderExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14F18D170EDA02001E14BA /* AGPageHeaderExtractor.m */; };
 		6F14F193170EDA02001E14BA /* AGPageWebLinkingExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14F190170EDA02001E14BA /* AGPageWebLinkingExtractor.m */; };
+		6F429FA2182B847700235840 /* AGEncryptedMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F429FA1182B847700235840 /* AGEncryptedMemoryStorage.m */; };
+		6F429FE7182BB30B00235840 /* AGEncryptedMemoryStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F429FE6182BB30B00235840 /* AGEncryptedMemoryStorageSpec.m */; };
 		6F6C39BF1771996B009B3A57 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */; };
 		6F6C39C117719970009B3A57 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39C017719970009B3A57 /* MobileCoreServices.framework */; };
 		6F6C39C217719986009B3A57 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */; };
@@ -180,6 +182,9 @@
 		6F14F18E170EDA02001E14BA /* AGPageParameterExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPageParameterExtractor.h; path = pipeline/paging/AGPageParameterExtractor.h; sourceTree = "<group>"; };
 		6F14F18F170EDA02001E14BA /* AGPageWebLinkingExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPageWebLinkingExtractor.h; path = pipeline/paging/AGPageWebLinkingExtractor.h; sourceTree = "<group>"; };
 		6F14F190170EDA02001E14BA /* AGPageWebLinkingExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPageWebLinkingExtractor.m; path = pipeline/paging/AGPageWebLinkingExtractor.m; sourceTree = "<group>"; };
+		6F429FA0182B847700235840 /* AGEncryptedMemoryStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGEncryptedMemoryStorage.h; path = datamanager/AGEncryptedMemoryStorage.h; sourceTree = "<group>"; };
+		6F429FA1182B847700235840 /* AGEncryptedMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGEncryptedMemoryStorage.m; path = datamanager/AGEncryptedMemoryStorage.m; sourceTree = "<group>"; };
+		6F429FE6182BB30B00235840 /* AGEncryptedMemoryStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGEncryptedMemoryStorageSpec.m; sourceTree = "<group>"; };
 		6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6F6C39C017719970009B3A57 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6F6C39C417719990009B3A57 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -261,6 +266,7 @@
 				573CBDA315E4F31B0071E7A6 /* AGPipelineSpec.m */,
 				573CBDAC15E546B70071E7A6 /* AGRestAdapterSpec.m */,
 				571DBAD41610C3D700A0A3A6 /* AGMemoryStorageSpec.m */,
+				6F429FE6182BB30B00235840 /* AGEncryptedMemoryStorageSpec.m */,
 				A0A37AD216AE905F00979868 /* AGPipeConfigSpec.m */,
 				6F7B5EEF17326E0A00ED4F83 /* AGPageConfigSpec.m */,
 				3A3FA042B2FA52968D0AA580 /* AGAuthenticatorSpec.m */,
@@ -393,6 +399,8 @@
 				57ED1453160B566200881924 /* AGStore.h */,
 				571DBAC91610715800A0A3A6 /* AGMemoryStorage.h */,
 				571DBACA1610715800A0A3A6 /* AGMemoryStorage.m */,
+				6F429FA0182B847700235840 /* AGEncryptedMemoryStorage.h */,
+				6F429FA1182B847700235840 /* AGEncryptedMemoryStorage.m */,
 				6FE55673169DE5D900E6188E /* AGPropertyListStorage.h */,
 				6FE55674169DE7C800E6188E /* AGPropertyListStorage.m */,
 				489F47B917DDFFF40072DE0F /* AGSQLiteStorage.h */,
@@ -594,6 +602,7 @@
 				571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */,
 				573B709D161DA2AE009F0452 /* AGAuthenticator.m in Sources */,
 				573B70A1161DDD1C009F0452 /* AGRestAuthentication.m in Sources */,
+				6F429FA2182B847700235840 /* AGEncryptedMemoryStorage.m in Sources */,
 				57C2616516402B8900793C0F /* AGPipeConfiguration.m in Sources */,
 				57277DFF164131FA00C50DC5 /* AGStoreConfiguration.m in Sources */,
 				57277E111641364300C50DC5 /* AGAuthConfiguration.m in Sources */,
@@ -625,6 +634,7 @@
 				3A3FA0F7DE3FD6E3C9B77946 /* AGPageBaseExtractorSpec.m in Sources */,
 				3A3FA6DEFAAE4B15941A6D48 /* AGPageBodyExtractorSpec.m in Sources */,
 				3A3FA2A2DD7A17FFCE0B9510 /* AGPageHeaderExtractorSpec.m in Sources */,
+				6F429FE7182BB30B00235840 /* AGEncryptedMemoryStorageSpec.m in Sources */,
 				3A3FA1B99E5E1EBF301778DA /* AGPageWebLinkingExtractorSpec.m in Sources */,
 				3A3FAC6A723867E94FB16341 /* AGPaginationSpec.m in Sources */,
 				3A3FAF2C1A2BCEACF5DFC256 /* AGPropertyListStorageSpec.m in Sources */,

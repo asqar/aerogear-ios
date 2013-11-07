@@ -22,6 +22,7 @@
 @synthesize recordId = _recordId;
 @synthesize name = _name;
 @synthesize type = _type;
+@synthesize privateKey = _privateKey;
 
 - (id)init {
     self = [super init];

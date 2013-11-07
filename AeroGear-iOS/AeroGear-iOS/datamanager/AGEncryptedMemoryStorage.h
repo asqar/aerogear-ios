@@ -16,21 +16,12 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "AGConfig.h"
+#import "AGStore.h"
+#import "AGStoreConfiguration.h"
 
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+@interface AGEncryptedMemoryStorage : NSObject <AGStore>
 
-/**
- * Applies the recordId to the configuration.
- */
-@property (copy, nonatomic) NSString* recordId;
-
-/**
- * The private key used to encrypt/decrypt data
- */
-@property (strong, nonatomic) NSData* privateKey;
++ (id)storeWithConfig:(id<AGStoreConfig>) storeConfig;
+- (id)initWithConfig:(id<AGStoreConfig>) storeConfig;
 
 @end
