@@ -17,8 +17,7 @@
 
 #import <Kiwi/Kiwi.h>
 #import "AGEncryptedMemoryStorage.h"
-#import <AGPBKDF2.h>
-#import <AGRandomGenerator.h>
+#import "AGPasswordKeyServices.h"
 
 SPEC_BEGIN(AGEncryptedMemoryStorageSpec)
 
@@ -27,22 +26,25 @@ describe(@"AGEncryptedMemoryStorage", ^{
         
         // An encrypted 'in memory' storage object:
         __block AGEncryptedMemoryStorage* encMemStore = nil;
-        __block NSData *key;
+        // The Encryption service to use
+        __block id<AGEncryptionService> encService = nil;
         
         beforeAll(^{
-            // generate key
-            AGPBKDF2 *keyGenerator = [[AGPBKDF2 alloc] init];
-            key = [keyGenerator deriveKey:@"my-pass-phrase" salt:[AGRandomGenerator randomBytes:16]];
+            AGKeyStoreCryptoConfig *config = [[AGKeyStoreCryptoConfig alloc] init];
+            [config setAlias:@"alias"];
+            [config setPassword:@"passphrase"];
+
+            encService = [[AGPasswordKeyServices alloc] initWithConfig:config];
         });
         
         beforeEach(^{
+            
             AGStoreConfiguration* config = [[AGStoreConfiguration alloc] init];
             [config setRecordId:@"id"];
-            [config setPrivateKey:key];
+            [config setEncryptionService:encService];
 
             encMemStore = [AGEncryptedMemoryStorage storeWithConfig:config];
-        });
-        
+        });        
         
         it(@"should not be nil", ^{
             [encMemStore shouldNotBeNil];

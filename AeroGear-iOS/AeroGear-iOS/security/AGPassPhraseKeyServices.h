@@ -15,22 +15,21 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "AGConfig.h"
-#import "AGEncryptionService.h"
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+#import "AGBaseEncryptionService.h"
+#import "AGPassPhraseCryptoConfig.h"
 
 /**
- * Applies the recordId to the configuration.
+ An AGEncryptionService that generates crypto params randomly by using AGPBKDF2
  */
-@property (copy, nonatomic) NSString* recordId;
+@interface AGPassPhraseKeyServices : AGBaseEncryptionService
 
 /**
- * The private key used to encrypt/decrypt data
+ * Initialize the provider with the given config
+ *
+ * @param config An AGPassPhraseCryptoConfig configuration object.
+ *
+ * @return the newly created AGPassPhraseKeyServices object.
  */
-@property (strong, nonatomic) id<AGEncryptionService> encryptionService;
+- (id)initWithConfig:(AGPassPhraseCryptoConfig *)config;
 
 @end

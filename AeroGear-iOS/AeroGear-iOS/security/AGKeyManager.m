@@ -15,23 +15,37 @@
  * limitations under the License.
  */
 
-#import "AGStoreConfiguration.h"
+#import "AGKeyManager.h"
 
-@implementation AGStoreConfiguration
+#import "AGPasswordKeyServices.h"
+#import "AGPassPhraseKeyServices.h"
 
-@synthesize recordId = _recordId;
-@synthesize name = _name;
-@synthesize type = _type;
-@synthesize encryptionService = _encryptionService;
+@implementation AGKeyManager
 
 - (id)init {
     self = [super init];
     if (self) {
-        // default values:
-        _type = @"MEMORY";
-        _recordId = @"id";
+       
     }
     return self;
 }
+
++ (id)manager {
+    return [[self alloc] init];
+}
+
+- (id<AGEncryptionService>)keyService:(id<AGCryptoConfig>)config {
+    
+    id<AGEncryptionService> keyService;
+    
+    if ([config isKindOfClass:[AGKeyStoreCryptoConfig class]]) {
+        keyService = [[AGPasswordKeyServices alloc] initWithConfig:config];
+    } else if ([config isKindOfClass:[AGPassPhraseCryptoConfig class]]) {
+        keyService = [[AGPassPhraseKeyServices alloc] initWithConfig:config];
+    }
+    
+    return keyService;
+}
+
 
 @end

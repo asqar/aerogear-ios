@@ -16,8 +16,7 @@
  */
 
 #import "AGEncryptedMemoryStorage.h"
-
-#import "AeroGearCrypto.h"
+#import "AGEncryptionService.h"
 
 NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorageErrorDomain";
 
@@ -25,9 +24,7 @@ NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorage
     NSMutableDictionary *_data;
     NSString *_recordId;
     
-    AGCryptoBox *_cryptoBox;
-    
-    NSData *_IV;
+    id<AGEncryptionService> _encryptionService;
 }
 
 @synthesize type = _type;
@@ -49,10 +46,7 @@ NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorage
       
         AGStoreConfiguration *config = (AGStoreConfiguration*) storeConfig;
         _recordId = config.recordId;
-        
-        _cryptoBox = [[AGCryptoBox alloc] initWithKey:config.privateKey];
-        // TODO extract from keychain
-        _IV = [@"69696ee955b62b73" dataUsingEncoding:NSUTF8StringEncoding];
+        _encryptionService = config.encryptionService;
     }
     
     return self;
@@ -62,8 +56,8 @@ NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorage
     NSMutableArray *list = [NSMutableArray arrayWithCapacity:[_data count]];
     
     for (NSData *encryptedData in [_data allValues]) {
-        NSData *decryptedData = [_cryptoBox decrypt:encryptedData IV:_IV];
-        
+        NSData *decryptedData = [_encryptionService decrypt:encryptedData];
+
         id object = [NSJSONSerialization JSONObjectWithData:decryptedData
                                                     options:NSJSONReadingMutableContainers error:nil];
         
@@ -79,7 +73,7 @@ NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorage
     NSData *encryptedData = [_data objectForKey:recordId];
  
     if (encryptedData) {
-        NSData *decryptedData = [_cryptoBox decrypt:encryptedData IV:_IV];
+        NSData *decryptedData = [_encryptionService decrypt:encryptedData];
 
         retval = [NSJSONSerialization JSONObjectWithData:decryptedData
                                                  options:NSJSONReadingMutableContainers error:nil];
@@ -167,7 +161,7 @@ NSString *const AGEncryptedMemoryStorageErrorDomain = @"AGEncryptedMemoryStorage
     // json encode it
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:0 error:nil];
     // encrypt it
-    NSData *encryptedData = [_cryptoBox encrypt:jsonData IV:_IV];
+    NSData *encryptedData = [_encryptionService encrypt:jsonData];
     // set it
     [_data setValue:encryptedData forKey:recordId];
 }

@@ -15,22 +15,27 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "AGConfig.h"
-#import "AGEncryptionService.h"
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+#import "AGPassPhraseKeyServices.h"
 
-/**
- * Applies the recordId to the configuration.
- */
-@property (copy, nonatomic) NSString* recordId;
+#import <AGPBKDF2.h>
+#import <AGCryptoBox.h>
 
-/**
- * The private key used to encrypt/decrypt data
- */
-@property (strong, nonatomic) id<AGEncryptionService> encryptionService;
+@implementation AGPassPhraseKeyServices
+
+- (id)initWithConfig:(AGPassPhraseCryptoConfig *)config {
+    self = [super init];
+    
+    if (self) {
+        AGPBKDF2 *keyGenerator = [[AGPBKDF2 alloc] init];
+        
+        // derive key
+        NSData *key = [keyGenerator deriveKey:config.passphrase salt:config.salt];
+        
+        // initialize cryptobox
+        _cryptoBox = [[AGCryptoBox alloc] initWithKey:key];
+    }
+    
+    return self;
+}
 
 @end

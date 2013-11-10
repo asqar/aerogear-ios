@@ -15,22 +15,23 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "AGConfig.h"
-#import "AGEncryptionService.h"
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+#import "AGPassPhraseCryptoConfig.h"
 
-/**
- * Applies the recordId to the configuration.
- */
-@property (copy, nonatomic) NSString* recordId;
+@implementation AGPassPhraseCryptoConfig
 
-/**
- * The private key used to encrypt/decrypt data
- */
-@property (strong, nonatomic) id<AGEncryptionService> encryptionService;
+@synthesize name = _name;
+@synthesize type = _type;
+
+@synthesize passphrase = _passphrase;
+@synthesize salt = _salt;
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        _type = @"AGPassPhraseCryptoConfig";
+    }
+    
+    return self;
+}
 
 @end

@@ -15,22 +15,28 @@
  * limitations under the License.
  */
 
-#import <Foundation/Foundation.h>
-#import "AGConfig.h"
-#import "AGEncryptionService.h"
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+#import "AGBaseEncryptionService.h"
+#import "AGKeyStoreCryptoConfig.h"
 
 /**
- * Applies the recordId to the configuration.
+  An AGEncryptionService that uses Apple's keychain for storing and retrieving
+  crypto parameters.
  */
-@property (copy, nonatomic) NSString* recordId;
+@interface AGPasswordKeyServices : AGBaseEncryptionService
 
 /**
- * The private key used to encrypt/decrypt data
+ * Initialize the provider with the given config
+ *
+ * @param config An AGKeyStoreCryptoConfig configuration object.
+ *
+ * @return the newly created AGPasswordKeyServices object.
  */
-@property (strong, nonatomic) id<AGEncryptionService> encryptionService;
+- (id)initWithConfig:(AGKeyStoreCryptoConfig *)config;
+
+/**
+ * Clear and previously stored crypto params for the AGKeyStoreCryptoConfig object that
+ * this provider was initialized to.
+ */
+- (void)resetKeychain;
 
 @end

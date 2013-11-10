@@ -16,21 +16,22 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "AGConfig.h"
-#import "AGEncryptionService.h"
-/**
- * Represents the public API to configure AGStore objects.
- */
-@protocol AGStoreConfig <AGConfig>
+
+#import "AGCryptoConfig.h"
 
 /**
- * Applies the recordId to the configuration.
+ * Configuration object for an AGPasswordKeyServices provider.
  */
-@property (copy, nonatomic) NSString* recordId;
+@interface AGKeyStoreCryptoConfig : NSObject <AGCryptoConfig>
 
 /**
- * The private key used to encrypt/decrypt data
+ * Applies the alias to the configuration.
  */
-@property (strong, nonatomic) id<AGEncryptionService> encryptionService;
+@property (nonatomic, copy) NSString *alias;
+
+/**
+ * Applies the password to the configuration.
+ */
+@property (nonatomic, copy) NSString *password;
 
 @end
