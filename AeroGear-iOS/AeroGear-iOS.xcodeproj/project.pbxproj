@@ -60,8 +60,6 @@
 		6F14F193170EDA02001E14BA /* AGPageWebLinkingExtractor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14F190170EDA02001E14BA /* AGPageWebLinkingExtractor.m */; };
 		6F393F081834100B00FFB44D /* AGEncryptedMemoryStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F393F051834100B00FFB44D /* AGEncryptedMemoryStorage.m */; };
 		6F393F091834100B00FFB44D /* AGEncryptedPropertyListStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F393F071834100B00FFB44D /* AGEncryptedPropertyListStorage.m */; };
-		6F393F0C1834105B00FFB44D /* AGEncryptedMemoryStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F393F0A1834105B00FFB44D /* AGEncryptedMemoryStorageSpec.m */; };
-		6F393F0D1834105B00FFB44D /* AGEncryptedPropertyListStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F393F0B1834105B00FFB44D /* AGEncryptedPropertyListStorageSpec.m */; };
 		6F6C39BF1771996B009B3A57 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */; };
 		6F6C39C117719970009B3A57 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39C017719970009B3A57 /* MobileCoreServices.framework */; };
 		6F6C39C217719986009B3A57 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */; };
@@ -82,8 +80,6 @@
 		6FE3D13C1834E3F100C3A09A /* AGPassphraseKeyServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D1351834E3F100C3A09A /* AGPassphraseKeyServices.m */; };
 		6FE3D13D1834E3F100C3A09A /* AGPasswordKeyServices.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D1371834E3F100C3A09A /* AGPasswordKeyServices.m */; };
 		6FE3D1431834E44200C3A09A /* AGKeyManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D13F1834E44200C3A09A /* AGKeyManagerSpec.m */; };
-		6FE3D1441834E44200C3A09A /* AGPassphraseKeyServicesSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D1401834E44200C3A09A /* AGPassphraseKeyServicesSpec.m */; };
-		6FE3D1451834E44200C3A09A /* AGPasswordKeyServicesSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D1411834E44200C3A09A /* AGPasswordKeyServicesSpec.m */; };
 		6FE3D1471834E4C300C3A09A /* AGBaseStorageSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE3D1461834E4C300C3A09A /* AGBaseStorageSpec.m */; };
 		6FE55675169DE7C800E6188E /* AGPropertyListStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE55674169DE7C800E6188E /* AGPropertyListStorage.m */; };
 		6FFF85381760EE060044B5DE /* AGHTTPMockHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFF85371760EE060044B5DE /* AGHTTPMockHelper.m */; };
@@ -198,8 +194,6 @@
 		6F393F051834100B00FFB44D /* AGEncryptedMemoryStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGEncryptedMemoryStorage.m; path = datamanager/AGEncryptedMemoryStorage.m; sourceTree = "<group>"; };
 		6F393F061834100B00FFB44D /* AGEncryptedPropertyListStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGEncryptedPropertyListStorage.h; path = datamanager/AGEncryptedPropertyListStorage.h; sourceTree = "<group>"; };
 		6F393F071834100B00FFB44D /* AGEncryptedPropertyListStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGEncryptedPropertyListStorage.m; path = datamanager/AGEncryptedPropertyListStorage.m; sourceTree = "<group>"; };
-		6F393F0A1834105B00FFB44D /* AGEncryptedMemoryStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGEncryptedMemoryStorageSpec.m; sourceTree = "<group>"; };
-		6F393F0B1834105B00FFB44D /* AGEncryptedPropertyListStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGEncryptedPropertyListStorageSpec.m; sourceTree = "<group>"; };
 		6F6C39BE1771996B009B3A57 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		6F6C39C017719970009B3A57 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6F6C39C417719990009B3A57 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -227,8 +221,6 @@
 		6FE3D1361834E3F100C3A09A /* AGPasswordKeyServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPasswordKeyServices.h; path = security/AGPasswordKeyServices.h; sourceTree = "<group>"; };
 		6FE3D1371834E3F100C3A09A /* AGPasswordKeyServices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPasswordKeyServices.m; path = security/AGPasswordKeyServices.m; sourceTree = "<group>"; };
 		6FE3D13F1834E44200C3A09A /* AGKeyManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGKeyManagerSpec.m; sourceTree = "<group>"; };
-		6FE3D1401834E44200C3A09A /* AGPassphraseKeyServicesSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPassphraseKeyServicesSpec.m; sourceTree = "<group>"; };
-		6FE3D1411834E44200C3A09A /* AGPasswordKeyServicesSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPasswordKeyServicesSpec.m; sourceTree = "<group>"; };
 		6FE3D1461834E4C300C3A09A /* AGBaseStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGBaseStorageSpec.m; sourceTree = "<group>"; };
 		6FE55673169DE5D900E6188E /* AGPropertyListStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPropertyListStorage.h; path = datamanager/AGPropertyListStorage.h; sourceTree = "<group>"; };
 		6FE55674169DE7C800E6188E /* AGPropertyListStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPropertyListStorage.m; path = datamanager/AGPropertyListStorage.m; sourceTree = "<group>"; };
@@ -313,7 +305,6 @@
 				573CBDA315E4F31B0071E7A6 /* AGPipelineSpec.m */,
 				573CBDAC15E546B70071E7A6 /* AGRestAdapterSpec.m */,
 				571DBAD41610C3D700A0A3A6 /* AGMemoryStorageSpec.m */,
-				6F393F0A1834105B00FFB44D /* AGEncryptedMemoryStorageSpec.m */,
 				A0A37AD216AE905F00979868 /* AGPipeConfigSpec.m */,
 				6F7B5EEF17326E0A00ED4F83 /* AGPageConfigSpec.m */,
 				3A3FA042B2FA52968D0AA580 /* AGAuthenticatorSpec.m */,
@@ -325,14 +316,11 @@
 				3A3FA7B7F632A59A9D4C53F1 /* AGPageWebLinkingExtractorSpec.m */,
 				3A3FA81DD1CD6812526D0D6A /* AGPaginationSpec.m */,
 				3A3FABBA99D20FF6EDAEB888 /* AGPropertyListStorageSpec.m */,
-				6F393F0B1834105B00FFB44D /* AGEncryptedPropertyListStorageSpec.m */,
 				489F47B717DDFF110072DE0F /* AGSQLiteStorageSpec.m */,
 				48BB0ED817E1E737002DB531 /* AGSQLiteStatementSpec.m */,
 				3A3FAD425C7D92793D443079 /* AGRestAuthenticationSpec.m */,
 				6F7C9A1A17CFBB6900058365 /* AGBaseAdapterSpec.m */,
 				6FE3D13F1834E44200C3A09A /* AGKeyManagerSpec.m */,
-				6FE3D1401834E44200C3A09A /* AGPassphraseKeyServicesSpec.m */,
-				6FE3D1411834E44200C3A09A /* AGPasswordKeyServicesSpec.m */,
 				6FE3D1461834E4C300C3A09A /* AGBaseStorageSpec.m */,
 			);
 			name = "Unit Tests";
@@ -684,14 +672,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				573CBDA415E4F31B0071E7A6 /* AGPipelineSpec.m in Sources */,
-				6FE3D1451834E44200C3A09A /* AGPasswordKeyServicesSpec.m in Sources */,
 				573CBDAD15E546B70071E7A6 /* AGRestAdapterSpec.m in Sources */,
 				571DBAD51610C3D700A0A3A6 /* AGMemoryStorageSpec.m in Sources */,
 				A0A37AD316AE905F00979868 /* AGPipeConfigSpec.m in Sources */,
-				6F393F0D1834105B00FFB44D /* AGEncryptedPropertyListStorageSpec.m in Sources */,
 				6F7B5EF017326E0A00ED4F83 /* AGPageConfigSpec.m in Sources */,
-				6F393F0C1834105B00FFB44D /* AGEncryptedMemoryStorageSpec.m in Sources */,
-				6FE3D1441834E44200C3A09A /* AGPassphraseKeyServicesSpec.m in Sources */,
 				6FFF85381760EE060044B5DE /* AGHTTPMockHelper.m in Sources */,
 				3A3FA4389A8490B5D7049667 /* AGAuthenticatorSpec.m in Sources */,
 				3A3FAD31FC7EE80261D43F28 /* AGDataManagerSpec.m in Sources */,
@@ -783,12 +767,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "";
 				DSTROOT = /tmp/AeroGear_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AeroGear-iOS/AeroGear-iOS-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TEST_HOST = "";
 			};
 			name = Debug;
 		};
@@ -796,12 +782,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */;
 			buildSettings = {
+				BUNDLE_LOADER = "";
 				DSTROOT = /tmp/AeroGear_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AeroGear-iOS/AeroGear-iOS-Prefix.pch";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				TEST_HOST = "";
 			};
 			name = Release;
 		};
@@ -822,6 +810,7 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -843,6 +832,7 @@
 					SenTestingKit,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "";
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
