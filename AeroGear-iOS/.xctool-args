@@ -1,6 +1,6 @@
 [
   "-workspace", "AeroGear-iOS.xcworkspace",
-  "-scheme", "AeroGear-iOS",
+  "-scheme", "AeroGear-iOSTests",
   "-sdk", "iphonesimulator",
-  "-arch", "i386"
+  "-configuration", "Release"
 ]
