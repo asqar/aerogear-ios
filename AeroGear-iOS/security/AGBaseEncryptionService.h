@@ -19,7 +19,7 @@
 
 #import "AGEncryptionService.h"
 
-@class AGCryptoBox;
+@class AGSecretBox;
 
 /**
   Base class for any given AGEncryptionService implementation. See AGPasswordKeyServices
@@ -28,7 +28,7 @@
 @interface AGBaseEncryptionService : NSObject <AGEncryptionService> {
 
 @protected
-    AGCryptoBox *_cryptoBox;
+    AGSecretBox *_secretBox;
     NSData *_applicationIV;
 }
 

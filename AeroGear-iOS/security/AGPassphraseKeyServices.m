@@ -18,7 +18,7 @@
 #import "AGPassphraseKeyServices.h"
 
 #import <AGPBKDF2.h>
-#import <AGCryptoBox.h>
+#import <AGSecretBox.h>
 
 @implementation AGPassphraseKeyServices
 
@@ -32,7 +32,7 @@
         NSData *key = [keyGenerator deriveKey:config.passphrase salt:config.salt];
         
         // initialize cryptobox
-        _cryptoBox = [[AGCryptoBox alloc] initWithKey:key];
+        _secretBox = [[AGSecretBox alloc] initWithKey:key];
     }
     
     return self;

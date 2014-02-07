@@ -18,7 +18,7 @@
 #import "AGPasswordKeyServices.h"
 
 #import <AGRandomGenerator.h>
-#import <AGCryptoBox.h>
+#import <AGSecretBox.h>
 
 @implementation AGPasswordKeyServices {
     NSString *_passKeyTag;
@@ -113,7 +113,7 @@
         }
         
         // initialize cryptobox
-        _cryptoBox = [[AGCryptoBox alloc] initWithKey:key];
+        _secretBox = [[AGSecretBox alloc] initWithKey:key];
     }
     
     return self;

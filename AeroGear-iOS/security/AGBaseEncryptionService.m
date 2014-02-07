@@ -16,7 +16,7 @@
  */
 
 #import "AGBaseEncryptionService.h"
-#import <AGCryptoBox.h>
+#import <AGSecretBox.h>
 #import <AGRandomGenerator.h>
 
 static NSString *const kApplicationIV = @"applicationIV";
@@ -47,7 +47,7 @@ static NSString *const kApplicationIV = @"applicationIV";
 }
 
 - (NSData *)encrypt:(NSData *)data IV:(NSData *)IV {
-    return [_cryptoBox encrypt:data IV:IV];
+    return [_secretBox encrypt:data IV:IV];
     
 }
 
@@ -57,7 +57,7 @@ static NSString *const kApplicationIV = @"applicationIV";
 }
 
 - (NSData *)decrypt:(NSData *)data IV:(NSData *)IV {
-    return [_cryptoBox decrypt:data IV:IV];
+    return [_secretBox decrypt:data IV:IV];
 }
 
 @end
