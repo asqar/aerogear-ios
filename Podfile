@@ -3,6 +3,7 @@ xcodeproj 'AeroGear-iOS.xcodeproj'
 platform :ios, '7.0'
 
 pod 'AFNetworking', '2.2.1'
+pod 'Mantle', '1.4.1'
 pod 'FMDB', '2.1'
 pod 'AeroGear-Crypto', '0.2.3'
 

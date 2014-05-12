@@ -17,14 +17,14 @@
 
 #import "AGRestAuthentication.h"
 #import "AGAuthConfiguration.h"
-#import "AGHttpClient.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 
 // TODO: Use #pragma marks to categorize methods and protocol implementations.
 
 @implementation AGRestAuthentication {
     // ivars
-    AGHttpClient* _restClient;
+    AFHTTPSessionManager *_restClient;
 }
 
 // =====================================================
@@ -75,7 +75,9 @@
         _enrollEndpoint = config.enrollEndpoint;
         _baseURL = config.baseURL.absoluteString;
 
-        _restClient = [AGHttpClient clientFor:config.baseURL timeout:config.timeout];
+        // TODO timeout
+        _restClient = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:_baseURL]];
+        
     }
 
     return self;

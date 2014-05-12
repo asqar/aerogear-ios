@@ -22,6 +22,7 @@
 @synthesize baseURL = _baseURL;
 @synthesize sessionConfiguration = _sessionConfiguration;
 @synthesize endpoint = _endpoint;
+@synthesize modelClass = _modelClass;
 @synthesize recordId = _recordId;
 @synthesize authModule = _authModule;
 @synthesize authzModule = _authzModule;

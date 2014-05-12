@@ -22,12 +22,15 @@
 
 @interface AGHttpClient : AFHTTPSessionManager
 
-+ (instancetype)clientFor:(NSURL *)url;
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval;
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration;
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass;
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval;
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration;
 
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration
-                                    authModule:(id<AGAuthenticationModuleAdapter>) authModule
-                                   authzModule:(id<AGAuthzModuleAdapter>)authzModule;
++ (instancetype)clientFor:(NSURL *)url
+                    class:(Class)modelClass
+                  timeout:(NSTimeInterval)interval
+     sessionConfiguration:(NSURLSessionConfiguration *)configuration
+               authModule:(id<AGAuthenticationModuleAdapter>) authModule
+              authzModule:(id<AGAuthzModuleAdapter>)authzModule;
 
 @end

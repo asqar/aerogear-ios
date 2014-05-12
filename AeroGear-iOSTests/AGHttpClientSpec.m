@@ -33,7 +33,7 @@
 @end
 
 SPEC_BEGIN(AGHttpClientSpec)
-
+/*
     describe(@"AGHttpClient", ^{
 
         NSString * const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]}, {\"id\":2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
@@ -628,5 +628,5 @@ SPEC_BEGIN(AGHttpClientSpec)
             });
         });
     });
-
+*/
 SPEC_END

@@ -18,13 +18,13 @@
 #import <UIKit/UIKit.h>
 #import "AGRestAuthzModule.h"
 #import "AGAuthzConfiguration.h"
-#import "AGHttpClient.h"
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 NSString * const AGAppLaunchedWithURLNotification = @"AGAppLaunchedWithURLNotification";
 
 @implementation AGRestAuthzModule {
     // ivars
-    AGHttpClient* _restClient;
+    AFHTTPSessionManager *_restClient;
     id _applicationLaunchNotificationObserver;
 }
 
@@ -67,7 +67,8 @@ NSString * const AGAppLaunchedWithURLNotification = @"AGAppLaunchedWithURLNotifi
         _clientSecret = config.clientSecret;
         _scopes = config.scopes;
 
-        _restClient = [AGHttpClient clientFor:config.baseURL timeout:config.timeout];
+        //TODO timeout
+        _restClient = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:_baseURL]];
 
         // default to url serialization
         _restClient.requestSerializer = [AFHTTPRequestSerializer serializer];

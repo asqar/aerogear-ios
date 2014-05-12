@@ -57,7 +57,7 @@
         _URL = finalURL;
         _recordId = _config.recordId;
 
-        _restClient = [AGHttpClient clientFor:finalURL timeout:_config.timeout
+        _restClient = [AGHttpClient clientFor:finalURL class:_config.modelClass timeout:_config.timeout
                          sessionConfiguration:_config.sessionConfiguration
                                    authModule:(id <AGAuthenticationModuleAdapter>) _config.authModule
                                   authzModule:(id <AGAuthzModuleAdapter>) _config.authzModule];

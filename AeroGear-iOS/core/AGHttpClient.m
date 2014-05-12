@@ -17,6 +17,7 @@
 
 #import "AGHttpClient.h"
 #import "AGMultipart.h"
+#import "AGModelResponseSerializer.h"
 
 @interface AGRequestSerializer : AFJSONRequestSerializer
 
@@ -67,25 +68,28 @@
 
 @implementation AGHttpClient
 
-+ (instancetype)clientFor:(NSURL *)url {
-    return [[[self class] alloc] initWithBaseURL:url timeout:60 sessionConfiguration:nil authModule:nil authzModule:nil];
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass {
+    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:60 sessionConfiguration:nil authModule:nil authzModule:nil];
 }
 
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval {
-    return [[[self class] alloc] initWithBaseURL:url timeout:interval sessionConfiguration:nil authModule:nil authzModule:nil];
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval {
+    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:nil authModule:nil authzModule:nil];
 }
 
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration {
-    return [[[self class] alloc] initWithBaseURL:url timeout:interval sessionConfiguration:configuration authModule:nil authzModule:nil];
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:configuration authModule:nil authzModule:nil];
 }
 
-+ (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration
++ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration
                authModule:(id<AGAuthenticationModuleAdapter>) authModule
               authzModule:(id<AGAuthzModuleAdapter>)authzModule {
-    return [[[self class] alloc] initWithBaseURL:url timeout:interval sessionConfiguration:configuration authModule:authModule authzModule:authzModule];
+    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:configuration authModule:authModule authzModule:authzModule];
 }
 
-- (instancetype)initWithBaseURL:(NSURL *)url timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration
+- (instancetype)initWithBaseURL:(NSURL *)url
+                          class:(Class)modelClass
+                        timeout:(NSTimeInterval)interval
+           sessionConfiguration:(NSURLSessionConfiguration *)configuration
                      authModule:(id<AGAuthenticationModuleAdapter>) authModule
                     authzModule:(id<AGAuthzModuleAdapter>)authzModule {
 
@@ -96,13 +100,14 @@
     }
 
     // apply AG request serializer
-    AGRequestSerializer *serializer = [AGRequestSerializer serializer];
-    serializer.authModule = authModule;
-    serializer.authzModule = authzModule;
+    AGRequestSerializer *reqSerializer = [AGRequestSerializer serializer];
+    reqSerializer.authModule = authModule;
+    reqSerializer.authzModule = authzModule;
+    self.requestSerializer = reqSerializer;
 
-    self.requestSerializer = serializer;
-    // apply json response serializer
-    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    // apply AG model response serializer
+    AGModelResponseSerializer *respSerializer = [AGModelResponseSerializer serializerForModelClass:modelClass];
+    self.responseSerializer = respSerializer;
 
     // set the timeout interval
     self.requestSerializer.timeoutInterval = interval;
