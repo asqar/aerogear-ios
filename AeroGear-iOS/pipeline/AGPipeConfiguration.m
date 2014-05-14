@@ -37,7 +37,7 @@
     if (self) {
         // default values:
         _type = @"REST";
-        _recordId = @"id";
+        _recordId = @"recId";
         _timeout = 60;  // the default timeout interval of NSMutableURLRequest (60 secs)
     }
     return self;
@@ -46,6 +46,16 @@
 // custom getter to return name if no endpoint is specified.
 -(NSString*) endpoint {
     return (_endpoint == nil? _name: _endpoint);
+}
+
+// custom setter to override name based on class name
+- (void)setModelClass:(Class)modelClass {
+    _modelClass = modelClass;
+
+    // if name not set, use default class name
+    if (!_name)
+        _name = [NSStringFromClass(modelClass) lowercaseString];
+
 }
 
 @end

@@ -240,7 +240,7 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
--(void) read:(id)value
+-(void) read:(id)recordId
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure;
 
@@ -281,7 +281,7 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
--(void) save:(NSDictionary*) object
+-(void) save:(id) object
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure;
 
@@ -301,7 +301,7 @@ Of course the _collection_ behind the responseObject can be stored to a variable
  * This block has no return value and takes one argument: The `NSError` object describing
  * the network or parsing error that occurred.
  */
--(void) remove:(NSDictionary*) object
+-(void) remove:(id) object
        success:(void (^)(id responseObject))success
        failure:(void (^)(NSError *error))failure;
 

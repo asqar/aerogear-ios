@@ -21,6 +21,9 @@
 #import "AGPageHeaderExtractor.h"
 #import "AGPageBodyExtractor.h"
 #import "AGPageWebLinkingExtractor.h"
+#import "AGRequestSerializer.h"
+#import "AGModelResponseSerializer.h"
+#import <Mantle/MTLJSONAdapter.h>
 
 //category:
 #import "AGNSMutableArray+Paging.h"
@@ -57,11 +60,23 @@
         _URL = finalURL;
         _recordId = _config.recordId;
 
-        _restClient = [AGHttpClient clientFor:finalURL class:_config.modelClass timeout:_config.timeout
-                         sessionConfiguration:_config.sessionConfiguration
-                                   authModule:(id <AGAuthenticationModuleAdapter>) _config.authModule
-                                  authzModule:(id <AGAuthzModuleAdapter>) _config.authzModule];
+        _restClient = [AGHttpClient clientFor:finalURL sessionConfiguration:_config.sessionConfiguration];
 
+        // apply request serializer
+        AGRequestSerializer *requestSerializer = [AGRequestSerializer serializer];
+        // set the auth/authz modules
+        requestSerializer.authModule = (id <AGAuthenticationModuleAdapter>)_config.authModule;
+        requestSerializer.authzModule = (id <AGAuthzModuleAdapter>)_config.authzModule;
+        // set the timeout interval
+        requestSerializer.timeoutInterval = _config.timeout;
+        // set Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
+        [requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
+        _restClient.requestSerializer = requestSerializer;
+
+        // apply response serializer
+        AGModelResponseSerializer *responseSerializer = [AGModelResponseSerializer serializerForModelClass:_config.modelClass];
+        _restClient.responseSerializer = responseSerializer;
 
         // if NSURLCredential object is set on the config
         if (_config.credential) {
@@ -102,17 +117,17 @@
 
 #pragma mark - public API (AGPipe)
 
--(void) read:(id)value
+-(void) read:(id)recordId
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure {
 
-    if (value == nil || [value isKindOfClass:[NSNull class]]) {
+    if (recordId == nil || [recordId isKindOfClass:[NSNull class]]) {
         [self raiseError:@"read" msg:@"read id value was nil" failure:failure];
         // do nothing
         return;
     }
 
-    NSString* objectKey = [self getStringValue:value];
+    NSString* objectKey = [self getStringValue:recordId];
     [_restClient GET:[self appendObjectPath:objectKey] parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if (success) {
             success(responseObject);
@@ -171,7 +186,7 @@
 }
 
 
--(void) save:(NSDictionary*) object
+-(void) save:(id) object
      success:(void (^)(id responseObject))success
      failure:(void (^)(NSError *error))failure {
 
@@ -195,21 +210,21 @@
         }
     };
 
-    id objectKey = object[_recordId];
+    id objectKey = [object valueForKey:_recordId];
 
     // we need to check if the map representation contains the "recordID" and its value is actually set,
     // to determine whether POST or PUT should be attempted
     if (objectKey == nil || [objectKey isKindOfClass:[NSNull class]]) {
-        [_restClient POST:_URL.path parameters:object success:successCallback failure:failureCallback];
+        [_restClient POST:_URL.path parameters:[MTLJSONAdapter JSONDictionaryFromModel:object] success:successCallback failure:failureCallback];
     } else {
 
         // extract object's id
         NSString* updateId = [self getStringValue:objectKey];
-       [_restClient PUT:[self appendObjectPath:updateId] parameters:object success:successCallback failure:failureCallback];
+       [_restClient PUT:[self appendObjectPath:updateId] parameters:[MTLJSONAdapter JSONDictionaryFromModel:object] success:successCallback failure:failureCallback];
     }
 }
 
--(void) remove:(NSDictionary*) object
+-(void) remove:(id) object
        success:(void (^)(id responseObject))success
        failure:(void (^)(NSError *error))failure {
 
@@ -220,7 +235,8 @@
         return;
     }
 
-    id objectKey = object[_recordId];
+    id objectKey = [object valueForKey:_recordId];
+
     // we need to check if the map representation contains the "recordID" and its value is actually set:
     if (objectKey == nil || [objectKey isKindOfClass:[NSNull class]]) {
         [self raiseError:@"remove" msg:@"recordId not set" failure:failure];
