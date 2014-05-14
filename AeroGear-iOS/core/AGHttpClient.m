@@ -17,103 +17,25 @@
 
 #import "AGHttpClient.h"
 #import "AGMultipart.h"
-#import "AGModelResponseSerializer.h"
-
-@interface AGRequestSerializer : AFJSONRequestSerializer
-
-    // auth/autz configuration
-    @property (nonatomic, strong) id<AGAuthenticationModuleAdapter> authModule;
-    @property (nonatomic, strong) id<AGAuthzModuleAdapter> authzModule;
-
-@end
-
-@implementation AGRequestSerializer
-
-+ (instancetype)serializer {
-    AGRequestSerializer *serializer = [[self alloc] init];
-
-    return serializer;
-}
-
-#pragma mark - AGRequestSerializer
-
-- (NSURLRequest *)requestBySerializingRequest:(NSURLRequest *)request
-                               withParameters:(id)parameters
-                                        error:(NSError *__autoreleasing *)error {
-
-    // call base json serialization
-    NSMutableURLRequest *mutableRequest = (NSMutableURLRequest *)[super requestBySerializingRequest:request
-                                                                                     withParameters:parameters error:error];
-    // finally apply auth/autz (if any) on request
-    NSDictionary *headers;
-
-    if (self.authModule && [self.authModule isAuthenticated]) {
-        headers = [self.authModule authTokens];
-    } else if (self.authzModule && [self.authzModule isAuthorized]) {
-        headers = [self.authzModule accessTokens];
-    }
-
-    // apply them
-    if (headers) {
-        [headers enumerateKeysAndObjectsUsingBlock:^(id name, id value, BOOL *stop) {
-            [mutableRequest setValue:value forHTTPHeaderField:name];
-        }];
-    }
-
-    return mutableRequest;
-}
-
-@end
-
 
 @implementation AGHttpClient
 
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass {
-    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:60 sessionConfiguration:nil authModule:nil authzModule:nil];
++ (instancetype)clientFor:(NSURL *)url {
+    return [[[self class] alloc] initWithBaseURL:url sessionConfiguration:nil];
 }
 
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval {
-    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:nil authModule:nil authzModule:nil];
-}
-
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration {
-    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:configuration authModule:nil authzModule:nil];
-}
-
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration
-               authModule:(id<AGAuthenticationModuleAdapter>) authModule
-              authzModule:(id<AGAuthzModuleAdapter>)authzModule {
-    return [[[self class] alloc] initWithBaseURL:url class:modelClass timeout:interval sessionConfiguration:configuration authModule:authModule authzModule:authzModule];
++ (instancetype)clientFor:(NSURL *)url sessionConfiguration:(NSURLSessionConfiguration *)configuration {
+    return [[[self class] alloc] initWithBaseURL:url sessionConfiguration:configuration];
 }
 
 - (instancetype)initWithBaseURL:(NSURL *)url
-                          class:(Class)modelClass
-                        timeout:(NSTimeInterval)interval
-           sessionConfiguration:(NSURLSessionConfiguration *)configuration
-                     authModule:(id<AGAuthenticationModuleAdapter>) authModule
-                    authzModule:(id<AGAuthzModuleAdapter>)authzModule {
+           sessionConfiguration:(NSURLSessionConfiguration *)configuration {
 
     self = [super initWithBaseURL:url sessionConfiguration:configuration];
 
     if (!self) {
         return nil;
     }
-
-    // apply AG request serializer
-    AGRequestSerializer *reqSerializer = [AGRequestSerializer serializer];
-    reqSerializer.authModule = authModule;
-    reqSerializer.authzModule = authzModule;
-    self.requestSerializer = reqSerializer;
-
-    // apply AG model response serializer
-    AGModelResponseSerializer *respSerializer = [AGModelResponseSerializer serializerForModelClass:modelClass];
-    self.responseSerializer = respSerializer;
-
-    // set the timeout interval
-    self.requestSerializer.timeoutInterval = interval;
-
-    // Accept HTTP Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.1
-    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     return (self);
 }

@@ -16,21 +16,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "AFNetworking.h"
-#import "AGAuthenticationModuleAdapter.h"
-#import "AGAuthzModuleAdapter.h"
+#import <AFNetworking/AFNetworking.h>
 
 @interface AGHttpClient : AFHTTPSessionManager
 
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass;
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval;
-+ (instancetype)clientFor:(NSURL *)url class:(Class)modelClass timeout:(NSTimeInterval)interval sessionConfiguration:(NSURLSessionConfiguration *)configuration;
-
-+ (instancetype)clientFor:(NSURL *)url
-                    class:(Class)modelClass
-                  timeout:(NSTimeInterval)interval
-     sessionConfiguration:(NSURLSessionConfiguration *)configuration
-               authModule:(id<AGAuthenticationModuleAdapter>) authModule
-              authzModule:(id<AGAuthzModuleAdapter>)authzModule;
++ (instancetype)clientFor:(NSURL *)url;
++ (instancetype)clientFor:(NSURL *)url sessionConfiguration:(NSURLSessionConfiguration *)configuration;
 
 @end
