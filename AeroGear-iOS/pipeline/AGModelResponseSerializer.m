@@ -40,7 +40,7 @@ NSString * const AGModelResponseErrorKey = @"AGModelResponseErrorKey";
     id jsonObj = [super responseObjectForResponse:response data:data error:error];
 
     // no need to continue if error occurred
-    if (error)
+    if (!jsonObj)
         return nil;
 
     // time to deserialize
