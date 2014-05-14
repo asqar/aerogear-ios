@@ -18,6 +18,8 @@
 		3A3FA4389A8490B5D7049667 /* AGAuthenticatorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FA042B2FA52968D0AA580 /* AGAuthenticatorSpec.m */; };
 		3A3FA56A5AAB22B9B7FC779E /* AGRestAuthenticationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAD425C7D92793D443079 /* AGRestAuthenticationSpec.m */; };
 		3A3FA6DEFAAE4B15941A6D48 /* AGPageBodyExtractorSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FA5F4C5D127CFCD4C15D9 /* AGPageBodyExtractorSpec.m */; };
+		3A3FA849D7A113EF4B0094E2 /* AGTestModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAD990DB2E43282D040E5 /* AGTestModel.m */; };
+		3A3FA8BBD600D0376DA7896A /* AGRequestSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FA5947F6C6BE348D5A4C9 /* AGRequestSerializer.m */; };
 		3A3FAC066A74B0FBA243D661 /* AGHttpClientSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FA925D72453AC929348F1 /* AGHttpClientSpec.m */; };
 		3A3FAC6A723867E94FB16341 /* AGPaginationSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FA81DD1CD6812526D0D6A /* AGPaginationSpec.m */; };
 		3A3FAD31FC7EE80261D43F28 /* AGDataManagerSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 3A3FAFA30EC799853C34BF60 /* AGDataManagerSpec.m */; };
@@ -147,7 +149,9 @@
 		38EABEBAA0F7D219BD79AC96 /* AGRestAuthzModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGRestAuthzModule.h; sourceTree = "<group>"; };
 		3A3FA042B2FA52968D0AA580 /* AGAuthenticatorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGAuthenticatorSpec.m; sourceTree = "<group>"; };
 		3A3FA3972010E7DB6AE04416 /* AGModelResponseSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGModelResponseSerializer.m; path = pipeline/AGModelResponseSerializer.m; sourceTree = "<group>"; };
+		3A3FA5947F6C6BE348D5A4C9 /* AGRequestSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGRequestSerializer.m; path = pipeline/AGRequestSerializer.m; sourceTree = "<group>"; };
 		3A3FA5F4C5D127CFCD4C15D9 /* AGPageBodyExtractorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPageBodyExtractorSpec.m; sourceTree = "<group>"; };
+		3A3FA64F418E8553C6212D92 /* AGRequestSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGRequestSerializer.h; path = pipeline/AGRequestSerializer.h; sourceTree = "<group>"; };
 		3A3FA74285D05B5DFF014629 /* AGPageBaseExtractorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPageBaseExtractorSpec.m; sourceTree = "<group>"; };
 		3A3FA7B7F632A59A9D4C53F1 /* AGPageWebLinkingExtractorSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPageWebLinkingExtractorSpec.m; sourceTree = "<group>"; };
 		3A3FA81DD1CD6812526D0D6A /* AGPaginationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPaginationSpec.m; sourceTree = "<group>"; };
@@ -156,6 +160,8 @@
 		3A3FABBA99D20FF6EDAEB888 /* AGPropertyListStorageSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPropertyListStorageSpec.m; sourceTree = "<group>"; };
 		3A3FABBEF2D17B0688B07561 /* AGModelResponseSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGModelResponseSerializer.h; path = pipeline/AGModelResponseSerializer.h; sourceTree = "<group>"; };
 		3A3FAD425C7D92793D443079 /* AGRestAuthenticationSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGRestAuthenticationSpec.m; sourceTree = "<group>"; };
+		3A3FAD990DB2E43282D040E5 /* AGTestModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGTestModel.m; path = utils/AGTestModel.m; sourceTree = "<group>"; };
+		3A3FAF1653ECB3DE399375AB /* AGTestModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGTestModel.h; path = utils/AGTestModel.h; sourceTree = "<group>"; };
 		3A3FAFA30EC799853C34BF60 /* AGDataManagerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGDataManagerSpec.m; sourceTree = "<group>"; };
 		480FD4D9185B088500D8CAD3 /* AGEncryptedSQLiteStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGEncryptedSQLiteStorage.h; path = datamanager/AGEncryptedSQLiteStorage.h; sourceTree = "<group>"; };
 		480FD4DA185B088500D8CAD3 /* AGEncryptedSQLiteStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGEncryptedSQLiteStorage.m; path = datamanager/AGEncryptedSQLiteStorage.m; sourceTree = "<group>"; };
@@ -495,6 +501,8 @@
 				A0A37AD916AEAEDE00979868 /* AGNSMutableArray+Paging.m */,
 				3A3FA3972010E7DB6AE04416 /* AGModelResponseSerializer.m */,
 				3A3FABBEF2D17B0688B07561 /* AGModelResponseSerializer.h */,
+				3A3FA64F418E8553C6212D92 /* AGRequestSerializer.h */,
+				3A3FA5947F6C6BE348D5A4C9 /* AGRequestSerializer.m */,
 			);
 			name = Pipeline;
 			sourceTree = "<group>";
@@ -575,6 +583,8 @@
 			children = (
 				6FFF85361760EE060044B5DE /* AGHTTPMockHelper.h */,
 				6FFF85371760EE060044B5DE /* AGHTTPMockHelper.m */,
+				3A3FAD990DB2E43282D040E5 /* AGTestModel.m */,
+				3A3FAF1653ECB3DE399375AB /* AGTestModel.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -731,6 +741,7 @@
 				38EAB9B564447C63EDA4F3BD /* AGAuthzConfiguration.m in Sources */,
 				38EAB6DDCEDC350EEEB294DF /* AGRestAuthzModule.m in Sources */,
 				3A3FAD839851E14B290D849D /* AGModelResponseSerializer.m in Sources */,
+				3A3FA8BBD600D0376DA7896A /* AGRequestSerializer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,6 +777,7 @@
 				489F47B817DDFF110072DE0F /* AGSQLiteStorageSpec.m in Sources */,
 				6FC6C6C418E06234008571A3 /* AGPassphraseEncryptionServicesSpec.m in Sources */,
 				6FE3D1471834E4C300C3A09A /* AGBaseStorageSpec.m in Sources */,
+				3A3FA849D7A113EF4B0094E2 /* AGTestModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
