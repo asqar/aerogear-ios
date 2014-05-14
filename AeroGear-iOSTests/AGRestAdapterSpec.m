@@ -18,15 +18,16 @@
 #import <Kiwi/Kiwi.h>
 #import "AGRESTPipe.h"
 #import "AGMultipart.h"
+#import "AGTestModel.h"
 #import "AGHTTPMockHelper.h"
 
 SPEC_BEGIN(AGRestAdapterSpec)
 
 describe(@"AGRestAdapter", ^{
-    
-    NSString * const PROJECTS = @"[{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]},{\"id\":2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[]}]";
 
-    NSString * const PROJECT = @"{\"id\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[]}";
+    // mocked json responses
+    NSString * const PROJECTS = @"[{\"recId\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[{\"recId\":1, \"title\":\"task1\", \"descr\":\"a task\", \"dueDate\":\"2014-01-01\", \"tags\":[{\"title\":\"tag1\"}]}]},{\"id\":2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[{\"recId\":2, \"title\":\"task2\", \"descr\":\"another task\", \"dueDate\":\"2014-01-02\", \"tags\":[{\"title\":\"tag2\"}]}]}]";
+    NSString * const PROJECT = @"{\"recId\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\"}";
     
     __block BOOL finishedFlag = NO;
     
@@ -38,6 +39,7 @@ describe(@"AGRestAdapter", ^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
             [config setName:@"projects"];
+            [config setModelClass:[AGProject class]];
 
             restPipe = [AGRESTPipe pipeWithConfig:config];
         });
@@ -68,6 +70,12 @@ describe(@"AGRestAdapter", ^{
 
             [restPipe read:^(id responseObject) {
                 [responseObject shouldNotBeNil];
+
+                // should have correct size
+                [[theValue([responseObject count]) should] equal:theValue(2)];
+                // should have correctly deserialized
+                [[responseObject[0] should] beKindOfClass:[AGProject class]];
+
                 finishedFlag = YES;
 
             } failure:^(NSError *error) {
@@ -78,14 +86,13 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"should successfully save (POST)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
+            [AGHTTPMockHelper mockResponseStatus:201];
 
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
+            AGProject *project = [[AGProject alloc] init];
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe save:project success:^(id responseObject) {
-                [responseObject shouldNotBeNil];
                 [[[AGHTTPMockHelper lastHTTPMethodCalled] should] equal:@"POST"];
                 finishedFlag = YES;
 
@@ -97,14 +104,14 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"should successfully save (PUT)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
+            [AGHTTPMockHelper mockResponseStatus:200];
 
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe save:project success:^(id responseObject) {
-                [responseObject shouldNotBeNil];
                 [[[AGHTTPMockHelper lastHTTPMethodCalled] should] equal:@"PUT"];
                 finishedFlag = YES;
             } failure:^(NSError *error) {
@@ -115,15 +122,15 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"should successfully remove (DELETE)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]];
+            [AGHTTPMockHelper mockResponseStatus:200];
 
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
-
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe remove:project success:^(id responseObject) {
-                [responseObject shouldNotBeNil];
+                [[[AGHTTPMockHelper lastHTTPMethodCalled] should] equal:@"DELETE"];
                 finishedFlag = YES;
 
             } failure:^(NSError *error) {
@@ -181,7 +188,7 @@ describe(@"AGRestAdapter", ^{
         it(@"should not accept invalid types", ^{
             [[theValue([AGRESTPipe accepts:nil]) should] equal:theValue(NO)];
             [[theValue([AGRESTPipe accepts:@"bogus"]) should] equal:theValue(NO)];
-            // REST lowecase should not be accepted
+            // REST lowercase should not be accepted
             [[theValue([AGRESTPipe accepts:@"rest"]) should] equal:theValue(NO)];
         });
     });
@@ -226,17 +233,14 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"on save (POST)", ^{
-            // here we simulate POST
-            // for iOS 5 and iOS 6 the timeout should be honoured correctly
-            // regardless of the iOS 5 bug
-
             // install the mock:
             [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]
                                     status:200
                                requestTime:2]; // two secs delay
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
+
+            AGProject *project = [[AGProject alloc] init];
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe save:project success:^(id responseObject) {
                 // nope
@@ -255,10 +259,11 @@ describe(@"AGRestAdapter", ^{
             [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]
                                     status:200
                                requestTime:2]; // two secs delay
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
 
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe save:project success:^(id responseObject) {
                 // nope
@@ -277,10 +282,10 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
-
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe remove:project success:^(id responseObject) {
                 // nope
@@ -295,7 +300,7 @@ describe(@"AGRestAdapter", ^{
         });
     });
 
-    context(@"timout should be honoured", ^{
+    context(@"timeout should be honoured", ^{
         
         __block AGRESTPipe* restPipe = nil;
         
@@ -303,7 +308,8 @@ describe(@"AGRestAdapter", ^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
             [config setName:@"projects"];
-            
+            [config setModelClass:[AGProject class]];
+
             // Note: we set the timeout(sec) to a low level so that
             // we can test the timeout methods with adjusting response delay
             [config setTimeout:1];
@@ -321,7 +327,7 @@ describe(@"AGRestAdapter", ^{
 
         it(@"on read (GET)", ^{
             // install the mock:
-            [AGHTTPMockHelper mockResponse:[PROJECTS dataUsingEncoding:NSUTF8StringEncoding]
+            [AGHTTPMockHelper mockResponse:nil
                                     status:200
                                requestTime:2]; // two secs delay
 
@@ -337,13 +343,14 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"on save (POST)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]
+            [AGHTTPMockHelper mockResponse:nil
                                     status:200
                                requestTime:2]; // two secs delay
-            NSMutableDictionary* project = [NSMutableDictionary
-                                            dictionaryWithObjectsAndKeys:@"First Project", @"title",
-                                            @"project-161-58-58", @"style", nil];
-            
+
+            AGProject *project = [[AGProject alloc] init];
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
+
             [restPipe save:project success:^(id responseObject) {
                 // nope
                 
@@ -356,14 +363,15 @@ describe(@"AGRestAdapter", ^{
         });
         
         it(@"on save (PUT)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]
+            [AGHTTPMockHelper mockResponse:nil
                                     status:200
                                requestTime:2]; // two secs delay
-            NSMutableDictionary* project = [NSMutableDictionary
-                                            dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                            @"project-161-58-58", @"style", nil];
-            
-            
+
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
+
             [restPipe save:project success:^(id responseObject) {
                 // nope
             } failure:^(NSError *error) {
@@ -375,14 +383,14 @@ describe(@"AGRestAdapter", ^{
         });
 
         it(@"on remove (DELETE)", ^{
-            [AGHTTPMockHelper mockResponse:[PROJECT dataUsingEncoding:NSUTF8StringEncoding]
+            [AGHTTPMockHelper mockResponse:nil
                                     status:200
                                requestTime:2]; // two secs delay
 
-            NSMutableDictionary* project = [NSMutableDictionary
-                    dictionaryWithObjectsAndKeys:@"1", @"id", @"First Project", @"title",
-                                                 @"project-161-58-58", @"style", nil];
-
+            AGProject *project = [[AGProject alloc] init];
+            project.recId = @1;
+            project.title = @"First Project";
+            project.style = @"project-161-58-58";
 
             [restPipe remove:project success:^(id responseObject) {
                 // nope
