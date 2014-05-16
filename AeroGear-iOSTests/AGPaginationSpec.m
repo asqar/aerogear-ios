@@ -19,14 +19,15 @@
 #import "AGRESTPipe.h"
 #import "AGHTTPMockHelper.h"
 #import "AGNSMutableArray+Paging.h"
+#import "AGTestModel.h"
 
 SPEC_BEGIN(AGPaginationSpec)
 
 describe(@"AGPagination", ^{
-    
-    NSString * const RESPONSE_FIRST = @"[{\"id\":1,\"color\":\"black\",\"brand\":\"BMW\"}]";
-    NSString * const RESPONSE_SECOND =  @"[{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
-    NSString * const RESPONSE_TWO_ITEMS = @"[{\"id\":1,\"color\":\"black\",\"brand\":\"BMW\"},{\"id\":2,\"color\":\"black\",\"brand\":\"FIAT\"}]";
+
+    NSString * const RESPONSE_TWO_ITEMS = @"[{\"recId\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\",\"tasks\":[{\"recId\":1, \"title\":\"task1\", \"descr\":\"a task\", \"dueDate\":\"2014-01-01\", \"tags\":[{\"title\":\"tag1\"}]}]},{\"id\":2,\"title\":\"Second Project\",\"style\":\"project-64-144-230\",\"tasks\":[{\"recId\":2, \"title\":\"task2\", \"descr\":\"another task\", \"dueDate\":\"2014-01-02\", \"tags\":[{\"title\":\"tag2\"}]}]}]";
+    NSString * const RESPONSE_FIRST = @"[{\"recId\":1,\"title\":\"First Project\",\"style\":\"project-161-58-58\"}]";
+    NSString * const RESPONSE_SECOND = @"[{\"recId\":2,\"title\":\"Second Project\",\"style\":\"project-119-12-11\"}]";
 
     __block id<AGPipe> pipe = nil;
     __block BOOL finishedFlag;
@@ -36,7 +37,6 @@ describe(@"AGPagination", ^{
         beforeEach(^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
-            [config setName:@"cars"];
 
             [config setPageConfig:^(id<AGPageConfig> pageConfig) {
                 [pageConfig setNextIdentifier:@"AG-Links-Next"];
@@ -44,7 +44,7 @@ describe(@"AGPagination", ^{
                 [pageConfig setMetadataLocation:@"header"];
             }];
 
-            pipe = [AGRESTPipe pipeWithConfig:config];
+            pipe = [AGRESTPipe pipe:[Project class] config:config];
         });
 
         afterEach(^{
@@ -62,17 +62,17 @@ describe(@"AGPagination", ^{
         it(@"should move to the next page", ^{
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
-                                   headers:@{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                   headers:@{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1"}];
 
             __block NSMutableArray *pagedResultSet;
 
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
+            [pipe readWithParams:@{@"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
                 pagedResultSet = responseObject;  // page 1
 
-                // hold the "id" from the first page, so that
+                // hold the "project" from the first page, so that
                 // we can match with the result when we move
                 // to the next page down in the test.
-                NSString *car_id = [responseObject[0][@"id"] stringValue];
+                Project *firstProject = responseObject[0];
 
                 // set the mocked response for the second page
                 [AGHTTPMockHelper mockResponse:[RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding]];
@@ -80,9 +80,9 @@ describe(@"AGPagination", ^{
                 // move to the next page
                 [pagedResultSet next:^(id responseObject) {
 
-                    NSString *id = [responseObject[0][@"id"] stringValue];
+                    Project *secondProject = responseObject[0];
 
-                    [[car_id shouldNot] equal:id];
+                    [[firstProject.recId shouldNot] equal:secondProject.recId];
                     finishedFlag = YES;
 
                 } failure:^(NSError *error) {
@@ -98,12 +98,12 @@ describe(@"AGPagination", ^{
         it(@"should NOT move back from the first page", ^{
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
-                                   headers:@{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                   headers:@{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1"}];
 
             __block NSMutableArray *pagedResultSet;
 
             // fetch the first page
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
+            [pipe readWithParams:@{@"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
                 pagedResultSet = responseObject;  // page 1
 
                 // simulate "Bad Request" as in the case of AGController
@@ -137,38 +137,39 @@ describe(@"AGPagination", ^{
         it(@"should move to the next page and then back", ^{
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
-                                   headers:@{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                   headers:@{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1"}];
 
             __block NSMutableArray *pagedResultSet;
 
             // fetch the first page
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : @1}
+            [pipe readWithParams:@{@"offset" : @"0", @"limit" : @1}
                     success:^(id responseObject) {
                         pagedResultSet = responseObject;  // page 1
 
                         // hold the "car id" from the first page, so that
                         // we can match with the result when we move
                         // to the next page down in the test.
-                        NSString *car_id = [responseObject[0][@"id"] stringValue];
+                        Project *firstProject = responseObject[0];
 
                         [AGHTTPMockHelper mockResponse:[RESPONSE_SECOND dataUsingEncoding:NSUTF8StringEncoding]
                                                headers:
-                                                       @{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=2&limit=1",
-                                                               @"AG-Links-Previous" : @"http://server.com/context?color=black&offset=0&limit=1"}];
+                                                       @{@"AG-Links-Next" : @"http://server.com/context/project?offset=2&limit=1",
+                                                               @"AG-Links-Previous" : @"http://server.com/context/project?offset=0&limit=1"}];
 
                         // move to the second page
                         [pagedResultSet next:^(id responseObject) {
 
                             // set the mocked response for the first page again
                             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
-                                                   headers:@{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                                   headers:@{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1"}];
 
                             // move backwards (aka. page 1)
                             [pagedResultSet previous:^(id responseObject) {
 
-                                NSString *id = [responseObject[0][@"id"] stringValue];
+                                Project *project = responseObject[0];
 
-                                [[car_id should] equal:id];
+                                // should match
+                                [[firstProject.recId should] equal:project.recId];
                                 finishedFlag = YES;
 
                             } failure:^(NSError *error) {
@@ -188,18 +189,18 @@ describe(@"AGPagination", ^{
             // the default parameter provider
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
-            [config setName:@"cars"];
+
             [config setPageConfig:^(id<AGPageConfig> pageConfig) {
                 [pageConfig setNextIdentifier:@"AG-Links-Next"];
                 [pageConfig setPreviousIdentifier:@"AG-Links-Previous"];
-                [pageConfig setParameterProvider:@{@"color" : @"black", @"offset" : @"0", @"limit" : @1}];
+                [pageConfig setParameterProvider:@{@"offset" : @"0", @"limit" : @1}];
                 [pageConfig setMetadataLocation:@"header"];
             }];
 
-            pipe = [AGRESTPipe pipeWithConfig:config];
+            pipe = [AGRESTPipe pipe:[Project class] config:config];
 
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
-                                   headers:@{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                   headers:@{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1"}];
 
             [pipe readWithParams:nil success:^(id responseObject) {
 
@@ -209,7 +210,7 @@ describe(@"AGPagination", ^{
                 [AGHTTPMockHelper mockResponse:[RESPONSE_TWO_ITEMS dataUsingEncoding:NSUTF8StringEncoding]];
 
                 // override the results per page from parameter provider
-                [pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : @2} success:^(id responseObject) {
+                [pipe readWithParams:@{@"offset" : @"0", @"limit" : @2} success:^(id responseObject) {
 
                     [[responseObject should] haveCountOf:2];
 
@@ -228,7 +229,7 @@ describe(@"AGPagination", ^{
         it(@"should fail to move to the next page if 'next identifier' is bogus", ^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
-            [config setName:@"cars"];
+
             [config setPageConfig:^(id<AGPageConfig> pageConfig) {
                 [pageConfig setMetadataLocation:@"header"];
                 // wrong setting:
@@ -236,17 +237,17 @@ describe(@"AGPagination", ^{
 
             }];
 
-            pipe = [AGRESTPipe pipeWithConfig:config];
+            pipe = [AGRESTPipe pipe:[Project class] config:config];
 
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
                                    headers:
-                                           @{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=1&limit=1",
-                                                   @"AG-Links-Previous" : @"http://server.com/context?color=black&offset=0&limit=1"}];
+                                           @{@"AG-Links-Next" : @"http://server.com/context/project?offset=1&limit=1",
+                                                   @"AG-Links-Previous" : @"http://server.com/context/project?offset=0&limit=1"}];
 
             __block NSMutableArray *pagedResultSet;
 
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
+            [pipe readWithParams:@{@"offset" : @"0", @"limit" : @1} success:^(id responseObject) {
 
                 pagedResultSet = responseObject;
 
@@ -272,24 +273,24 @@ describe(@"AGPagination", ^{
         it(@"should fail to move to the previous page if 'previous identifier' is bogus", ^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
-            [config setName:@"cars"];
+
             [config setPageConfig:^(id<AGPageConfig> pageConfig) {
                 [pageConfig setMetadataLocation:@"header"];
                 // wrong setting:
                 [pageConfig setPreviousIdentifier:@"foo"];
             }];
 
-            pipe = [AGRESTPipe pipeWithConfig:config];
+            pipe = [AGRESTPipe pipe:[Project class] config:config];
 
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
                                    headers:
-                                           @{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=3&limit=1",
-                                                   @"AG-Links-Previous" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                           @{@"AG-Links-Next" : @"http://server.com/context/project?offset=3&limit=1",
+                                                   @"AG-Links-Previous" : @"http://server.com/context/project?offset=1&limit=1"}];
 
             __block NSMutableArray *pagedResultSet;
 
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"2", @"limit" : @1} success:^(id responseObject) {
+            [pipe readWithParams:@{@"offset" : @"2", @"limit" : @1} success:^(id responseObject) {
 
                 pagedResultSet = responseObject;
 
@@ -315,23 +316,22 @@ describe(@"AGPagination", ^{
         it(@"should fail to move to the previous page if 'previous identifier' is bogus", ^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com/context/"]];
-            [config setName:@"cars"];
             [config setPageConfig:^(id<AGPageConfig> pageConfig) {
                 // wrong setting:
                 [pageConfig setMetadataLocation:@"body"];
             }];
 
-            pipe = [AGRESTPipe pipeWithConfig:config];
+            pipe = [AGRESTPipe pipe:[Project class] config:config];
 
             __block NSMutableArray *pagedResultSet;
 
             // set the mocked response for the first page
             [AGHTTPMockHelper mockResponse:[RESPONSE_FIRST dataUsingEncoding:NSUTF8StringEncoding]
                                    headers:
-                                           @{@"AG-Links-Next" : @"http://server.com/context?color=black&offset=3&limit=1",
-                                                   @"AG-Links-Previous" : @"http://server.com/context?color=black&offset=1&limit=1"}];
+                                           @{@"AG-Links-Next" : @"http://server.com/context/project?offset=3&limit=1",
+                                                   @"AG-Links-Previous" : @"http://server.com/context/project?offset=1&limit=1"}];
 
-            [pipe readWithParams:@{@"color" : @"black", @"offset" : @"2", @"limit" : @1} success:^(id responseObject) {
+            [pipe readWithParams:@{@"offset" : @"2", @"limit" : @1} success:^(id responseObject) {
 
                 pagedResultSet = responseObject;
 

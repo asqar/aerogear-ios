@@ -38,10 +38,8 @@ describe(@"AGRestAdapter", ^{
         beforeEach(^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
-            [config setName:@"projects"];
-            [config setModelClass:[AGProject class]];
 
-            restPipe = [AGRESTPipe pipeWithConfig:config];
+            restPipe = [AGRESTPipe pipe:[Project class] config:config];
         });
 
         afterEach(^{
@@ -57,7 +55,7 @@ describe(@"AGRestAdapter", ^{
         });
         
         it(@"should have an expected url", ^{
-            [[restPipe.URL should] equal:[NSURL URLWithString:@"http://server.com/projects"]];
+            [[restPipe.URL should] equal:[NSURL URLWithString:@"http://server.com/project"]];
         });
 
         it(@"should have an expected type", ^{
@@ -74,7 +72,7 @@ describe(@"AGRestAdapter", ^{
                 // should have correct size
                 [[theValue([responseObject count]) should] equal:theValue(2)];
                 // should have correctly deserialized
-                [[responseObject[0] should] beKindOfClass:[AGProject class]];
+                [[responseObject[0] should] beKindOfClass:[Project class]];
 
                 finishedFlag = YES;
 
@@ -88,7 +86,7 @@ describe(@"AGRestAdapter", ^{
         it(@"should successfully save (POST)", ^{
             [AGHTTPMockHelper mockResponseStatus:201];
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.title = @"First Project";
             project.style = @"project-161-58-58";
 
@@ -106,7 +104,7 @@ describe(@"AGRestAdapter", ^{
         it(@"should successfully save (PUT)", ^{
             [AGHTTPMockHelper mockResponseStatus:200];
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -124,7 +122,7 @@ describe(@"AGRestAdapter", ^{
         it(@"should successfully remove (DELETE)", ^{
             [AGHTTPMockHelper mockResponseStatus:200];
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -200,9 +198,8 @@ describe(@"AGRestAdapter", ^{
         beforeEach(^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
-            [config setName:@"projects"];
 
-            restPipe = [AGRESTPipe pipeWithConfig:config];
+            restPipe = [AGRESTPipe pipe:[Project class] config:config];
         });
 
         afterEach(^{
@@ -238,7 +235,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.title = @"First Project";
             project.style = @"project-161-58-58";
 
@@ -260,7 +257,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -282,7 +279,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -307,14 +304,12 @@ describe(@"AGRestAdapter", ^{
         beforeEach(^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
-            [config setName:@"projects"];
-            [config setModelClass:[AGProject class]];
 
             // Note: we set the timeout(sec) to a low level so that
             // we can test the timeout methods with adjusting response delay
             [config setTimeout:1];
             
-            restPipe = [AGRESTPipe pipeWithConfig:config];
+            restPipe = [AGRESTPipe pipe:[Project class] config:config];
         });
         
         afterEach(^{
@@ -347,7 +342,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.title = @"First Project";
             project.style = @"project-161-58-58";
 
@@ -367,7 +362,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -387,7 +382,7 @@ describe(@"AGRestAdapter", ^{
                                     status:200
                                requestTime:2]; // two secs delay
 
-            AGProject *project = [[AGProject alloc] init];
+            Project *project = [[Project alloc] init];
             project.recId = @1;
             project.title = @"First Project";
             project.style = @"project-161-58-58";
@@ -410,9 +405,8 @@ describe(@"AGRestAdapter", ^{
         beforeEach(^{
             AGPipeConfiguration* config = [[AGPipeConfiguration alloc] init];
             [config setBaseURL:[NSURL URLWithString:@"http://server.com"]];
-            [config setName:@"projects"];
-            
-            restPipe = [AGRESTPipe pipeWithConfig:config];
+
+            restPipe = [AGRESTPipe pipe:[Project class] config:config];
         });
         
         afterEach(^{

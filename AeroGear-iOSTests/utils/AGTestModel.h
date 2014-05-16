@@ -18,7 +18,7 @@
 #import <Foundation/Foundation.h>
 #import <Mantle/Mantle.h>
 
-@interface AGProject : MTLModel <MTLJSONSerializing>
+@interface Project : MTLModel <MTLJSONSerializing>
 
 @property (strong, nonatomic) NSNumber *recId;
 @property (copy, nonatomic) NSString *title;
@@ -28,7 +28,7 @@
 
 @end
 
-@interface AGTask : MTLModel <MTLJSONSerializing>
+@interface Task : MTLModel <MTLJSONSerializing>
 
 @property(strong, nonatomic) NSNumber *recId;
 @property(copy, nonatomic) NSString *title;
@@ -39,7 +39,7 @@
 
 @end
 
-@interface AGTag : MTLModel <MTLJSONSerializing>
+@interface Tag : MTLModel <MTLJSONSerializing>
 
 @property(copy, nonatomic) NSString *title;
 

@@ -39,7 +39,7 @@ describe(@"AGPipeConfig.h", ^{
         
         it(@"should have defaults", ^{
             [[config.type should] equal:@"REST"];
-            [[config.recordId should] equal:@"id"];
+            [[config.recordId should] equal:@"recId"];
             [[theValue(config.timeout) should] equal:theValue(60)];
         });
 

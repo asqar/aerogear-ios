@@ -19,29 +19,29 @@
 
 #import "AGTestModel.h"
 
-@implementation AGProject
+@implementation Project
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{};
 }
 
 + (NSValueTransformer *)tasksJSONTransformer {
-    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[AGTask class]];
+    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[Task class]];
 }
 @end
 
-@implementation AGTask
+@implementation Task
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{};
 }
 
 + (NSValueTransformer *)tagsJSONTransformer {
-    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[AGTag class]];
+    return [NSValueTransformer mtl_JSONArrayTransformerWithModelClass:[Tag class]];
 }
 @end
 
-@implementation AGTag
+@implementation Tag
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{};

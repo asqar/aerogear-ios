@@ -17,8 +17,7 @@
 
 #import <Kiwi/Kiwi.h>
 #import "AGPipeline.h"
-#import "AGPipe.h"
-#import "AGAuthenticator.h"
+#import "AGTestModel.h"
 
 SPEC_BEGIN(AGPipelineSpec)
 
@@ -35,45 +34,52 @@ describe(@"AGPipeline", ^{
             [pipeline shouldNotBeNil];
         });
 
-        it(@"AGPipe should have an expected URL", ^{
+        it(@"AGPipe should have an expected URL with a class given", ^{
 
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
-            }];
+            [pipeline pipe:[Project class]];
 
-            id<AGPipe> pipe =  [pipeline pipeWithName:@"tests"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
             [pipe.URL shouldNotBeNil];
             // does it match ?
-            [[pipe.URL should] equal:[NSURL URLWithString:@"http://server.com/tests"]];
+            [[pipe.URL should] equal:[NSURL URLWithString:@"http://server.com/project"]];
+        });
+
+        it(@"AGPipe should have an expected URL with a class given and name override", ^{
+
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
+                [config setName:@"foo"];
+            }];
+
+            id<AGPipe> pipe = [pipeline pipeWithName:@"foo"];
+            [pipe.URL shouldNotBeNil];
+            // does it match ?
+            [[pipe.URL should] equal:[NSURL URLWithString:@"http://server.com/foo"]];
         });
 
         it(@"AGPipe should have a default type", ^{
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
-            }];
+            [pipeline pipe:[Project class]];
 
-            id<AGPipe> pipe = [pipeline pipeWithName:@"tests"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
 
             [(id)pipe shouldNotBeNil];
             [[pipe.type should] equal:@"REST"];
         });
 
         it(@"AGPipeline should allow add of an AGPipe object with valid type", ^{
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setType:@"REST"];
             }];
 
-            id<AGPipe> pipe = [pipeline pipeWithName:@"tests"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
 
             [(id)pipe shouldNotBeNil];
             [[pipe.type should] equal:@"REST"];
         });
 
         it(@"AGPipeline should _not_ allow add of an AGPipe object with invalid type", ^{
-            pipeline = [AGPipeline pipeline];
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
+            pipeline = [AGPipeline pipelineWithBaseURL:[NSURL URLWithString:@"http://server.com/"]];
+
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setType:@"BOGUS"];
             }];
 
@@ -83,99 +89,86 @@ describe(@"AGPipeline", ^{
 
         it(@"AGPipeline should allow add of an AGPipe object with a different baseURL", ^{
 
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tasks"];
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:[NSURL URLWithString:@"http://blah.com/context"]];
             }];
 
-            id<AGPipe> pipe = [pipeline pipeWithName:@"tasks"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
             [pipe.URL shouldNotBeNil];
-            [[pipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/context/tasks"]];
+            [[pipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/context/project"]];
         });
 
         it(@"AGPipeline should allow add of an AGPipe object with a different endpoint", ^{
 
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tasks"];
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setEndpoint:@"myTasks"];
             }];
 
-            id<AGPipe> pipe = [pipeline pipeWithName:@"tasks"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
             [pipe.URL shouldNotBeNil];
             [[pipe.URL should] equal:[NSURL URLWithString:@"http://server.com/myTasks"]];
         });
 
         it(@"AGPipeline should allow add of an AGPipe object with a different baseURL and an endpoint", ^{
 
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tasks"];
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:[NSURL URLWithString:@"http://blah.com/context"]];
                 [config setEndpoint:@"myTasks"];
             }];
 
-            id<AGPipe> pipe = [pipeline pipeWithName:@"tasks"];
+            id<AGPipe> pipe = [pipeline pipeWithName:@"project"];
             [pipe.URL shouldNotBeNil];
             [[pipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/context/myTasks"]];
         });
 
         it(@"AGPipeline should allow to add multiple AGPipe objects with different baseURLs and replace previous ones", ^{
             // vanilla
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tasks"];
-            }];
+            [pipeline pipe:[Task class] config:nil];
 
-            id<AGPipe> newPipe = [pipeline pipeWithName:@"tasks"];
+            id<AGPipe> newPipe = [pipeline pipeWithName:@"task"];
             [newPipe.URL shouldNotBeNil];
-            [[newPipe.URL should] equal:[NSURL URLWithString:@"http://server.com/tasks"]];
+            [[newPipe.URL should] equal:[NSURL URLWithString:@"http://server.com/task"]];
 
             // new pipe, with different baseURL:
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"projects"];
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:[NSURL URLWithString:@"http://blah.com/context"]];
             }];
 
-            id<AGPipe> otherPipe = [pipeline pipeWithName:@"projects"];
+            id<AGPipe> otherPipe = [pipeline pipeWithName:@"project"];
             [otherPipe.URL shouldNotBeNil];
-            [[otherPipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/context/projects"]];
+            [[otherPipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/context/project"]];
 
             // yet another new pipe, but replace the 'tasks' pipe (even it has a different URL):
             NSURL* secondBaseURL = [NSURL URLWithString:@"http://blah.com/somecontext"];
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tasks"];
+            [pipeline pipe:[Task class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:secondBaseURL];
-                [config setEndpoint:@"tags"];
+                [config setEndpoint:@"foo"];
             }];
 
-            id<AGPipe> newestPipe = [pipeline pipeWithName:@"tasks"];
+            id<AGPipe> newestPipe = [pipeline pipeWithName:@"task"];
             [newestPipe.URL shouldNotBeNil];
-            [[newestPipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/somecontext/tags"]];
+            [[newestPipe.URL should] equal:[NSURL URLWithString:@"http://blah.com/somecontext/foo"]];
         });
 
         it(@"should be able to add and remove an AGPipe", ^{
-            pipeline = [AGPipeline pipeline];
-
-            // add 'tasks' pipe
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
+            // add 'project' pipe
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:[NSURL URLWithString:@"http://blah.com/context"]];
             }];
 
             id<AGPipe> pipe;
 
-            pipe = [pipeline pipeWithName:@"tests"];
+            pipe = [pipeline pipeWithName:@"project"];
             [(id)pipe shouldNotBeNil];
 
-            [pipeline remove:@"tests"];
-            pipe = [pipeline pipeWithName:@"tests"];
+            [pipeline remove:@"project"];
+            pipe = [pipeline pipeWithName:@"project"];
             [(id)pipe shouldBeNil];
         });
 
         it(@"should not remove a non existing AGPipe", ^{
-            pipeline = [AGPipeline pipeline];
-
-            // add 'tasks' pipe
-            [pipeline pipe:^(id<AGPipeConfig> config) {
-                [config setName:@"tests"];
+            // add 'project' pipe
+            [pipeline pipe:[Project class] config:^(id<AGPipeConfig> config) {
                 [config setBaseURL:[NSURL URLWithString:@"http://blah.com/context"]];
             }];
 
@@ -186,7 +179,7 @@ describe(@"AGPipeline", ^{
             [(id) pipe shouldBeNil];
 
             // should contain the first pipe
-            pipe = [pipeline pipeWithName:@"tests"];
+            pipe = [pipeline pipeWithName:@"project"];
             [(id)pipe shouldNotBeNil];
         });
     });
