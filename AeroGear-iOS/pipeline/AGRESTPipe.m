@@ -37,14 +37,15 @@
 
 @synthesize type = _type;
 @synthesize URL = _URL;
+@synthesize modelClass = _modelClass;
 
 #pragma mark - 'factory' and 'init' section
 
-+(instancetype) pipeWithConfig:(id<AGPipeConfig>) pipeConfig {
-    return [[[self class] alloc] initWithConfig:pipeConfig];
++(instancetype) pipe:(Class)class config:(id<AGPipeConfig>)pipeConfig {
+    return [[[self class] alloc] init:class config:pipeConfig];
 }
 
--(instancetype) initWithConfig:(id<AGPipeConfig>) pipeConfig {
+-(instancetype) init:(Class)class config:(id<AGPipeConfig>)pipeConfig {
     self = [super init];
     if (self) {
         _type = @"REST";
@@ -53,12 +54,20 @@
         AGPipeConfiguration *_config = (AGPipeConfiguration*) pipeConfig;
         
         NSURL* baseURL = _config.baseURL;
+
+        // if no 'name' is specified user the class name instead
+        if (!_config.name) {
+            [pipeConfig setName:([NSStringFromClass(class) lowercaseString])];
+        }
+
         NSString* endpoint = _config.endpoint;
+
         // append the endpoint/name and use it as the final URL
         NSURL* finalURL = [self appendEndpoint:endpoint toURL:baseURL];
         
         _URL = finalURL;
         _recordId = _config.recordId;
+        _modelClass = class;
 
         _restClient = [AGHttpClient clientFor:finalURL sessionConfiguration:_config.sessionConfiguration];
 
@@ -75,7 +84,7 @@
         _restClient.requestSerializer = requestSerializer;
 
         // apply response serializer
-        AGModelResponseSerializer *responseSerializer = [AGModelResponseSerializer serializerForModelClass:_config.modelClass];
+        AGModelResponseSerializer *responseSerializer = [AGModelResponseSerializer serializerForModelClass:_modelClass];
         _restClient.responseSerializer = responseSerializer;
 
         // if NSURLCredential object is set on the config

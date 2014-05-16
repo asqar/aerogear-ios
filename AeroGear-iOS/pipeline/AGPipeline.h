@@ -53,20 +53,6 @@
 -(instancetype) initWithBaseURL:(NSURL*) baseURL;
 
 /**
- * An initializer method to instantiate an empty AGPipeline.
- *
- * @return the AGPipeline object.
- */
--(instancetype) init;
-
-/**
- * A factory method to instantiate an empty AGPipeline.
- *
- * @return the AGPipeline object.
- */
-+(instancetype) pipeline;
-
-/**
  * A factory method to instantiate an empty AGPipeline.
  *
  * @param baseURL the URL of the server.
@@ -86,14 +72,26 @@
 +(instancetype) pipelineWithBaseURL:(NSURL*) baseURL sessionConfiguration:(NSURLSessionConfiguration *)configuration;
 
 /**
- * Adds a new AGPipe object, based on the given configuration object.
+ * Adds a new AGPipe object based on the given model class.
+ * The pipe will be initialized with a default pipe configuration.
  *
+ * @param class The class which travels on this pipe
+ *
+ * @return the newly created AGPipe object.
+ */
+-(id<AGPipe>) pipe:(Class)class;
+
+/**
+ * Adds a new AGPipe object, based on the given configuration object and model class.
+ *
+ * @param class The class which travels on this pipe
  * @param config A block object which passes in an implementation of the AGPipeConfig protocol that is used to configure
  * the AGPipe object.
  *
  * @return the newly created AGPipe object.
  */
--(id<AGPipe>) pipe:(void (^)(id<AGPipeConfig> config)) config;
+
+-(id<AGPipe>) pipe:(Class)class config:(void (^)(id<AGPipeConfig> config)) config;
 
 /**
  * Removes a pipe from the AGPipeline object.

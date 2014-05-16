@@ -212,6 +212,11 @@ Of course the _collection_ behind the responseObject can be stored to a variable
 @property (nonatomic, readonly) NSURL* URL;
 
 /**
+ * The class which travels on this pipe
+ */
+@property (nonatomic, readonly) Class modelClass;
+
+/**
  * Reads all the data from the underlying server connection.
  *
  * @param success A block object to be executed when the request operation finishes successfully.

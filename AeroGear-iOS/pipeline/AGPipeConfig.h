@@ -42,11 +42,6 @@
 @property (copy, nonatomic) NSString* endpoint;
 
 /**
- * The class which travels on this pipe
- */
-@property (strong, nonatomic) Class modelClass;
-
-/**
  * The recordId to the configuration.
  */
 @property (copy, nonatomic) NSString* recordId;

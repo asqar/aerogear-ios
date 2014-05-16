@@ -22,7 +22,6 @@
 @synthesize baseURL = _baseURL;
 @synthesize sessionConfiguration = _sessionConfiguration;
 @synthesize endpoint = _endpoint;
-@synthesize modelClass = _modelClass;
 @synthesize recordId = _recordId;
 @synthesize authModule = _authModule;
 @synthesize authzModule = _authzModule;
@@ -46,16 +45,6 @@
 // custom getter to return name if no endpoint is specified.
 -(NSString*) endpoint {
     return (_endpoint == nil? _name: _endpoint);
-}
-
-// custom setter to override name based on class name
-- (void)setModelClass:(Class)modelClass {
-    _modelClass = modelClass;
-
-    // if name not set, use default class name
-    if (!_name)
-        _name = [NSStringFromClass(modelClass) lowercaseString];
-
 }
 
 @end

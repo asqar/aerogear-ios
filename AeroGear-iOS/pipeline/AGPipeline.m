@@ -31,10 +31,6 @@
 }
 @synthesize pipes = _pipes;
 
-- (instancetype)init {
-   return [self initWithBaseURL:nil];
-}
-
 - (instancetype)initWithBaseURL:(NSURL *)baseURL {
     return [self initWithBaseURL:baseURL sessionConfiguration:nil];
 }
@@ -55,10 +51,6 @@
     return self;
 }
 
-+(instancetype)pipeline {
-    return [[[self class] alloc] init];
-}
-
 +(instancetype)pipelineWithBaseURL:(NSURL*) baseURL; {
     return [[[self class] alloc] initWithBaseURL:baseURL];
 }
@@ -67,23 +59,27 @@
     return [[[self class] alloc] initWithBaseURL:baseURL sessionConfiguration:configuration];
 }
 
--(id<AGPipe>) pipe:(void (^)(id<AGPipeConfig> config)) config {
+-(id<AGPipe>) pipe:(Class)class {
+    return [self pipe:class config:nil];
+}
+
+-(id<AGPipe>) pipe:(Class)class config:(void (^)(id<AGPipeConfig> config)) config {
     AGPipeConfiguration* pipeConfig = [[AGPipeConfiguration alloc] init];
 
     // applying the defaults:
     [pipeConfig setBaseURL:_baseURL];
     [pipeConfig setSessionConfiguration:_sessionConfiguration];
 
+    // apply user defined settings
     if (config) {
         config(pipeConfig);
     }
-    
-    // TODO check ALL supported types...
+
     if (! [pipeConfig.type isEqualToString:@"REST"]) {
         return nil;
     }
 
-    id<AGPipe> pipe = [AGRESTPipe pipeWithConfig:pipeConfig];
+    id<AGPipe> pipe = [AGRESTPipe pipe:class config:pipeConfig];
     [_pipes setValue:pipe forKey:[pipeConfig name]];
     
     return pipe;
@@ -96,7 +92,7 @@
     return pipe;
 }
 
--(id<AGPipe>) pipeWithName:(NSString*) name {
+-(id<AGPipe>)pipeWithName:(NSString*) name {
     return [_pipes valueForKey:name];
 }
 
