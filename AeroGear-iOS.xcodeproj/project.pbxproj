@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		08D43362329A46488E585071 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D1DA06FAB24A18AB6A5963 /* libPods.a */; };
+		137AE3F91B6BABBE00748428 /* CSAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */; };
+		137AE3FA1B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */; };
+		137AE3FB1B6BABBE00748428 /* CSAFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */; };
+		137AE3FC1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */; };
+		137AE3FD1B6BABBE00748428 /* CSAFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */; };
+		137AE3FE1B6BABBE00748428 /* CSAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */; };
+		137AE3FF1B6BABBE00748428 /* CSAFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */; };
+		137AE4001B6BABBE00748428 /* CSAFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */; };
+		137AE4011B6BABBE00748428 /* CSAFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */; };
 		1D0A1358119648AFB949959A /* libPods-AeroGear-iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E065C8DDD305422BBB3237D5 /* libPods-AeroGear-iOSTests.a */; };
 		38EAB6DDCEDC350EEEB294DF /* AGRestAuthzModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 38EAB8B515B16A800D9ACAC2 /* AGRestAuthzModule.m */; };
 		38EAB9B564447C63EDA4F3BD /* AGAuthzConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 38EABA4C6581856F7241CB57 /* AGAuthzConfiguration.m */; };
@@ -135,6 +144,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		137AE3E61B6BABBE00748428 /* CSAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		137AE3E81B6BABBE00748428 /* CSAFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		137AE3EA1B6BABBE00748428 /* CSAFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPSessionManager.h; sourceTree = "<group>"; };
+		137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPSessionManager.m; sourceTree = "<group>"; };
+		137AE3EC1B6BABBE00748428 /* CSAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworking.h; sourceTree = "<group>"; };
+		137AE3ED1B6BABBE00748428 /* CSAFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		137AE3EF1B6BABBE00748428 /* CSAFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFSecurityPolicy.h; sourceTree = "<group>"; };
+		137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFSecurityPolicy.m; sourceTree = "<group>"; };
+		137AE3F11B6BABBE00748428 /* CSAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLConnectionOperation.h; sourceTree = "<group>"; };
+		137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLConnectionOperation.m; sourceTree = "<group>"; };
+		137AE3F31B6BABBE00748428 /* CSAFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLRequestSerialization.h; sourceTree = "<group>"; };
+		137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLRequestSerialization.m; sourceTree = "<group>"; };
+		137AE3F51B6BABBE00748428 /* CSAFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLResponseSerialization.h; sourceTree = "<group>"; };
+		137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLResponseSerialization.m; sourceTree = "<group>"; };
+		137AE3F71B6BABBE00748428 /* CSAFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLSessionManager.h; sourceTree = "<group>"; };
+		137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLSessionManager.m; sourceTree = "<group>"; };
 		38EAB0A7B277164A8D63F747 /* AGAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthorizer.h; sourceTree = "<group>"; };
 		38EAB406473CD49D16965D21 /* AGAuthzModuleAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthzModuleAdapter.h; sourceTree = "<group>"; };
 		38EAB5ADD30E415FE3231321 /* AGAuthzConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthzConfig.h; sourceTree = "<group>"; };
@@ -210,7 +238,9 @@
 		57ED144C160B490F00881924 /* AGDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGDataManager.h; path = datamanager/AGDataManager.h; sourceTree = "<group>"; };
 		57ED144D160B490F00881924 /* AGDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGDataManager.m; path = datamanager/AGDataManager.m; sourceTree = "<group>"; };
 		57ED1453160B566200881924 /* AGStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGStore.h; path = datamanager/AGStore.h; sourceTree = "<group>"; };
+		635AE83A2463B160B33D63B1 /* Pods.codecoverage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.codecoverage.xcconfig; path = "Pods/Target Support Files/Pods/Pods.codecoverage.xcconfig"; sourceTree = "<group>"; };
 		65D1DA06FAB24A18AB6A5963 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		67434AC979C6B44E89C73792 /* Pods-AeroGear-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AeroGear-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AeroGear-iOSTests/Pods-AeroGear-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		6F14F18A170EDA02001E14BA /* AGPageBodyExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPageBodyExtractor.h; path = pipeline/paging/AGPageBodyExtractor.h; sourceTree = "<group>"; };
 		6F14F18B170EDA02001E14BA /* AGPageBodyExtractor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AGPageBodyExtractor.m; path = pipeline/paging/AGPageBodyExtractor.m; sourceTree = "<group>"; };
 		6F14F18C170EDA02001E14BA /* AGPageHeaderExtractor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGPageHeaderExtractor.h; path = pipeline/paging/AGPageHeaderExtractor.h; sourceTree = "<group>"; };
@@ -266,9 +296,11 @@
 		A0A37AD216AE905F00979868 /* AGPipeConfigSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AGPipeConfigSpec.m; sourceTree = "<group>"; };
 		A0A37AD816AEAEDE00979868 /* AGNSMutableArray+Paging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "AGNSMutableArray+Paging.h"; path = "pipeline/AGNSMutableArray+Paging.h"; sourceTree = "<group>"; };
 		A0A37AD916AEAEDE00979868 /* AGNSMutableArray+Paging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "AGNSMutableArray+Paging.m"; path = "pipeline/AGNSMutableArray+Paging.m"; sourceTree = "<group>"; };
-		B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
-		D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AeroGear-iOSTests.xcconfig"; path = "Pods/Pods-AeroGear-iOSTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		C1A574BD0AD4911D34056C36 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		C8C83F45802B19B09288E934 /* Pods-AeroGear-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AeroGear-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AeroGear-iOSTests/Pods-AeroGear-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		E065C8DDD305422BBB3237D5 /* libPods-AeroGear-iOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AeroGear-iOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9A667B2D51078E7F09075C6 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F9B2D0E26FBA1B0FF4BE583F /* Pods-AeroGear-iOSTests.codecoverage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AeroGear-iOSTests.codecoverage.xcconfig"; path = "Pods/Target Support Files/Pods-AeroGear-iOSTests/Pods-AeroGear-iOSTests.codecoverage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -305,6 +337,45 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		137AE3E51B6BABBE00748428 /* AFNetworking */ = {
+			isa = PBXGroup;
+			children = (
+				137AE3E61B6BABBE00748428 /* CSAFHTTPRequestOperation.h */,
+				137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */,
+				137AE3E81B6BABBE00748428 /* CSAFHTTPRequestOperationManager.h */,
+				137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */,
+				137AE3EA1B6BABBE00748428 /* CSAFHTTPSessionManager.h */,
+				137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */,
+				137AE3EC1B6BABBE00748428 /* CSAFNetworking.h */,
+				137AE3ED1B6BABBE00748428 /* CSAFNetworkReachabilityManager.h */,
+				137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */,
+				137AE3EF1B6BABBE00748428 /* CSAFSecurityPolicy.h */,
+				137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */,
+				137AE3F11B6BABBE00748428 /* CSAFURLConnectionOperation.h */,
+				137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */,
+				137AE3F31B6BABBE00748428 /* CSAFURLRequestSerialization.h */,
+				137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */,
+				137AE3F51B6BABBE00748428 /* CSAFURLResponseSerialization.h */,
+				137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */,
+				137AE3F71B6BABBE00748428 /* CSAFURLSessionManager.h */,
+				137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */,
+			);
+			path = AFNetworking;
+			sourceTree = "<group>";
+		};
+		350060592D9CC296AD2A31EC /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C1A574BD0AD4911D34056C36 /* Pods.debug.xcconfig */,
+				635AE83A2463B160B33D63B1 /* Pods.codecoverage.xcconfig */,
+				E9A667B2D51078E7F09075C6 /* Pods.release.xcconfig */,
+				C8C83F45802B19B09288E934 /* Pods-AeroGear-iOSTests.debug.xcconfig */,
+				F9B2D0E26FBA1B0FF4BE583F /* Pods-AeroGear-iOSTests.codecoverage.xcconfig */,
+				67434AC979C6B44E89C73792 /* Pods-AeroGear-iOSTests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		38EAB91D6CFFEDC2CAD696A4 /* Authorizer */ = {
 			isa = PBXGroup;
 			children = (
@@ -390,12 +461,12 @@
 		57737FCE15E3D01D006B97BB = {
 			isa = PBXGroup;
 			children = (
+				137AE3E51B6BABBE00748428 /* AFNetworking */,
 				57737FDE15E3D01D006B97BB /* AeroGear-iOS */,
 				57737FF315E3D01D006B97BB /* AeroGear-iOSTests */,
 				57737FDB15E3D01D006B97BB /* Frameworks */,
 				57737FDA15E3D01D006B97BB /* Products */,
-				B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */,
-				D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */,
+				350060592D9CC296AD2A31EC /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -665,7 +736,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-AeroGear-iOSTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AeroGear-iOSTests/Pods-AeroGear-iOSTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AB043696C28242AAB34681EC /* Copy Pods Resources */ = {
@@ -680,7 +751,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -695,9 +766,12 @@
 				57DCDB8415F20E4800289EA4 /* AGBaseAdapter.m in Sources */,
 				57ED144E160B490F00881924 /* AGDataManager.m in Sources */,
 				6F393F081834100B00FFB44D /* AGEncryptedMemoryStorage.m in Sources */,
+				137AE3FE1B6BABBE00748428 /* CSAFURLConnectionOperation.m in Sources */,
 				571DBACB1610715800A0A3A6 /* AGMemoryStorage.m in Sources */,
 				571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */,
 				573B709D161DA2AE009F0452 /* AGAuthenticator.m in Sources */,
+				137AE4001B6BABBE00748428 /* CSAFURLResponseSerialization.m in Sources */,
+				137AE4011B6BABBE00748428 /* CSAFURLSessionManager.m in Sources */,
 				573B70A1161DDD1C009F0452 /* AGRestAuthentication.m in Sources */,
 				480FD4E0185B08ED00D8CAD3 /* AGSQLiteCommand.m in Sources */,
 				57C2616516402B8900793C0F /* AGPipeConfiguration.m in Sources */,
@@ -706,15 +780,20 @@
 				6FE55675169DE7C800E6188E /* AGPropertyListStorage.m in Sources */,
 				480FD4DB185B088500D8CAD3 /* AGEncryptedSQLiteStorage.m in Sources */,
 				48B5C59118521C7000FF7108 /* AGEncoder.m in Sources */,
+				137AE3FB1B6BABBE00748428 /* CSAFHTTPSessionManager.m in Sources */,
 				A0A37ADA16AEAEDE00979868 /* AGNSMutableArray+Paging.m in Sources */,
+				137AE3FD1B6BABBE00748428 /* CSAFSecurityPolicy.m in Sources */,
 				6F573BBE1863080C000F4076 /* AGMultipart.m in Sources */,
 				6FE3D1391834E3F100C3A09A /* AGKeyManager.m in Sources */,
 				6F14F191170EDA02001E14BA /* AGPageBodyExtractor.m in Sources */,
+				137AE3F91B6BABBE00748428 /* CSAFHTTPRequestOperation.m in Sources */,
+				137AE3FF1B6BABBE00748428 /* CSAFURLRequestSerialization.m in Sources */,
 				6F14F192170EDA02001E14BA /* AGPageHeaderExtractor.m in Sources */,
 				6FE3D13D1834E3F100C3A09A /* AGPasswordEncryptionServices.m in Sources */,
 				6FE3D13A1834E3F100C3A09A /* AGKeyStoreCryptoConfig.m in Sources */,
 				6FE3D13B1834E3F100C3A09A /* AGPassphraseCryptoConfig.m in Sources */,
 				6F14F193170EDA02001E14BA /* AGPageWebLinkingExtractor.m in Sources */,
+				137AE3FC1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m in Sources */,
 				6F393F091834100B00FFB44D /* AGEncryptedPropertyListStorage.m in Sources */,
 				6FE3D1381834E3F100C3A09A /* AGBaseEncryptionService.m in Sources */,
 				6FE3D13C1834E3F100C3A09A /* AGPassphraseEncryptionServices.m in Sources */,
@@ -724,6 +803,7 @@
 				489F47BB17DDFFF40072DE0F /* AGSQLiteStorage.m in Sources */,
 				38EABEA20822C924B3E36AED /* AGAuthorizer.m in Sources */,
 				38EAB9B564447C63EDA4F3BD /* AGAuthzConfiguration.m in Sources */,
+				137AE3FA1B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m in Sources */,
 				38EAB6DDCEDC350EEEB294DF /* AGRestAuthzModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -849,7 +929,7 @@
 		};
 		57737FFF15E3D01D006B97BB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */;
+			baseConfigurationReference = C1A574BD0AD4911D34056C36 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "";
 				DSTROOT = /tmp/AeroGear_iOS.dst;
@@ -869,7 +949,7 @@
 		};
 		5773800015E3D01D006B97BB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */;
+			baseConfigurationReference = E9A667B2D51078E7F09075C6 /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "";
 				DSTROOT = /tmp/AeroGear_iOS.dst;
@@ -889,7 +969,7 @@
 		};
 		5773800215E3D01D006B97BB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */;
+			baseConfigurationReference = C8C83F45802B19B09288E934 /* Pods-AeroGear-iOSTests.debug.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -912,7 +992,7 @@
 		};
 		5773800315E3D01D006B97BB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */;
+			baseConfigurationReference = 67434AC979C6B44E89C73792 /* Pods-AeroGear-iOSTests.release.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -973,7 +1053,7 @@
 		};
 		83EB45E61886BABF0074ED68 /* CodeCoverage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8AB37EC1AA3464892D758C1 /* Pods.xcconfig */;
+			baseConfigurationReference = 635AE83A2463B160B33D63B1 /* Pods.codecoverage.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "";
 				DSTROOT = /tmp/AeroGear_iOS.dst;
@@ -989,7 +1069,7 @@
 		};
 		83EB45E71886BABF0074ED68 /* CodeCoverage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6A7A8124B23447DA65BC0DE /* Pods-AeroGear-iOSTests.xcconfig */;
+			baseConfigurationReference = F9B2D0E26FBA1B0FF4BE583F /* Pods-AeroGear-iOSTests.codecoverage.xcconfig */;
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

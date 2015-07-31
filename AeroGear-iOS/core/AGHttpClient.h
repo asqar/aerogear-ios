@@ -16,11 +16,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "AFNetworking.h"
+#import "CSAFNetworking.h"
 #import "AGAuthenticationModuleAdapter.h"
 #import "AGAuthzModuleAdapter.h"
 
-@interface AGHttpClient : AFHTTPSessionManager
+@interface AGHttpClient : CSAFHTTPSessionManager
 
 + (instancetype)clientFor:(NSURL *)url;
 + (instancetype)clientFor:(NSURL *)url timeout:(NSTimeInterval)interval;

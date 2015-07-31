@@ -18,7 +18,7 @@
 #import "AGHttpClient.h"
 #import "AGMultipart.h"
 
-@interface AGRequestSerializer : AFJSONRequestSerializer
+@interface AGRequestSerializer : CSAFJSONRequestSerializer
 
     // auth/autz configuration
     @property (nonatomic, strong) id<AGAuthenticationModuleAdapter> authModule;
@@ -102,7 +102,7 @@
 
     self.requestSerializer = serializer;
     // apply json response serializer
-    self.responseSerializer = [AFJSONResponseSerializer serializer];
+    self.responseSerializer = [CSAFJSONResponseSerializer serializer];
 
     // set the timeout interval
     self.requestSerializer.timeoutInterval = interval;
@@ -113,7 +113,7 @@
     return (self);
 }
 
-#pragma mark - AFHTTPSessionManager override
+#pragma mark - CSAFHTTPSessionManager override
 
 // override to construct a multipart request if required by the params passed in
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
@@ -207,7 +207,7 @@
         }
     }];
 
-    // cater for AFNetworking default behaviour to call [object description]
+    // cater for CSAFNetworking default behaviour to call [object description]
     // for parameters other than NSData and NSNull. We need to filter
     // AGMultipart objects from the request and apply them in the block later on
     NSMutableDictionary *filteredParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
@@ -216,7 +216,7 @@
     // will hold any error that occurs during multipart add
     __block NSError *err;
 
-    req = [self.requestSerializer multipartFormRequestWithMethod:method URLString:path parameters:filteredParameters constructingBodyWithBlock:^(id <AFMultipartFormData> formData) {
+    req = [self.requestSerializer multipartFormRequestWithMethod:method URLString:path parameters:filteredParameters constructingBodyWithBlock:^(id <CSAFMultipartFormData> formData) {
 
         [parts enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
             if ([obj isKindOfClass:[AGFilePart class]]) {

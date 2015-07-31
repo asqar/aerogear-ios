@@ -70,7 +70,7 @@ NSString * const AGAppLaunchedWithURLNotification = @"AGAppLaunchedWithURLNotifi
         _restClient = [AGHttpClient clientFor:config.baseURL timeout:config.timeout];
 
         // default to url serialization
-        _restClient.requestSerializer = [AFHTTPRequestSerializer serializer];
+        _restClient.requestSerializer = [CSAFHTTPRequestSerializer serializer];
     }
 
     return self;
