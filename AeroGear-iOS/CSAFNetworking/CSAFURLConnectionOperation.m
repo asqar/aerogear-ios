@@ -63,7 +63,7 @@ static dispatch_queue_t url_request_operation_completion_queue() {
     return af_url_request_operation_completion_queue;
 }
 
-static NSString * const kAFNetworkingLockName = @"com.alamofire.networking.operation.lock";
+static NSString * const kCSAFNetworkingLockName = @"com.alamofire.networking.operation.lock";
 
 NSString * const CSAFNetworkingOperationDidStartNotification = @"com.alamofire.networking.operation.start";
 NSString * const CSAFNetworkingOperationDidFinishNotification = @"com.alamofire.networking.operation.finish";
@@ -191,7 +191,7 @@ static inline BOOL CSAFStateTransitionIsValid(CSAFOperationState fromState, CSAF
     _state = CSAFOperationReadyState;
 
     self.lock = [[NSRecursiveLock alloc] init];
-    self.lock.name = kAFNetworkingLockName;
+    self.lock.name = kCSAFNetworkingLockName;
 
     self.runLoopModes = [NSSet setWithObject:NSRunLoopCommonModes];
 
