@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		08D43362329A46488E585071 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65D1DA06FAB24A18AB6A5963 /* libPods.a */; };
-		137AE3F91B6BABBE00748428 /* CSAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */; };
-		137AE3FA1B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */; };
-		137AE3FB1B6BABBE00748428 /* CSAFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */; };
-		137AE3FC1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */; };
-		137AE3FD1B6BABBE00748428 /* CSAFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */; };
-		137AE3FE1B6BABBE00748428 /* CSAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */; };
-		137AE3FF1B6BABBE00748428 /* CSAFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */; };
-		137AE4001B6BABBE00748428 /* CSAFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */; };
-		137AE4011B6BABBE00748428 /* CSAFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */; };
+		137AE4161B6BBC6900748428 /* CSAFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4041B6BBC6900748428 /* CSAFHTTPRequestOperation.m */; };
+		137AE4171B6BBC6900748428 /* CSAFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4061B6BBC6900748428 /* CSAFHTTPRequestOperationManager.m */; };
+		137AE4181B6BBC6900748428 /* CSAFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4081B6BBC6900748428 /* CSAFHTTPSessionManager.m */; };
+		137AE4191B6BBC6900748428 /* CSAFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE40B1B6BBC6900748428 /* CSAFNetworkReachabilityManager.m */; };
+		137AE41A1B6BBC6900748428 /* CSAFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE40D1B6BBC6900748428 /* CSAFSecurityPolicy.m */; };
+		137AE41B1B6BBC6900748428 /* CSAFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE40F1B6BBC6900748428 /* CSAFURLConnectionOperation.m */; };
+		137AE41C1B6BBC6900748428 /* CSAFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4111B6BBC6900748428 /* CSAFURLRequestSerialization.m */; };
+		137AE41D1B6BBC6900748428 /* CSAFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4131B6BBC6900748428 /* CSAFURLResponseSerialization.m */; };
+		137AE41E1B6BBC6900748428 /* CSAFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 137AE4151B6BBC6900748428 /* CSAFURLSessionManager.m */; };
 		1D0A1358119648AFB949959A /* libPods-AeroGear-iOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E065C8DDD305422BBB3237D5 /* libPods-AeroGear-iOSTests.a */; };
 		38EAB6DDCEDC350EEEB294DF /* AGRestAuthzModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 38EAB8B515B16A800D9ACAC2 /* AGRestAuthzModule.m */; };
 		38EAB9B564447C63EDA4F3BD /* AGAuthzConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 38EABA4C6581856F7241CB57 /* AGAuthzConfiguration.m */; };
@@ -144,25 +144,25 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		137AE3E61B6BABBE00748428 /* CSAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperation.h; sourceTree = "<group>"; };
-		137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperation.m; sourceTree = "<group>"; };
-		137AE3E81B6BABBE00748428 /* CSAFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
-		137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
-		137AE3EA1B6BABBE00748428 /* CSAFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPSessionManager.h; sourceTree = "<group>"; };
-		137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPSessionManager.m; sourceTree = "<group>"; };
-		137AE3EC1B6BABBE00748428 /* CSAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworking.h; sourceTree = "<group>"; };
-		137AE3ED1B6BABBE00748428 /* CSAFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworkReachabilityManager.h; sourceTree = "<group>"; };
-		137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFNetworkReachabilityManager.m; sourceTree = "<group>"; };
-		137AE3EF1B6BABBE00748428 /* CSAFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFSecurityPolicy.h; sourceTree = "<group>"; };
-		137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFSecurityPolicy.m; sourceTree = "<group>"; };
-		137AE3F11B6BABBE00748428 /* CSAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLConnectionOperation.h; sourceTree = "<group>"; };
-		137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLConnectionOperation.m; sourceTree = "<group>"; };
-		137AE3F31B6BABBE00748428 /* CSAFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLRequestSerialization.h; sourceTree = "<group>"; };
-		137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLRequestSerialization.m; sourceTree = "<group>"; };
-		137AE3F51B6BABBE00748428 /* CSAFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLResponseSerialization.h; sourceTree = "<group>"; };
-		137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLResponseSerialization.m; sourceTree = "<group>"; };
-		137AE3F71B6BABBE00748428 /* CSAFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLSessionManager.h; sourceTree = "<group>"; };
-		137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLSessionManager.m; sourceTree = "<group>"; };
+		137AE4031B6BBC6900748428 /* CSAFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		137AE4041B6BBC6900748428 /* CSAFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		137AE4051B6BBC6900748428 /* CSAFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		137AE4061B6BBC6900748428 /* CSAFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		137AE4071B6BBC6900748428 /* CSAFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFHTTPSessionManager.h; sourceTree = "<group>"; };
+		137AE4081B6BBC6900748428 /* CSAFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFHTTPSessionManager.m; sourceTree = "<group>"; };
+		137AE4091B6BBC6900748428 /* CSAFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworking.h; sourceTree = "<group>"; };
+		137AE40A1B6BBC6900748428 /* CSAFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		137AE40B1B6BBC6900748428 /* CSAFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		137AE40C1B6BBC6900748428 /* CSAFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFSecurityPolicy.h; sourceTree = "<group>"; };
+		137AE40D1B6BBC6900748428 /* CSAFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFSecurityPolicy.m; sourceTree = "<group>"; };
+		137AE40E1B6BBC6900748428 /* CSAFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLConnectionOperation.h; sourceTree = "<group>"; };
+		137AE40F1B6BBC6900748428 /* CSAFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLConnectionOperation.m; sourceTree = "<group>"; };
+		137AE4101B6BBC6900748428 /* CSAFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLRequestSerialization.h; sourceTree = "<group>"; };
+		137AE4111B6BBC6900748428 /* CSAFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLRequestSerialization.m; sourceTree = "<group>"; };
+		137AE4121B6BBC6900748428 /* CSAFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLResponseSerialization.h; sourceTree = "<group>"; };
+		137AE4131B6BBC6900748428 /* CSAFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLResponseSerialization.m; sourceTree = "<group>"; };
+		137AE4141B6BBC6900748428 /* CSAFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSAFURLSessionManager.h; sourceTree = "<group>"; };
+		137AE4151B6BBC6900748428 /* CSAFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSAFURLSessionManager.m; sourceTree = "<group>"; };
 		38EAB0A7B277164A8D63F747 /* AGAuthorizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthorizer.h; sourceTree = "<group>"; };
 		38EAB406473CD49D16965D21 /* AGAuthzModuleAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthzModuleAdapter.h; sourceTree = "<group>"; };
 		38EAB5ADD30E415FE3231321 /* AGAuthzConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AGAuthzConfig.h; sourceTree = "<group>"; };
@@ -337,30 +337,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		137AE3E51B6BABBE00748428 /* AFNetworking */ = {
+		137AE4021B6BBC6900748428 /* CSAFNetworking */ = {
 			isa = PBXGroup;
 			children = (
-				137AE3E61B6BABBE00748428 /* CSAFHTTPRequestOperation.h */,
-				137AE3E71B6BABBE00748428 /* CSAFHTTPRequestOperation.m */,
-				137AE3E81B6BABBE00748428 /* CSAFHTTPRequestOperationManager.h */,
-				137AE3E91B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m */,
-				137AE3EA1B6BABBE00748428 /* CSAFHTTPSessionManager.h */,
-				137AE3EB1B6BABBE00748428 /* CSAFHTTPSessionManager.m */,
-				137AE3EC1B6BABBE00748428 /* CSAFNetworking.h */,
-				137AE3ED1B6BABBE00748428 /* CSAFNetworkReachabilityManager.h */,
-				137AE3EE1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m */,
-				137AE3EF1B6BABBE00748428 /* CSAFSecurityPolicy.h */,
-				137AE3F01B6BABBE00748428 /* CSAFSecurityPolicy.m */,
-				137AE3F11B6BABBE00748428 /* CSAFURLConnectionOperation.h */,
-				137AE3F21B6BABBE00748428 /* CSAFURLConnectionOperation.m */,
-				137AE3F31B6BABBE00748428 /* CSAFURLRequestSerialization.h */,
-				137AE3F41B6BABBE00748428 /* CSAFURLRequestSerialization.m */,
-				137AE3F51B6BABBE00748428 /* CSAFURLResponseSerialization.h */,
-				137AE3F61B6BABBE00748428 /* CSAFURLResponseSerialization.m */,
-				137AE3F71B6BABBE00748428 /* CSAFURLSessionManager.h */,
-				137AE3F81B6BABBE00748428 /* CSAFURLSessionManager.m */,
+				137AE4031B6BBC6900748428 /* CSAFHTTPRequestOperation.h */,
+				137AE4041B6BBC6900748428 /* CSAFHTTPRequestOperation.m */,
+				137AE4051B6BBC6900748428 /* CSAFHTTPRequestOperationManager.h */,
+				137AE4061B6BBC6900748428 /* CSAFHTTPRequestOperationManager.m */,
+				137AE4071B6BBC6900748428 /* CSAFHTTPSessionManager.h */,
+				137AE4081B6BBC6900748428 /* CSAFHTTPSessionManager.m */,
+				137AE4091B6BBC6900748428 /* CSAFNetworking.h */,
+				137AE40A1B6BBC6900748428 /* CSAFNetworkReachabilityManager.h */,
+				137AE40B1B6BBC6900748428 /* CSAFNetworkReachabilityManager.m */,
+				137AE40C1B6BBC6900748428 /* CSAFSecurityPolicy.h */,
+				137AE40D1B6BBC6900748428 /* CSAFSecurityPolicy.m */,
+				137AE40E1B6BBC6900748428 /* CSAFURLConnectionOperation.h */,
+				137AE40F1B6BBC6900748428 /* CSAFURLConnectionOperation.m */,
+				137AE4101B6BBC6900748428 /* CSAFURLRequestSerialization.h */,
+				137AE4111B6BBC6900748428 /* CSAFURLRequestSerialization.m */,
+				137AE4121B6BBC6900748428 /* CSAFURLResponseSerialization.h */,
+				137AE4131B6BBC6900748428 /* CSAFURLResponseSerialization.m */,
+				137AE4141B6BBC6900748428 /* CSAFURLSessionManager.h */,
+				137AE4151B6BBC6900748428 /* CSAFURLSessionManager.m */,
 			);
-			path = AFNetworking;
+			path = CSAFNetworking;
 			sourceTree = "<group>";
 		};
 		350060592D9CC296AD2A31EC /* Pods */ = {
@@ -461,7 +461,6 @@
 		57737FCE15E3D01D006B97BB = {
 			isa = PBXGroup;
 			children = (
-				137AE3E51B6BABBE00748428 /* AFNetworking */,
 				57737FDE15E3D01D006B97BB /* AeroGear-iOS */,
 				57737FF315E3D01D006B97BB /* AeroGear-iOSTests */,
 				57737FDB15E3D01D006B97BB /* Frameworks */,
@@ -499,6 +498,7 @@
 		57737FDE15E3D01D006B97BB /* AeroGear-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				137AE4021B6BBC6900748428 /* CSAFNetworking */,
 				57737FDF15E3D01D006B97BB /* Supporting Files */,
 				57C2615F16402B0E00793C0F /* Config */,
 				57ED1456160B569500881924 /* Core */,
@@ -766,12 +766,12 @@
 				57DCDB8415F20E4800289EA4 /* AGBaseAdapter.m in Sources */,
 				57ED144E160B490F00881924 /* AGDataManager.m in Sources */,
 				6F393F081834100B00FFB44D /* AGEncryptedMemoryStorage.m in Sources */,
-				137AE3FE1B6BABBE00748428 /* CSAFURLConnectionOperation.m in Sources */,
+				137AE41B1B6BBC6900748428 /* CSAFURLConnectionOperation.m in Sources */,
 				571DBACB1610715800A0A3A6 /* AGMemoryStorage.m in Sources */,
 				571DBACF161071BF00A0A3A6 /* AGBaseStorage.m in Sources */,
 				573B709D161DA2AE009F0452 /* AGAuthenticator.m in Sources */,
-				137AE4001B6BABBE00748428 /* CSAFURLResponseSerialization.m in Sources */,
-				137AE4011B6BABBE00748428 /* CSAFURLSessionManager.m in Sources */,
+				137AE41D1B6BBC6900748428 /* CSAFURLResponseSerialization.m in Sources */,
+				137AE41E1B6BBC6900748428 /* CSAFURLSessionManager.m in Sources */,
 				573B70A1161DDD1C009F0452 /* AGRestAuthentication.m in Sources */,
 				480FD4E0185B08ED00D8CAD3 /* AGSQLiteCommand.m in Sources */,
 				57C2616516402B8900793C0F /* AGPipeConfiguration.m in Sources */,
@@ -780,20 +780,20 @@
 				6FE55675169DE7C800E6188E /* AGPropertyListStorage.m in Sources */,
 				480FD4DB185B088500D8CAD3 /* AGEncryptedSQLiteStorage.m in Sources */,
 				48B5C59118521C7000FF7108 /* AGEncoder.m in Sources */,
-				137AE3FB1B6BABBE00748428 /* CSAFHTTPSessionManager.m in Sources */,
+				137AE4181B6BBC6900748428 /* CSAFHTTPSessionManager.m in Sources */,
 				A0A37ADA16AEAEDE00979868 /* AGNSMutableArray+Paging.m in Sources */,
-				137AE3FD1B6BABBE00748428 /* CSAFSecurityPolicy.m in Sources */,
+				137AE41A1B6BBC6900748428 /* CSAFSecurityPolicy.m in Sources */,
 				6F573BBE1863080C000F4076 /* AGMultipart.m in Sources */,
 				6FE3D1391834E3F100C3A09A /* AGKeyManager.m in Sources */,
 				6F14F191170EDA02001E14BA /* AGPageBodyExtractor.m in Sources */,
-				137AE3F91B6BABBE00748428 /* CSAFHTTPRequestOperation.m in Sources */,
-				137AE3FF1B6BABBE00748428 /* CSAFURLRequestSerialization.m in Sources */,
+				137AE4161B6BBC6900748428 /* CSAFHTTPRequestOperation.m in Sources */,
+				137AE41C1B6BBC6900748428 /* CSAFURLRequestSerialization.m in Sources */,
 				6F14F192170EDA02001E14BA /* AGPageHeaderExtractor.m in Sources */,
 				6FE3D13D1834E3F100C3A09A /* AGPasswordEncryptionServices.m in Sources */,
 				6FE3D13A1834E3F100C3A09A /* AGKeyStoreCryptoConfig.m in Sources */,
 				6FE3D13B1834E3F100C3A09A /* AGPassphraseCryptoConfig.m in Sources */,
 				6F14F193170EDA02001E14BA /* AGPageWebLinkingExtractor.m in Sources */,
-				137AE3FC1B6BABBE00748428 /* CSAFNetworkReachabilityManager.m in Sources */,
+				137AE4191B6BBC6900748428 /* CSAFNetworkReachabilityManager.m in Sources */,
 				6F393F091834100B00FFB44D /* AGEncryptedPropertyListStorage.m in Sources */,
 				6FE3D1381834E3F100C3A09A /* AGBaseEncryptionService.m in Sources */,
 				6FE3D13C1834E3F100C3A09A /* AGPassphraseEncryptionServices.m in Sources */,
@@ -803,7 +803,7 @@
 				489F47BB17DDFFF40072DE0F /* AGSQLiteStorage.m in Sources */,
 				38EABEA20822C924B3E36AED /* AGAuthorizer.m in Sources */,
 				38EAB9B564447C63EDA4F3BD /* AGAuthzConfiguration.m in Sources */,
-				137AE3FA1B6BABBE00748428 /* CSAFHTTPRequestOperationManager.m in Sources */,
+				137AE4171B6BBC6900748428 /* CSAFHTTPRequestOperationManager.m in Sources */,
 				38EAB6DDCEDC350EEEB294DF /* AGRestAuthzModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
